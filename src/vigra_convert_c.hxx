@@ -1,5 +1,5 @@
 #include "os_settings.hxx"
-
+#include <cstring>
 
 LIBEXPORT int vigra_convert_grayband_to_argb_c(const float *arr,  
                                                 unsigned char* argb_arr,
