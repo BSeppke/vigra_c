@@ -29,7 +29,7 @@ SIV_CREATION_FUNCTION(5)
 LIBEXPORT int vigra_delete_splineimageview##splineDegree##_c (void * siv)               \
 {                                                                                       \
     SplineImageView##splineDegree * siv_ptr  = (SplineImageView##splineDegree * ) siv;  \
-    delete siv;                                                                         \
+    delete siv_ptr;                                                                         \
     return 0;                                                                           \
 }
 

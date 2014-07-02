@@ -163,14 +163,13 @@
     <ClCompile Include="..\src\vigra_c.cxx" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\opencv_grab_c.hxx" />
-    <ClInclude Include="..\src\os_settings.hxx" />
-    <ClInclude Include="..\src\vigra_filters_c.hxx" />
-    <ClInclude Include="..\src\vigra_imgproc_c.hxx" />
-    <ClInclude Include="..\src\vigra_impex_c.hxx" />
-    <ClInclude Include="..\src\vigra_morphology_c.hxx" />
-    <ClInclude Include="..\src\vigra_segmentation_c.hxx" />
-    <ClInclude Include="..\src\vigra_splineimageview_c.hxx" />
+    <ClInclude Include="..\src\os_settings.h" />
+    <ClInclude Include="..\src\vigra_filters_c.h" />
+    <ClInclude Include="..\src\vigra_imgproc_c.h" />
+    <ClInclude Include="..\src\vigra_impex_c.h" />
+    <ClInclude Include="..\src\vigra_morphology_c.h" />
+    <ClInclude Include="..\src\vigra_segmentation_c.h" />
+    <ClInclude Include="..\src\vigra_splineimageview_c.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,10 +2,10 @@
 
 #include "vigra/basicimageview.hxx"
 #include "vigra/labelimage.hxx"
+#include <iostream> //needed for std::cerr inside vigra/labelVolume.hxx
 #include "vigra/watersheds.hxx"
 #include "vigra/edgedetection.hxx"
 #include "vigra/configVersion.hxx"
-#include <iostream> //needed for std::cerr inside vigra/labelVolume.hxx
 
 
 LIBEXPORT int vigra_labelimage_c(const float *arr,const  float *arr2, const int width, int height)
