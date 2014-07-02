@@ -131,7 +131,7 @@ SIV_ACCESSOR_FUNCTION_SIGNATURE(5)
 /************ ADDRESS BASED FUNCTIONS *****************/
 
 #define SIV_ADDRESS_CREATION_FUNCTION_SIGNATURE(splineDegree) \
-LIBEXPORT vigra::UInt64 vigra_create_splineimageview##splineDegree##_address_c (const float *arr, const int width, const int height);
+LIBEXPORT unsigned long vigra_create_splineimageview##splineDegree##_address_c (const float *arr, const int width, const int height);
 
 SIV_ADDRESS_CREATION_FUNCTION_SIGNATURE(1)
 SIV_ADDRESS_CREATION_FUNCTION_SIGNATURE(2)
@@ -140,7 +140,7 @@ SIV_ADDRESS_CREATION_FUNCTION_SIGNATURE(4)
 SIV_ADDRESS_CREATION_FUNCTION_SIGNATURE(5)
 
 #define SIV_DELETION_BY_ADDRESS_FUNCTION_SIGNATURE(splineDegree) \
-LIBEXPORT int vigra_delete_splineimageview##splineDegree##_by_address_c (vigra::UInt64 address);
+LIBEXPORT int vigra_delete_splineimageview##splineDegree##_by_address_c (unsigned long address);
 
 SIV_DELETION_BY_ADDRESS_FUNCTION_SIGNATURE(1)
 SIV_DELETION_BY_ADDRESS_FUNCTION_SIGNATURE(2)
@@ -150,7 +150,7 @@ SIV_DELETION_BY_ADDRESS_FUNCTION_SIGNATURE(5)
 
 
 #define SIV_OPERATION_BY_ADDRESS_FUNCTION_SIGNATURE(function, splineDegree) \
-LIBEXPORT float vigra_splineimageview##splineDegree##_##function##_by_address_c (vigra::UInt64 address, double x, double y);
+LIBEXPORT float vigra_splineimageview##splineDegree##_##function##_by_address_c (unsigned long address, double x, double y);
 
 SIV_OPERATION_BY_ADDRESS_FUNCTION_SIGNATURE(dx,1)
 SIV_OPERATION_BY_ADDRESS_FUNCTION_SIGNATURE(dx,2)
@@ -244,7 +244,7 @@ SIV_OPERATION_BY_ADDRESS_FUNCTION_SIGNATURE(g2yy,5)
 
 
 #define SIV_ACCESSOR_BY_ADDRESS_FUNCTION_SIGNATURE(splineDegree) \
-LIBEXPORT float vigra_splineimageview##splineDegree##_accessor_by_address_c(vigra::UInt64 address, double x, double y);
+LIBEXPORT float vigra_splineimageview##splineDegree##_accessor_by_address_c(unsigned long address, double x, double y);
 
 SIV_ACCESSOR_BY_ADDRESS_FUNCTION_SIGNATURE(1)
 SIV_ACCESSOR_BY_ADDRESS_FUNCTION_SIGNATURE(2)
