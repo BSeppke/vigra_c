@@ -1,13 +1,15 @@
-#include <iostream> //needed for std::cerr inside vigra/labelVolume.hxx
+#include "vigra_segmentation_c.h"
 
 #include "vigra/basicimageview.hxx"
 #include "vigra/labelimage.hxx"
 #include "vigra/watersheds.hxx"
 #include "vigra/edgedetection.hxx"
-#include "os_settings.hxx"
+#include "vigra/configVersion.hxx"
+#include <iostream> //needed for std::cerr inside vigra/labelVolume.hxx
 
 
-LIBEXPORT int vigra_labelimage_c(const float *arr,const  float *arr2, const int width, int height){ 
+LIBEXPORT int vigra_labelimage_c(const float *arr,const  float *arr2, const int width, int height)
+{
     try
     {
       vigra::BasicImageView<float> img(arr, width, height);
@@ -21,7 +23,8 @@ LIBEXPORT int vigra_labelimage_c(const float *arr,const  float *arr2, const int 
     }
 }
 
-LIBEXPORT int vigra_watersheds_c(const float *arr,const  float *arr2, const  int width,const  int height){ 
+LIBEXPORT int vigra_watersheds_c(const float *arr,const  float *arr2, const  int width,const  int height)
+{
     try
     {
       vigra::BasicImageView<float> img(arr, width, height);
@@ -39,7 +42,8 @@ LIBEXPORT int vigra_watersheds_c(const float *arr,const  float *arr2, const  int
     }
 }
 
-LIBEXPORT int vigra_cannyedgeimage_c(const float *arr,const  float *arr2, const  int width,const  int height, const float scale, const float gradient_threshold, const float mark){
+LIBEXPORT int vigra_cannyedgeimage_c(const float *arr,const  float *arr2, const  int width,const  int height, const float scale, const float gradient_threshold, const float mark)
+{
     try
     {
       vigra::BasicImageView<float> img(arr, width, height);
@@ -53,7 +57,8 @@ LIBEXPORT int vigra_cannyedgeimage_c(const float *arr,const  float *arr2, const 
     return 0;
 }
 
-LIBEXPORT int vigra_differenceofexponentialedgeimage_c(const float *arr,const  float *arr2, const  int width,const  int height, const float scale, const float gradient_threshold, const float mark){ 
+LIBEXPORT int vigra_differenceofexponentialedgeimage_c(const float *arr,const  float *arr2, const  int width,const  int height, const float scale, const float gradient_threshold, const float mark)
+{
     try
     {
       vigra::BasicImageView<float> img(arr, width, height);
@@ -67,7 +72,8 @@ LIBEXPORT int vigra_differenceofexponentialedgeimage_c(const float *arr,const  f
     return 0;
 }
 
-LIBEXPORT int vigra_regionimagetocrackedgeimage_c(const float *arr,const  float *arr2, const  int width,const  int height, const float mark){ 
+LIBEXPORT int vigra_regionimagetocrackedgeimage_c(const float *arr,const  float *arr2, const  int width,const  int height, const float mark)
+{
     try
     {
       vigra::BasicImageView<float> img(arr, width, height);

@@ -1,11 +1,13 @@
+#include "vigra_morphology_c.h"
+
 #include "vigra/basicimage.hxx"
 #include "vigra/basicimageview.hxx"
 #include "vigra/flatmorphology.hxx"
-#include "os_settings.hxx"
 
 using namespace std;
 
-LIBEXPORT int vigra_discerosion_c(const float *arr, const float *arr2,const  int width,const  int height,const  int radius){ 
+LIBEXPORT int vigra_discerosion_c(const float *arr, const float *arr2,const int width, const int height, const int radius)
+{
     try
     {
       // create a gray scale image of appropriate size
@@ -27,7 +29,8 @@ LIBEXPORT int vigra_discerosion_c(const float *arr, const float *arr2,const  int
     return 0;
 }
 
-LIBEXPORT int vigra_discdilation_c(const float *arr, const float *arr2,const  int width,const  int height,const  int radius){ 
+LIBEXPORT int vigra_discdilation_c(const float *arr, const float *arr2,const int width, const int height, const int radius)
+{
     try
     {
       // create a gray scale image of appropriate size
@@ -49,7 +52,8 @@ LIBEXPORT int vigra_discdilation_c(const float *arr, const float *arr2,const  in
     return 0;
 }
 
-LIBEXPORT int vigraext_upwind_c(const float *arr, const float *arr2,  const float *arr3, const  int width,const  int height,const float weight){
+LIBEXPORT int vigraext_upwind_c(const float *arr, const float *arr2,  const float *arr3, const int width, const int height, const float weight)
+{
 	try
     {
 		// create a gray scale image of appropriate size

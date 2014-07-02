@@ -1,22 +1,14 @@
+#include "vigra_imgproc_c.h"
+
 #include "vigra/resizeimage.hxx"
 #include "vigra/affinegeometry.hxx"
 #include "vigra/basicgeometry.hxx"
 #include "vigra/fftw3.hxx"
-#include "os_settings.hxx"
-
 #include "vigra/configVersion.hxx"
 
-LIBEXPORT  int foo(double arr[], int length) {
-   int i;
-   for (i=0; i<length; i++) arr[i] *= 2.0;
-   return length;
- }
- 
- LIBEXPORT int vigra_resizeimage_c(const float *arr,  
-				  const float *arr2, 
-				  const  int width, const  int height, 
-				  const  int width2, const  int height2,
-				  const int resize_method){ 
+
+LIBEXPORT int vigra_resizeimage_c(const float *arr, const float *arr2, const int width, const int height, const int width2, const int height2, const int resize_method)
+{
     try
     {
       // create a gray scale image of appropriate size
@@ -50,11 +42,8 @@ LIBEXPORT  int foo(double arr[], int length) {
     return 0;
 }
 
-LIBEXPORT int vigra_rotateimage_c( const float *arr,
-				   const float *arr2,
-				   const int width, const  int height,
-				   const float angle, 
-				   const int resize_method){ 
+LIBEXPORT int vigra_rotateimage_c( const float *arr, const float *arr2, const int width, const int height, const float angle, const int resize_method)
+{
     try
     {
         // create a gray scale image of appropriate size
@@ -92,12 +81,8 @@ LIBEXPORT int vigra_rotateimage_c( const float *arr,
     return 0;
 }
 
-
-LIBEXPORT int vigra_affinewarpimage_c( const float *arr,
-				   const float  *arr2,
-				   double *affineMatrix,
-				   const int width, const  int height, 
-				   const int resize_method){ 
+LIBEXPORT int vigra_affinewarpimage_c( const float *arr, const float *arr2, double *affineMatrix, const int width, const  int height, const int resize_method)
+{
     try
     {
         // create a gray scale image of appropriate size
@@ -126,10 +111,11 @@ LIBEXPORT int vigra_affinewarpimage_c( const float *arr,
         else if (resize_method == 0){
             vigra::SplineImageView<0, float> spline0(srcImageRange(img));
             vigra::affineWarpImage(spline0, destImageRange(img2), mat);
-	}
-        else {        
+        }
+        else
+        {
             return 2;
-	}
+        }
     }
     catch (vigra::StdException & e)
     {
@@ -139,7 +125,8 @@ LIBEXPORT int vigra_affinewarpimage_c( const float *arr,
 }
 
 
-LIBEXPORT int vigra_reflectimage_c(const float *arr, const float *arr2, const  int width, const  int height, const int reflect_method){ 
+LIBEXPORT int vigra_reflectimage_c(const float *arr, const float *arr2, const int width, const int height, const int reflect_method)
+{
     try
     {
         // create a gray scale image of appropriate size
@@ -159,10 +146,8 @@ LIBEXPORT int vigra_reflectimage_c(const float *arr, const float *arr2, const  i
     return 0;
 }
 
-LIBEXPORT int vigra_fouriertransform_c(const float *arr, 
-				       const float *arr2,
-				       const float *arr3, 
-				       const  int width, const  int height){ 
+LIBEXPORT int vigra_fouriertransform_c(const float *arr, const float *arr2, const float *arr3, const int width, const int height)
+{
     try
     {
         // create a gray scale image of appropriate size
