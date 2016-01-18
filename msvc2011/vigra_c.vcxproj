@@ -170,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\os_settings.h" />
+    <ClInclude Include="..\src\vigra_convert_c.h" />
     <ClInclude Include="..\src\vigra_filters_c.h" />
     <ClInclude Include="..\src\vigra_imgproc_c.h" />
     <ClInclude Include="..\src\vigra_impex_c.h" />
