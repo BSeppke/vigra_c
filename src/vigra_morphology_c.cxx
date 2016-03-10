@@ -1,5 +1,7 @@
 #include "vigra_morphology_c.h"
 
+#include "vigra/stdimage.hxx"
+#include "vigra/copyimage.hxx"
 #include "vigra/basicimage.hxx"
 #include "vigra/basicimageview.hxx"
 #include "vigra/flatmorphology.hxx"
