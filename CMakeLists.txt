@@ -33,4 +33,6 @@ if(UNIX AND NOT WIN32)
      list(APPEND FFTW_LIBRARIES "${FFTW_libm_LIBRARY}")
 endif()
 
+set(CMAKE_BUILD_TYPE Release)
+
 add_subdirectory(src)
