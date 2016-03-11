@@ -25,6 +25,5 @@ set(HEADERS
 	vigra_splineimageview_c.h)
 
 # Tell CMake to create the library
-add_definitions(-DVIGRA_C_BUILD)
 add_library(vigra_c SHARED ${SOURCES} ${HEADERS})
 target_link_libraries(vigra_c vigraimpex ${FFTW_LIBRARIES})
