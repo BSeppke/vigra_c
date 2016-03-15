@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.11)
 
-project(opencv-grab_c)
+project(vigra_c)
 
 #find . -type f -name \*.cxx | sed 's,^\./,,'
 set(SOURCES 
