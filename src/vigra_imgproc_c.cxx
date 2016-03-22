@@ -4,8 +4,6 @@
 #include "vigra/affinegeometry.hxx"
 #include "vigra/basicgeometry.hxx"
 #include "vigra/fftw3.hxx"
-#include "vigra/configVersion.hxx"
-
 
 LIBEXPORT int vigra_resizeimage_c(const float *arr, const float *arr2, const int width, const int height, const int width2, const int height2, const int resize_method)
 {
@@ -160,15 +158,8 @@ LIBEXPORT int vigra_fouriertransform_c(const float *arr, const float *arr2, cons
         	
         vigra::fourierTransform(srcImageRange(img), destImage(fourier));
         moveDCToCenter(srcImageRange(fourier), destImage(rearrangedFourier));
-		
-#if VIGRA_VERSION_MAJOR<2 && VIGRA_VERSION_MINOR<8
-        vigra::copyImage(srcImageRange(rearrangedFourier, vigra::FFTWRealAccessor()) , destImage(img2) );
-        vigra::copyImage(srcImageRange(rearrangedFourier, vigra::FFTWImaginaryAccessor()) , destImage(img3) );
-#else
-        vigra::copyImage(srcImageRange(rearrangedFourier, vigra::FFTWRealAccessor<double>()) , destImage(img2) );
-        vigra::copyImage(srcImageRange(rearrangedFourier, vigra::FFTWImaginaryAccessor<double>()) , destImage(img3) );
-#endif
-	
+        vigra::copyImage(srcImageRange(rearrangedFourier, vigra::FFTWRealAccessor<double>()), destImage(img2));
+        vigra::copyImage(srcImageRange(rearrangedFourier, vigra::FFTWImaginaryAccessor<double>()), destImage(img3));
     }
     catch (vigra::StdException & e)
     {
