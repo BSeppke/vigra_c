@@ -15,6 +15,6 @@
 #include <vigra/multi_array.hxx>
 
 typedef float PixelType;
-typedef vigra::MultiArray<2, PixelType> ImageView;
+typedef vigra::MultiArrayView<2, PixelType, vigra::UnstridedArrayTag> ImageView;
 
 #endif
