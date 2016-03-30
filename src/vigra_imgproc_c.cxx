@@ -14,7 +14,7 @@ LIBEXPORT int vigra_resizeimage_c(const PixelType *arr, const PixelType *arr2, c
         vigra::Shape2 shape(width,height);
         vigra::Shape2 shape2(width2,height2);
         ImageView img(shape, arr);
-        ImageView img2(shape2, arr);
+        ImageView img2(shape2, arr2);
       
         switch(resize_method)
         {
