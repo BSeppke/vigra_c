@@ -36,6 +36,7 @@ LIBEXPORT int vigra_importgrayimage_c(PixelType *arr, int width, int height, con
     {
         return 1;
     }
+    
     return 0;
 }
 LIBEXPORT int vigra_exportgrayimage_c(const PixelType *arr, int width, int height, const char * filename)
@@ -72,7 +73,7 @@ LIBEXPORT int vigra_importrgbimage_c(PixelType *arr_r, PixelType *arr_g, PixelTy
 				vigra::MultiArray<2, vigra::RGBValue<PixelType> > in(info.width(), info.height());
 				
 				// import the image just read
-				importImage(info, destImage(in));
+				importImage(info, in);
 				
 				//write the color channels to the different arrays
                 vigra::Shape2 shape(width,height);

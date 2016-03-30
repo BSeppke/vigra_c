@@ -79,6 +79,7 @@ LIBEXPORT int vigra_rotateimage_c( const PixelType *arr, const PixelType *arr2, 
     {
         return 1;
     }
+    
     return 0;
 }
 
@@ -171,10 +172,10 @@ LIBEXPORT int vigra_fouriertransform_c(const PixelType *arr, const PixelType *ar
         auto i2_iter = img2.begin(),
              i3_iter = img3.begin();
         
-        for(auto f_iter= fourier.begin(); f_iter != fourier.end(); ++f_iter)
+        for(auto f_iter= fourier.begin(); f_iter != fourier.end(); ++f_iter, ++i2_iter, ++i3_iter)
         {
-            *i2_iter = f_iter->real(); ++i2_iter;
-            *i3_iter = f_iter->imag(); ++i3_iter;
+            *i2_iter = f_iter->real();
+            *i3_iter = f_iter->imag();
         }
     }
     catch (vigra::StdException & e)
