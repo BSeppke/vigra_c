@@ -2,7 +2,6 @@
 
 #include <vigra/splineimageview.hxx>
 
-
 typedef vigra::SplineImageView<1, float> SplineImageView1;
 typedef vigra::SplineImageView<2, float> SplineImageView2;
 typedef vigra::SplineImageView<3, float> SplineImageView3;
@@ -12,10 +11,10 @@ typedef vigra::SplineImageView<5, float> SplineImageView5;
 /************ POINTER BASED FUNCTIONS *****************/
 
 #define SIV_CREATION_FUNCTION(splineDegree) \
-LIBEXPORT void * vigra_create_splineimageview##splineDegree##_c (const float *arr, const int width, const int height)	\
+LIBEXPORT void * vigra_create_splineimageview##splineDegree##_c (const PixelType *arr, const int width, const int height)	\
 {																														\
-    vigra::BasicImageView<float> img(arr, width, height);																\
-    return new SplineImageView##splineDegree (srcImageRange(img));														\
+    ImageView img(vigra::Shape2(width,height), arr);																\
+    return new SplineImageView##splineDegree (img);														\
 }
 
 SIV_CREATION_FUNCTION(1)
@@ -158,10 +157,10 @@ SIV_ACCESSOR_FUNCTION(5)
 
 
 #define SIV_ADDRESS_CREATION_FUNCTION(splineDegree) \
-LIBEXPORT unsigned long vigra_create_splineimageview##splineDegree##_address_c (const float *arr, const int width, const int height)	\
+LIBEXPORT unsigned long vigra_create_splineimageview##splineDegree##_address_c (const PixelType *arr, const int width, const int height)	\
 {                                                                                                                                       \
-    vigra::BasicImageView<float> img(arr, width, height);                                                                               \
-    SplineImageView##splineDegree* siv = new SplineImageView##splineDegree (srcImageRange(img));                                        \
+    ImageView img(vigra::Shape2(width,height), arr);                                                                               \
+    SplineImageView##splineDegree* siv = new SplineImageView##splineDegree (img);                                        \
     return (unsigned long) siv;                                                                                                         \
 }
 

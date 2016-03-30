@@ -1,8 +1,7 @@
 #include "vigra_filters_c.h"
 
-#include "vigra/basicimageview.hxx"
-#include "vigra/convolution.hxx"
-#include "vigra/separableconvolution.hxx"
+#include "vigra/stdconvolution.hxx"
+#include "vigra/multi_convolution.hxx"
 #include "vigra/nonlineardiffusion.hxx" 
 #include "vigra/distancetransform.hxx"
 #include "vigra/tensorutilities.hxx"
@@ -11,124 +10,167 @@
 #include "vigra/orientedtensorfilters.hxx"
 
 
-LIBEXPORT int vigra_convolveimage_c(const float *arr, float *arr2, const double *kernel_arr, const int width, const int height, const int kernel_width, const int kernel_height)
+//Helper function to generate a vigra::Kernel2D from a flat array
+template<class T>
+vigra::Kernel2D<T> kernel2dFromArray(const T* arr, const int width, const int height)
+{
+    //Create a view on the data
+    vigra::Shape2 shape(width,height);
+    vigra::MultiArrayView<2, T> k_img(shape, arr);
+    
+    //Allocate a temp. BasicImage<T> for initialization of the Kernel2D,
+    //which shall be returned.
+    vigra::BasicImage<T> temp_kernel(width, height);
+    
+    //Fill the temp image
+    for(int y=0; y<height; ++y)
+        for(int x=0; x<width; ++x)
+            temp_kernel(x,y) = k_img(x,y);
+    
+    //Init a kernel based in that image
+    vigra::Kernel2D<T> kernel;
+    kernel.initExplicitly(temp_kernel);
+    
+    //and return it
+    return kernel;
+}
+
+
+//Helper function to generate a vigra::Kernel1D from a flat array
+template<class T>
+vigra::Kernel1D<T> kernel1dFromArray(const T* arr, const int size)
+{
+    //Boundaries of the kernel
+    int b = size/2;
+    
+    //Init the convolution kernel
+    vigra::Kernel1D<T> kernel;
+    kernel.initExplicitly(-b, b);
+    
+    //Fill the kernel with array data
+    for(int i=0; i<size; ++i)
+    {
+        kernel[i-b] = arr[i];
+    }
+    
+    //and return it
+    return kernel;
+}
+
+LIBEXPORT int vigra_convolveimage_c(const PixelType *arr, PixelType *arr2, const double *kernel_arr, const int width, const int height, const int kernel_width, const int kernel_height)
 {
     try
     {
 		// create a gray scale image of appropriate size
-		vigra::BasicImageView<float> img(arr, width, height);
-		vigra::BasicImageView<float> img2(arr2, width, height);
-		vigra::BasicImageView<double> k(kernel_arr, kernel_width, kernel_height);
+        vigra::Shape2 shape(width,height);
+		ImageView img(shape, arr);
+		ImageView img2(shape, arr2);
+        
+		//check if kernel dimensions are odd
+		if ( (kernel_width % 2)==0 || (kernel_height % 2)==0)
+			return 2;
+
+		convolveImage(img,img2, kernel2dFromArray(kernel_arr, kernel_width, kernel_height));
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    
+    return 0;
+}
+
+LIBEXPORT int vigra_separableconvolveimage_c(const PixelType *arr, PixelType *arr2, const double *kernel_arr_h, const double *kernel_arr_v, const int width, const int height, const int kernel_width, const int kernel_height)
+{
+    try
+    {
+		// create a gray scale image of appropriate size
+        vigra::Shape2 shape(width,height);
+		ImageView img(shape, arr);
+		ImageView img2(shape, arr2);
 		
 		//check if kernel dimensions are odd
 		if ( (kernel_width % 2)==0 || (kernel_height % 2)==0)
 			return 2;
-		
-		vigra::Diff2D k_ul(-kernel_width/2,-kernel_height/2), k_lr(kernel_width/2,kernel_height/2);
-		vigra::BasicImageView<double>::Iterator kernel_center = k.upperLeft() + vigra::Diff2D(kernel_width/2, kernel_height/2);
-		
-		convolveImage(	img.upperLeft(), img.lowerRight(), img.accessor(),
-					  img2.upperLeft(), img2.accessor(),
-					  kernel_center, k.accessor(),
-					  k_ul, k_lr, vigra::BORDER_TREATMENT_REFLECT);
+        
+		convolveImage(img, img2, kernel1dFromArray(kernel_arr_h, kernel_width), kernel1dFromArray(kernel_arr_v, kernel_height));
     }
     catch (vigra::StdException & e)
     {
         return 1;
     }
+    
     return 0;
 }
 
-LIBEXPORT int vigra_separableconvolveimage_c(const float *arr, float *arr2, const double *kernel_arr_h, const double *kernel_arr_v, const int width, const int height, const int kernel_width, const int kernel_height)
+LIBEXPORT int vigra_gaussiangradient_c(const PixelType *arr, const PixelType *arr2, const PixelType *arr3, const int width, const int height, const  float sigma)
 {
     try
     {
 		// create a gray scale image of appropriate size
-		vigra::BasicImageView<float> img(arr, width, height);
-		vigra::BasicImageView<float> img2(arr2, width, height);
+        vigra::Shape2 shape(width,height);
+		ImageView img(shape, arr);
+		ImageView img2(shape, arr2);
+		ImageView img3(shape, arr3);
 		
-		vigra::BasicImage<float> temp(width, height);
-
-		//check if kernel dimensions are odd
-		if ( (kernel_width % 2)==0 || (kernel_height % 2)==0)
-			return 2;
-		
-		vigra::separableConvolveX(img.upperLeft(), img.lowerRight(), img.accessor(),
-								  temp.upperLeft(), temp.accessor(), 
-								  kernel_arr_h + kernel_width/2, vigra::StandardAccessor<double>(), -kernel_width/2, kernel_width/2, vigra::BORDER_TREATMENT_REFLECT);
-		
-		vigra::separableConvolveY(temp.upperLeft(), temp.lowerRight(), temp.accessor(),
-								  img2.upperLeft(), img2.accessor(), 
-								  kernel_arr_v + kernel_height/2, vigra::StandardAccessor<double>(),  -kernel_height/2, kernel_height/2, vigra::BORDER_TREATMENT_REFLECT);
+		vigra::gaussianGradient(img, img2, img3, sigma);
     }
     catch (vigra::StdException & e)
     {
         return 1;
     }
+    
     return 0;
 }
 
-LIBEXPORT int vigra_gaussiangradient_c(const float *arr, const float *arr2, const float *arr3, const int width, const int height, const  float sigma)
+LIBEXPORT int vigra_gaussiangradientmagnitude_c(const PixelType *arr, const PixelType *arr2, const int width, const int height, const  float sigma)
 {
     try
     {
 		// create a gray scale image of appropriate size
-		vigra::BasicImageView<float> img(arr, width, height);
-		vigra::BasicImageView<float> img2(arr2, width, height);
-		vigra::BasicImageView<float> img3(arr3, width, height);
+        vigra::Shape2 shape(width,height);
+		ImageView img(shape, arr);
+		ImageView img2(shape, arr2);
 		
-		vigra::gaussianGradient(srcImageRange(img), destImage(img2), destImage(img3), sigma);
+		vigra::gaussianGradientMagnitude(img, img2, sigma);
     }
     catch (vigra::StdException & e)
     {
         return 1;
     }
+    
     return 0;
 }
 
-LIBEXPORT int vigra_gaussiangradientmagnitude_c(const float *arr, const float *arr2, const int width, const int height, const  float sigma)
+LIBEXPORT int vigra_gaussiansmoothing_c(const PixelType *arr , const PixelType *arr2, const int width, const int height, const  float sigma)
 {
     try
     {
-		// create a gray scale image of appropriate size
-		vigra::BasicImageView<float> img(arr, width, height);
-		vigra::BasicImageView<float> img2(arr2, width, height);
-		
-		vigra::gaussianGradientMagnitude(srcImageRange(img), destImage(img2), sigma);
-    }
-    catch (vigra::StdException & e)
-    {
-        return 1;
-    }
-    return 0;
-}
-
-LIBEXPORT int vigra_gaussiansmoothing_c(const float *arr , const float *arr2, const int width, const int height, const  float sigma)
-{
-    try
-    {
-      // create a gray scale image of appropriate size
-      vigra::BasicImageView<float> img(arr, width, height);
-      vigra::BasicImageView<float> img2(arr2, width, height);
+        // create a gray scale image of appropriate size
+        vigra::Shape2 shape(width,height);
+        ImageView img(shape, arr);
+        ImageView img2(shape, arr2);
             
-      vigra::gaussianSmoothing(srcImageRange(img), destImage(img2), sigma);
+        vigra::gaussianSmoothing(img, img2, sigma);
     }
     catch (vigra::StdException & e)
     {
         return 1;
     }
+    
     return 0;
 }
 
-LIBEXPORT int vigra_laplacianofgaussian_c(const float *arr, const float *arr2, const int width, const int height, const  float scale)
+LIBEXPORT int vigra_laplacianofgaussian_c(const PixelType *arr, const PixelType *arr2, const int width, const int height, const  float scale)
 {
     try
     {
-      // create a gray scale image of appropriate size
-      vigra::BasicImageView<float> img(arr, width, height);
-      vigra::BasicImageView<float> img2(arr2, width, height);
+        // create a gray scale image of appropriate size
+        vigra::Shape2 shape(width,height);
+        ImageView img(shape, arr);
+        ImageView img2(shape, arr2);
             
-      vigra::laplacianOfGaussian(srcImageRange(img), destImage(img2), scale);
+        vigra::laplacianOfGaussian(img, img2, scale);
     }
     catch (vigra::StdException & e)
     {
@@ -137,115 +179,131 @@ LIBEXPORT int vigra_laplacianofgaussian_c(const float *arr, const float *arr2, c
     return 0;
 }
 
-LIBEXPORT int vigra_hessianmatrixofgaussian_c(const float *arr, const float *arr_xx, const float *arr_xy, const float *arr_yy, const int width, const int height, const float scale)
+LIBEXPORT int vigra_hessianmatrixofgaussian_c(const PixelType *arr, const PixelType *arr_xx, const PixelType *arr_xy, const PixelType *arr_yy, const int width, const int height, const float scale)
 {
     try
     {
 		// create a gray scale image of appropriate size
-		vigra::BasicImageView<float> img(arr, width, height);
-		vigra::BasicImageView<float> img_xx(arr_xx, width, height);
-		vigra::BasicImageView<float> img_xy(arr_xy, width, height);
-		vigra::BasicImageView<float> img_yy(arr_yy, width, height);
+        vigra::Shape2 shape(width,height);
+		ImageView img(shape, arr);
+		ImageView img_xx(shape, arr_xx);
+		ImageView img_xy(shape, arr_xy);
+		ImageView img_yy(shape, arr_yy);
 		
-		vigra::hessianMatrixOfGaussian(srcImageRange(img),
-							   destImage(img_xx), destImage(img_xy), destImage(img_yy), scale);
+		vigra::hessianMatrixOfGaussian(img, img_xx,img_xy,img_yy, scale);
 	}
     catch (vigra::StdException & e)
     {
         return 1;
     }
+    
     return 0;
 }
 
-LIBEXPORT int vigra_structuretensor_c(const float *arr, const float *arr_xx, const float *arr_xy, const float *arr_yy, const int width, const int height, const float inner_scale, const float outer_scale)
+LIBEXPORT int vigra_structuretensor_c(const PixelType *arr, const PixelType *arr_xx, const PixelType *arr_xy, const PixelType *arr_yy, const int width, const int height, const float inner_scale, const float outer_scale)
 {
     try
     {
 		// create a gray scale image of appropriate size
-		vigra::BasicImageView<float> img(arr, width, height);
-		vigra::BasicImageView<float> img_xx(arr_xx, width, height);
-		vigra::BasicImageView<float> img_xy(arr_xy, width, height);
-		vigra::BasicImageView<float> img_yy(arr_yy, width, height);
+        vigra::Shape2 shape(width,height);
+		ImageView img(shape, arr);
+		ImageView img_xx(shape, arr_xx);
+		ImageView img_xy(shape, arr_xy);
+		ImageView img_yy(shape, arr_yy);
 		
-		vigra::structureTensor(srcImageRange(img),
-							   destImage(img_xx), destImage(img_xy), destImage(img_yy), inner_scale, outer_scale);
+		vigra::structureTensor(img, img_xx,img_xy,img_yy, inner_scale, outer_scale);
 	}
     catch (vigra::StdException & e)
     {
         return 1;
     }
+    
     return 0;
 }
 
-LIBEXPORT int vigra_boundarytensor_c(const float *arr, const float *arr_xx, const float *arr_xy, const float *arr_yy, const int width, const int height, const float scale)
+LIBEXPORT int vigra_boundarytensor_c(const PixelType *arr, const PixelType *arr_xx, const PixelType *arr_xy, const PixelType *arr_yy, const int width, const int height, const float scale)
 {
     try
     {
 		// create a gray scale image of appropriate size
-		vigra::BasicImageView<float> img(arr, width, height);
-		vigra::BasicImageView<float> img_xx(arr_xx, width, height);
-		vigra::BasicImageView<float> img_xy(arr_xy, width, height);
-		vigra::BasicImageView<float> img_yy(arr_yy, width, height);
+        vigra::Shape2 shape(width,height);
+		ImageView img(shape, arr);
+		ImageView img_xx(shape, arr_xx);
+		ImageView img_xy(shape, arr_xy);
+		ImageView img_yy(shape, arr_yy);
 		
 		//create the temporary tensor
-		typedef vigra::TinyVector<float, 3> FVector3;
-		vigra::FVector3Image tensor(width,height);
+		vigra::MultiArray<2, vigra::TinyVector<float, 3> > tensor(width,height);
 		
-		vigra::boundaryTensor(srcImageRange(img), destImage(tensor), scale);
+		vigra::boundaryTensor(img, tensor, scale);
 		
-		vigra::copyImage(tensor.upperLeft(), tensor.lowerRight(), vigra::VectorComponentAccessor<FVector3>(0), img_xx.upperLeft(), img_xx.accessor());
-		vigra::copyImage(tensor.upperLeft(), tensor.lowerRight(), vigra::VectorComponentAccessor<FVector3>(1), img_xy.upperLeft(), img_xy.accessor());
-		vigra::copyImage(tensor.upperLeft(), tensor.lowerRight(), vigra::VectorComponentAccessor<FVector3>(2), img_yy.upperLeft(), img_yy.accessor());
-		
+        auto xx_iter = img_xx.begin(),
+             xy_iter = img_xy.begin(),
+             yy_iter = img_yy.begin();
+        
+        for(auto t_iter = tensor.begin(); t_iter != tensor.end(); ++t_iter, ++ xx_iter, ++xy_iter, ++yy_iter)
+        {
+            *xx_iter = t_iter->operator[](0);
+            *xy_iter = t_iter->operator[](1);
+            *yy_iter = t_iter->operator[](2);
+        }
 	}
     catch (vigra::StdException & e)
     {
         return 1;
     }
+    
     return 0;
 }
 
-LIBEXPORT int vigra_boundarytensor1_c(const float *arr, const float *arr_xx, const float *arr_xy, const float *arr_yy, const int width, const int height, const float scale)
+LIBEXPORT int vigra_boundarytensor1_c(const PixelType *arr, const PixelType *arr_xx, const PixelType *arr_xy, const PixelType *arr_yy, const int width, const int height, const float scale)
 {
     try
     {
-		// create a gray scale image of appropriate size
-		vigra::BasicImageView<float> img(arr, width, height);
-		vigra::BasicImageView<float> img_xx(arr_xx, width, height);
-		vigra::BasicImageView<float> img_xy(arr_xy, width, height);
-		vigra::BasicImageView<float> img_yy(arr_yy, width, height);
+        // create a gray scale image of appropriate size
+        vigra::Shape2 shape(width,height);
+		ImageView img(shape, arr);
+		ImageView img_xx(shape, arr_xx);
+		ImageView img_xy(shape, arr_xy);
+		ImageView img_yy(shape, arr_yy);
 		
 		//create the temporary tensor
-		typedef vigra::TinyVector<float, 3> FVector3;
-		vigra::FVector3Image tensor(width,height);
+		vigra::MultiArray<2, vigra::TinyVector<float, 3> > tensor(width,height);
 		
-		vigra::boundaryTensor1(srcImageRange(img), destImage(tensor), scale);
+		vigra::boundaryTensor1(img, tensor, scale);
 		
-		vigra::copyImage(tensor.upperLeft(), tensor.lowerRight(), vigra::VectorComponentAccessor<FVector3>(0), img_xx.upperLeft(), img_xx.accessor());
-		vigra::copyImage(tensor.upperLeft(), tensor.lowerRight(), vigra::VectorComponentAccessor<FVector3>(1), img_xy.upperLeft(), img_xy.accessor());
-		vigra::copyImage(tensor.upperLeft(), tensor.lowerRight(), vigra::VectorComponentAccessor<FVector3>(2), img_yy.upperLeft(), img_yy.accessor());
-		
+        auto xx_iter = img_xx.begin(),
+             xy_iter = img_xy.begin(),
+             yy_iter = img_yy.begin();
+        
+        for(auto t_iter = tensor.begin(); t_iter != tensor.end(); ++t_iter, ++ xx_iter, ++xy_iter, ++yy_iter)
+        {
+            *xx_iter = t_iter->operator[](0);
+            *xy_iter = t_iter->operator[](1);
+            *yy_iter = t_iter->operator[](2);
+        }
 	}
     catch (vigra::StdException & e)
     {
         return 1;
     }
+    
     return 0;
 }
 
-LIBEXPORT int vigra_gradientenergytensor_c(const float *arr, const double *arr_derivKernel, const double *arr_smoothKernel, const float *arr_xx, const float *arr_xy, const float *arr_yy, const int width, const int height, const int derivKernel_size, const int smoothKernel_size)
+LIBEXPORT int vigra_gradientenergytensor_c(const PixelType *arr, const double *arr_derivKernel, const double *arr_smoothKernel, const PixelType *arr_xx, const PixelType *arr_xy, const PixelType *arr_yy, const int width, const int height, const int derivKernel_size, const int smoothKernel_size)
 {
     try
     {
 		// create a gray scale image of appropriate size
-		vigra::BasicImageView<float> img(arr, width, height);
-		vigra::BasicImageView<float> img_xx(arr_xx, width, height);
-		vigra::BasicImageView<float> img_xy(arr_xy, width, height);
-		vigra::BasicImageView<float> img_yy(arr_yy, width, height);
+        vigra::Shape2 shape(width,height);
+		ImageView img(shape, arr);
+		ImageView img_xx(shape, arr_xx);
+		ImageView img_xy(shape, arr_xy);
+		ImageView img_yy(shape, arr_yy);
 		
 		//create the temporary tensor
-		typedef vigra::TinyVector<float, 3> FVector3;
-		vigra::FVector3Image tensor(width,height);
+		vigra::MultiArray<2, vigra::TinyVector<float, 3> > tensor(width,height);
 		
 		vigra::Kernel1D<double> derivKernel, smoothKernel;
 		
@@ -259,12 +317,18 @@ LIBEXPORT int vigra_gradientenergytensor_c(const float *arr, const double *arr_d
 			smoothKernel[i+smoothKernel_size/2] = arr_smoothKernel[i];
 		}
 		
-		vigra::gradientEnergyTensor(srcImageRange(img), destImage(tensor),  derivKernel, smoothKernel);
+		vigra::gradientEnergyTensor(img, tensor, derivKernel, smoothKernel);
 		
-		vigra::copyImage(tensor.upperLeft(), tensor.lowerRight(), vigra::VectorComponentAccessor<FVector3>(0), img_xx.upperLeft(), img_xx.accessor());
-		vigra::copyImage(tensor.upperLeft(), tensor.lowerRight(), vigra::VectorComponentAccessor<FVector3>(1), img_xy.upperLeft(), img_xy.accessor());
-		vigra::copyImage(tensor.upperLeft(), tensor.lowerRight(), vigra::VectorComponentAccessor<FVector3>(2), img_yy.upperLeft(), img_yy.accessor());
-		
+        auto xx_iter = img_xx.begin(),
+             xy_iter = img_xy.begin(),
+             yy_iter = img_yy.begin();
+        
+        for(auto t_iter = tensor.begin(); t_iter != tensor.end(); ++t_iter, ++ xx_iter, ++xy_iter, ++yy_iter)
+        {
+            *xx_iter = t_iter->operator[](0);
+            *xy_iter = t_iter->operator[](1);
+            *yy_iter = t_iter->operator[](2);
+        }
 	}
     catch (vigra::StdException & e)
     {
@@ -273,136 +337,46 @@ LIBEXPORT int vigra_gradientenergytensor_c(const float *arr, const double *arr_d
     return 0;
 }
 
-LIBEXPORT int vigra_tensoreigenrepresentation_c(const float *arr_xx, const float *arr_xy, const float *arr_yy, const float *arr_lEV, const float *arr_sEV, const float *arr_ang, const int width, const int height)
+LIBEXPORT int vigra_tensoreigenrepresentation_c(const PixelType *arr_xx, const PixelType *arr_xy, const PixelType *arr_yy, const PixelType *arr_lEV, const PixelType *arr_sEV, const PixelType *arr_ang, const int width, const int height)
 {
     try
     {
-		typedef vigra::TinyVector<float, 3> FVector3;
-		
 		// create a gray scale image of appropriate size
-		vigra::BasicImageView<float> img_xx(arr_xx, width, height);
-		vigra::BasicImageView<float> img_xy(arr_xy, width, height);
-		vigra::BasicImageView<float> img_yy(arr_yy, width, height);
+        vigra::Shape2 shape(width,height);
+		ImageView img_xx(shape, arr_xx);
+		ImageView img_xy(shape, arr_xy);
+		ImageView img_yy(shape, arr_yy);
+        
+		ImageView img_lEV(shape, arr_lEV);
+		ImageView img_sEV(shape, arr_sEV);
+		ImageView img_ang(shape, arr_ang);
+        
+		//create the temporary tensor
+		vigra::MultiArray<2, vigra::TinyVector<float, 3> > tensor(width,height);
 		
-		vigra::BasicImageView<float> img_lEV(arr_lEV, width, height);
-		vigra::BasicImageView<float> img_sEV(arr_sEV, width, height);
-		vigra::BasicImageView<float> img_ang(arr_ang, width, height);
-		
-		vigra::FVector3Image tensor(width,height);
-		vigra::FVector3Image eigen(width,height);
-		
-		vigra::copyImage(img_xx.upperLeft(), img_xx.lowerRight(), img_xx.accessor(), tensor.upperLeft(), vigra::VectorComponentAccessor<FVector3>(0));
-		vigra::copyImage(img_xy.upperLeft(), img_xy.lowerRight(), img_xy.accessor(), tensor.upperLeft(), vigra::VectorComponentAccessor<FVector3>(1));
-		vigra::copyImage(img_yy.upperLeft(), img_yy.lowerRight(), img_yy.accessor(), tensor.upperLeft(), vigra::VectorComponentAccessor<FVector3>(2));
-		
-		vigra::tensorEigenRepresentation(srcImageRange(tensor), destImage(eigen));
-		
-		vigra::copyImage(eigen.upperLeft(), eigen.lowerRight(), vigra::VectorComponentAccessor<FVector3>(0), img_lEV.upperLeft(), img_lEV.accessor());
-		vigra::copyImage(eigen.upperLeft(), eigen.lowerRight(), vigra::VectorComponentAccessor<FVector3>(1), img_sEV.upperLeft(), img_sEV.accessor());
-		vigra::copyImage(eigen.upperLeft(), eigen.lowerRight(), vigra::VectorComponentAccessor<FVector3>(2), img_ang.upperLeft(), img_ang.accessor());
-		
-		
-	}
-    catch (vigra::StdException & e)
-    {
-        return 1;
-    }
-    return 0;
-}
-
-LIBEXPORT int vigra_tensortrace_c(const float *arr_xx, const float *arr_xy, const float *arr_yy, const float *arr_trace, const int width, const int height)
-{
-    try
-    {
-		typedef vigra::TinyVector<float, 3> FVector3;
-		
-		// create a gray scale image of appropriate size
-		vigra::BasicImageView<float> img_xx(arr_xx, width, height);
-		vigra::BasicImageView<float> img_xy(arr_xy, width, height);
-		vigra::BasicImageView<float> img_yy(arr_yy, width, height);
-		
-		vigra::BasicImageView<float> img_trace(arr_trace, width, height);
-		
-		vigra::FVector3Image tensor(width,height);
-		
-		vigra::copyImage(img_xx.upperLeft(), img_xx.lowerRight(), img_xx.accessor(), tensor.upperLeft(), vigra::VectorComponentAccessor<FVector3>(0));
-		vigra::copyImage(img_xy.upperLeft(), img_xy.lowerRight(), img_xy.accessor(), tensor.upperLeft(), vigra::VectorComponentAccessor<FVector3>(1));
-		vigra::copyImage(img_yy.upperLeft(), img_yy.lowerRight(), img_yy.accessor(), tensor.upperLeft(), vigra::VectorComponentAccessor<FVector3>(2));
-		
-		vigra::tensorTrace(srcImageRange(tensor), destImage(img_trace));
-		
-	}
-    catch (vigra::StdException & e)
-    {
-        return 1;
-    }
-    return 0;
-}
-
-LIBEXPORT int vigra_tensortoedgecorner_c(const float *arr_xx, const float *arr_xy, const float *arr_yy, const float *arr_edgeness, const float *arr_orientation, const float *arr_cornerness, const int width, const int height)
-{
-    try
-    {
-		typedef vigra::TinyVector<float, 3> FVector3;
-		typedef vigra::TinyVector<float, 2> FVector2;
-		
-		// create a gray scale image of appropriate size
-		vigra::BasicImageView<float> img_xx(arr_xx, width, height);
-		vigra::BasicImageView<float> img_xy(arr_xy, width, height);
-		vigra::BasicImageView<float> img_yy(arr_yy, width, height);
-		
-		vigra::BasicImageView<float> img_edgeness(arr_edgeness,   width, height);
-		vigra::BasicImageView<float> img_orientation(arr_orientation,   width, height);
-		vigra::BasicImageView<float> img_cornerness(arr_cornerness, width, height);
-		
-		vigra::FVector3Image tensor(width,height);
-		vigra::FVector2Image edgePart(width,height);
-		
-		vigra::copyImage(img_xx.upperLeft(), img_xx.lowerRight(), img_xx.accessor(), tensor.upperLeft(), vigra::VectorComponentAccessor<FVector3>(0));
-		vigra::copyImage(img_xy.upperLeft(), img_xy.lowerRight(), img_xy.accessor(), tensor.upperLeft(), vigra::VectorComponentAccessor<FVector3>(1));
-		vigra::copyImage(img_yy.upperLeft(), img_yy.lowerRight(), img_yy.accessor(), tensor.upperLeft(), vigra::VectorComponentAccessor<FVector3>(2));
-		
-		vigra::tensorToEdgeCorner(srcImageRange(tensor), destImage(edgePart), destImage(img_cornerness));
-		
-		vigra::copyImage(edgePart.upperLeft(), edgePart.lowerRight(), vigra::VectorComponentAccessor<FVector2>(0), img_edgeness.upperLeft(), img_edgeness.accessor());
-		vigra::copyImage(edgePart.upperLeft(), edgePart.lowerRight(), vigra::VectorComponentAccessor<FVector2>(1), img_orientation.upperLeft(), img_orientation.accessor());
+        auto xx_iter = img_xx.begin(),
+             xy_iter = img_xy.begin(),
+             yy_iter = img_yy.begin();
+        
+        for(auto t_iter = tensor.begin(); t_iter != tensor.end(); ++t_iter, ++ xx_iter, ++xy_iter, ++yy_iter)
+        {
+            t_iter->operator[](0) = *xx_iter;
+            t_iter->operator[](1) = *xy_iter;
+            t_iter->operator[](2) = *yy_iter;
+        }
+        
+		vigra::tensorEigenRepresentation(tensor, tensor);
 				
-	}
-    catch (vigra::StdException & e)
-    {
-        return 1;
-    }
-    return 0;
-}
-LIBEXPORT int vigra_hourglassfilter_c(const float *arr_xx, const float *arr_xy, const float *arr_yy, const float *arr_hgxx, const float *arr_hgxy, const float *arr_hgyy, const int width, const int height, const float sigma, const float rho)
-{
-    try
-    {
-		typedef vigra::TinyVector<float, 3> FVector3;
-		
-		// create a gray scale image of appropriate size
-		vigra::BasicImageView<float> img_xx(arr_xx, width, height);
-		vigra::BasicImageView<float> img_xy(arr_xy, width, height);
-		vigra::BasicImageView<float> img_yy(arr_yy, width, height);
-		
-		vigra::BasicImageView<float> img_hgxx(arr_hgxx, width, height);
-		vigra::BasicImageView<float> img_hgxy(arr_hgxy, width, height);
-		vigra::BasicImageView<float> img_hgyy(arr_hgyy, width, height);
-		
-		vigra::FVector3Image tensor(width,height);
-		vigra::FVector3Image smoothedTensor(width,height);
-		
-		vigra::copyImage(img_xx.upperLeft(), img_xx.lowerRight(), img_xx.accessor(), tensor.upperLeft(), vigra::VectorComponentAccessor<FVector3>(0));
-		vigra::copyImage(img_xy.upperLeft(), img_xy.lowerRight(), img_xy.accessor(), tensor.upperLeft(), vigra::VectorComponentAccessor<FVector3>(1));
-		vigra::copyImage(img_yy.upperLeft(), img_yy.lowerRight(), img_yy.accessor(), tensor.upperLeft(), vigra::VectorComponentAccessor<FVector3>(2));
-		
-		vigra::hourGlassFilter(srcImageRange(tensor), destImage(smoothedTensor), sigma, rho);
-		
-		vigra::copyImage(smoothedTensor.upperLeft(), smoothedTensor.lowerRight(), vigra::VectorComponentAccessor<FVector3>(0), img_hgxx.upperLeft(), img_hgxx.accessor());
-		vigra::copyImage(smoothedTensor.upperLeft(), smoothedTensor.lowerRight(), vigra::VectorComponentAccessor<FVector3>(1), img_hgxy.upperLeft(), img_hgxy.accessor());
-		vigra::copyImage(smoothedTensor.upperLeft(), smoothedTensor.lowerRight(), vigra::VectorComponentAccessor<FVector3>(2), img_hgyy.upperLeft(), img_hgyy.accessor());
-		
-		
+        auto lEV_iter = img_lEV.begin(),
+             sEV_iter = img_sEV.begin(),
+             ang_iter = img_ang.begin();
+        
+        for(auto t_iter = tensor.begin(); t_iter != tensor.end(); ++t_iter, ++ lEV_iter, ++sEV_iter, ++ang_iter)
+        {
+            *lEV_iter = t_iter->operator[](0);
+            *sEV_iter = t_iter->operator[](1);
+            *ang_iter = t_iter->operator[](2);
+        }
 	}
     catch (vigra::StdException & e)
     {
@@ -411,15 +385,149 @@ LIBEXPORT int vigra_hourglassfilter_c(const float *arr_xx, const float *arr_xy, 
     return 0;
 }
 
-LIBEXPORT int vigra_gaussiansharpening_c(const float *arr, const float *arr2, const int width, const int height, const float sharpening_factor, const float scale)
+LIBEXPORT int vigra_tensortrace_c(const PixelType *arr_xx, const PixelType *arr_xy, const PixelType *arr_yy, const PixelType *arr_trace, const int width, const int height)
+{
+    try
+    {
+        // create a gray scale image of appropriate size
+        vigra::Shape2 shape(width,height);
+		ImageView img_xx(shape, arr_xx);
+		ImageView img_xy(shape, arr_xy);
+		ImageView img_yy(shape, arr_yy);
+        ImageView img_trace(shape, arr_trace);
+		
+		//create the temporary tensor
+		vigra::MultiArray<2, vigra::TinyVector<float, 3> > tensor(width,height);
+		
+        auto xx_iter = img_xx.begin(),
+             xy_iter = img_xy.begin(),
+             yy_iter = img_yy.begin();
+        
+        for(auto t_iter = tensor.begin(); t_iter != tensor.end(); ++t_iter, ++ xx_iter, ++xy_iter, ++yy_iter)
+        {
+            t_iter->operator[](0) = *xx_iter;
+            t_iter->operator[](1) = *xy_iter;
+            t_iter->operator[](2) = *yy_iter;
+        }
+        
+		vigra::tensorTrace(tensor, img_trace);
+		
+	}
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+LIBEXPORT int vigra_tensortoedgecorner_c(const PixelType *arr_xx, const PixelType *arr_xy, const PixelType *arr_yy, const PixelType *arr_edgeness, const PixelType *arr_orientation, const PixelType *arr_cornerness, const int width, const int height)
 {
     try
     {
 		// create a gray scale image of appropriate size
-		vigra::BasicImageView<float> img(arr, width, height);
-		vigra::BasicImageView<float> img2(arr2, width, height);
+        vigra::Shape2 shape(width,height);
+		ImageView img_xx(shape, arr_xx);
+		ImageView img_xy(shape, arr_xy);
+		ImageView img_yy(shape, arr_yy);
+        
+		ImageView img_edgeness(shape, arr_edgeness);
+		ImageView img_orientation(shape, arr_orientation);
+		ImageView img_cornerness(shape, arr_cornerness);
+        
+		//create the temporary tensor
+		vigra::MultiArray<2, vigra::TinyVector<float, 3> > tensor(width,height);
+		vigra::MultiArray<2, vigra::TinyVector<float, 2> > edgePart(width,height);
 		
-		vigra::gaussianSharpening(srcImageRange(img), destImage(img2),sharpening_factor, scale);
+        auto xx_iter = img_xx.begin(),
+             xy_iter = img_xy.begin(),
+             yy_iter = img_yy.begin();
+        
+        for(auto t_iter = tensor.begin(); t_iter != tensor.end(); ++t_iter, ++ xx_iter, ++xy_iter, ++yy_iter)
+        {
+            t_iter->operator[](0) = *xx_iter;
+            t_iter->operator[](1) = *xy_iter;
+            t_iter->operator[](2) = *yy_iter;
+        }
+        
+		vigra::tensorToEdgeCorner(tensor, edgePart, img_cornerness);
+				
+        auto edgeness_iter = img_edgeness.begin(),
+             orientation_iter = img_orientation.begin();
+        
+        for(auto e_iter = edgePart.begin(); e_iter != edgePart.end(); ++e_iter, ++ edgeness_iter, ++orientation_iter)
+        {
+            *edgeness_iter = e_iter->operator[](0);
+            *orientation_iter = e_iter->operator[](1);
+        }
+	}
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    
+    return 0;
+}
+LIBEXPORT int vigra_hourglassfilter_c(const PixelType *arr_xx, const PixelType *arr_xy, const PixelType *arr_yy, const PixelType *arr_hgxx, const PixelType *arr_hgxy, const PixelType *arr_hgyy, const int width, const int height, const float sigma, const float rho)
+{
+    try
+        {
+		// create a gray scale image of appropriate size
+        vigra::Shape2 shape(width,height);
+		ImageView img_xx(shape, arr_xx);
+		ImageView img_xy(shape, arr_xy);
+		ImageView img_yy(shape, arr_yy);
+        
+		ImageView img_hgxx(shape, arr_hgxx);
+		ImageView img_hgxy(shape, arr_hgxy);
+		ImageView img_hgyy(shape, arr_hgyy);
+        
+		//create the temporary tensor
+		vigra::MultiArray<2, vigra::TinyVector<float, 3> > tensor(width,height);
+		vigra::MultiArray<2, vigra::TinyVector<float, 3> > hg_tensor(width,height);
+		
+        auto xx_iter = img_xx.begin(),
+             xy_iter = img_xy.begin(),
+             yy_iter = img_yy.begin();
+        
+        for(auto t_iter = tensor.begin(); t_iter != tensor.end(); ++t_iter, ++ xx_iter, ++xy_iter, ++yy_iter)
+        {
+            t_iter->operator[](0) = *xx_iter;
+            t_iter->operator[](1) = *xy_iter;
+            t_iter->operator[](2) = *yy_iter;
+        }
+        
+		vigra::tensorEigenRepresentation(tensor, tensor);
+		vigra::hourGlassFilter(tensor, hg_tensor, sigma, rho);
+				
+        auto hgxx_iter = img_hgxx.begin(),
+             hgxy_iter = img_hgxy.begin(),
+             hgyy_iter = img_hgyy.begin();
+        
+        for(auto hg_iter = hg_tensor.begin(); hg_iter != hg_tensor.end(); ++hg_iter, ++hgxx_iter, ++hgxy_iter, ++hgyy_iter)
+        {
+            *hgxx_iter = hg_iter->operator[](0);
+            *hgxy_iter = hg_iter->operator[](1);
+            *hgyy_iter = hg_iter->operator[](2);
+        }
+	}
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    
+    return 0;
+}
+
+LIBEXPORT int vigra_gaussiansharpening_c(const PixelType *arr, const PixelType *arr2, const int width, const int height, const float sharpening_factor, const float scale)
+{
+    try
+    {
+		// create a gray scale image of appropriate size
+        vigra::Shape2 shape(width,height);
+		ImageView img(shape, arr);
+		ImageView img2(shape, arr2);
+		
+		vigra::gaussianSharpening(img, img2, sharpening_factor, scale);
     }
     catch (vigra::StdException & e)
     {
@@ -428,15 +536,16 @@ LIBEXPORT int vigra_gaussiansharpening_c(const float *arr, const float *arr2, co
     return 0;
 }
 
-LIBEXPORT int vigra_simplesharpening_c(const float *arr, const float *arr2, const int width, const int height, float sharpening_factor)
+LIBEXPORT int vigra_simplesharpening_c(const PixelType *arr, const PixelType *arr2, const int width, const int height, float sharpening_factor)
 {
     try
     {
 		// create a gray scale image of appropriate size
-		vigra::BasicImageView<float> img(arr, width, height);
-		vigra::BasicImageView<float> img2(arr2, width, height);
+        vigra::Shape2 shape(width,height);
+		ImageView img(shape, arr);
+		ImageView img2(shape, arr2);
 		
-		vigra::simpleSharpening(srcImageRange(img), destImage(img2),sharpening_factor);
+		vigra::simpleSharpening(img, img2, sharpening_factor);
     }
     catch (vigra::StdException & e)
     {
@@ -445,15 +554,16 @@ LIBEXPORT int vigra_simplesharpening_c(const float *arr, const float *arr2, cons
     return 0;
 }
 
-LIBEXPORT int vigra_nonlineardiffusion_c(const float *arr, const float *arr2, const int width, const int height, const float edge_threshold, const float scale)
+LIBEXPORT int vigra_nonlineardiffusion_c(const PixelType *arr, const PixelType *arr2, const int width, const int height, const float edge_threshold, const float scale)
 {
     try
     {
 		// create a gray scale image of appropriate size
-		vigra::BasicImageView<float> img(arr, width, height);
-		vigra::BasicImageView<float> img2(arr2, width, height);
+        vigra::Shape2 shape(width,height);
+		ImageView img(shape, arr);
+		ImageView img2(shape, arr2);
 		
-		vigra::nonlinearDiffusion(srcImageRange(img), destImage(img2),
+		vigra::nonlinearDiffusion(img, img2,
 								  vigra::DiffusivityFunctor<float>(edge_threshold), scale);
     }
     catch (vigra::StdException & e)
@@ -463,16 +573,17 @@ LIBEXPORT int vigra_nonlineardiffusion_c(const float *arr, const float *arr2, co
     return 0;
 }
 
-LIBEXPORT int vigra_distancetransform_c(const float *arr, const float *arr2, const int width, const int height, const float background_label, const int norm)
+LIBEXPORT int vigra_distancetransform_c(const PixelType *arr, const PixelType *arr2, const int width, const int height, const float background_label, const int norm)
 {
     try
     {
 		// create a gray scale image of appropriate size
-		vigra::BasicImageView<float> img(arr, width, height);
-		vigra::BasicImageView<float> img2(arr2, width, height);
+        vigra::Shape2 shape(width,height);
+		ImageView img(shape, arr);
+		ImageView img2(shape, arr2);
 		
 		if(norm>=0 && norm <= 2)
-			vigra::distanceTransform(   srcImageRange(img), destImage(img2),
+			vigra::distanceTransform(   img, img2,
 									 background_label,   norm);
 		else
 			return 2;

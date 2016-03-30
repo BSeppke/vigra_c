@@ -1,10 +1,11 @@
 #include "vigra_convert_c.h"
 #include <cstring>
 
-LIBEXPORT int vigra_convert_grayband_to_argb_c(const float *arr, char* argb_arr, const int width, const int height)
+
+LIBEXPORT int vigra_convert_grayband_to_argb_c(const PixelType *arr, char* argb_arr, const int width, const int height)
 { 
-    const float* gray_ptr = arr;
-    const float* gray_end = gray_ptr + (width*height);
+    const PixelType* gray_ptr = arr;
+    const PixelType* gray_end = gray_ptr + (width*height);
     
     char* argb_ptr = argb_arr;
     
@@ -20,10 +21,10 @@ LIBEXPORT int vigra_convert_grayband_to_argb_c(const float *arr, char* argb_arr,
 
 LIBEXPORT int vigra_convert_rgbbands_to_argb_c(const float *r_arr, const float *g_arr, const float *b_arr, char* argb_arr, const int width, const int height)
 { 
-    const float* r_ptr = r_arr;
-    const float* g_ptr = g_arr;
-    const float* b_ptr = b_arr;
-    const float* r_end = r_ptr + (width*height);
+    const PixelType* r_ptr = r_arr;
+    const PixelType* g_ptr = g_arr;
+    const PixelType* b_ptr = b_arr;
+    const PixelType* r_end = r_ptr + (width*height);
     
     char* argb_ptr = argb_arr;
     
@@ -37,12 +38,12 @@ LIBEXPORT int vigra_convert_rgbbands_to_argb_c(const float *r_arr, const float *
     return 0;
 }
 
-LIBEXPORT int vigra_convert_argb_to_grayband_c(const char* argb_arr, float *arr, const int width, const int height)
+LIBEXPORT int vigra_convert_argb_to_grayband_c(const char* argb_arr, PixelType *arr, const int width, const int height)
 { 
     const char* argb_ptr = argb_arr;
     
-    float* gray_ptr = arr;
-    float* gray_end = gray_ptr + (width*height);
+    PixelType* gray_ptr = arr;
+    PixelType* gray_end = gray_ptr + (width*height);
     
     
     for ( ; gray_ptr != gray_end; ++gray_ptr, argb_ptr+=4)
@@ -58,10 +59,10 @@ LIBEXPORT int vigra_convert_argb_to_rgbbands_c(const char* argb_arr, float *r_ar
 { 
     const char* argb_ptr = argb_arr;
     
-    float* r_ptr = r_arr;
-    float* g_ptr = g_arr;
-    float* b_ptr = b_arr;
-    float* r_end = r_ptr + (width*height);
+    PixelType* r_ptr = r_arr;
+    PixelType* g_ptr = g_arr;
+    PixelType* b_ptr = b_arr;
+    PixelType* r_end = r_ptr + (width*height);
     
     
     for ( ; r_ptr != r_end ; ++r_ptr, ++g_ptr, ++b_ptr, argb_ptr+=4)

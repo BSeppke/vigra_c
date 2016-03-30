@@ -14,7 +14,7 @@ set(SOURCES
 
 #find . -type f -name \*.h | sed 's,^\./,,'
 set(HEADERS  
-	os_settings.h
+	config.h
 	vigra_c.h
 	vigra_convert_c.h
 	vigra_filters_c.h

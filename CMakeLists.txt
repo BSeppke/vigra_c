@@ -22,6 +22,7 @@ set(CMAKE_MACOSX_RPATH FALSE)
 # Find VIGRA
 find_package(Vigra)
 if(Vigra_FOUND)
+    message("Vigra found:   Includes @ ${Vigra_INCLUDE_DIRS}")
     include_directories(${Vigra_INCLUDE_DIRS})
 endif()
 
@@ -34,6 +35,11 @@ if(UNIX AND NOT WIN32)
          NAMES m)
      list(APPEND FFTW_LIBRARIES "${FFTW_libm_LIBRARY}")
 endif()
+
+# Find the FFTWF lib
+find_library(FFTWF_LIBRARY
+     NAMES fftw-3.3f fftw3f fftwf)
+list(APPEND FFTW_LIBRARIES "${FFTWF_LIBRARY}")
 
 set(CMAKE_BUILD_TYPE Release)
 
