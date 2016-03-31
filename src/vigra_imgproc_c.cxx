@@ -1,9 +1,13 @@
 #include "vigra_imgproc_c.h"
 
-#include "vigra/resizeimage.hxx"
-#include "vigra/affinegeometry.hxx"
-#include "vigra/basicgeometry.hxx"
-#include "vigra/multi_fft.hxx"
+#include <iostream>
+
+#include <vigra/resizeimage.hxx>
+#include <vigra/affinegeometry.hxx>
+#include <vigra/basicgeometry.hxx>
+#include <vigra/multi_fft.hxx>
+#include <vigra/correlation.hxx>
+#include <vigra/multi_localminmax.hxx>
 
 
 LIBEXPORT int vigra_resizeimage_c(const PixelType *arr, const PixelType *arr2, const int width, const int height, const int width2, const int height2, const int resize_method)
@@ -92,8 +96,7 @@ LIBEXPORT int vigra_affinewarpimage_c( const PixelType *arr, const PixelType *ar
         ImageView img(shape, arr);
         ImageView img2(shape, arr2);
 		
-		typedef vigra::MultiArrayView<2, double>::difference_type Shape;
-		vigra::MultiArrayView<2, double> mat(Shape(3, 3) , affineMatrix);
+		vigra::MultiArrayView<2, double, vigra::UnstridedArrayTag> mat(vigra::Shape2(3, 3) , affineMatrix);
         
         if (resize_method == 4)
         {
@@ -177,6 +180,84 @@ LIBEXPORT int vigra_fouriertransform_c(const PixelType *arr, const PixelType *ar
             *i2_iter = f_iter->real();
             *i3_iter = f_iter->imag();
         }
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    
+    return 0;
+}
+
+
+LIBEXPORT int vigra_fastcrosscorrelation_c(const PixelType *arr, const PixelType *arr2, const PixelType *arr3, const int width,const int height, const int mask_width, const int mask_height)
+{
+    try
+    {
+        vigra::Shape2 shape(width,height);
+        ImageView img(shape, arr);
+        vigra::Shape2 mask_shape(mask_width, mask_height);
+        ImageView mask(mask_shape, arr2);
+        ImageView corr(shape, arr3);
+        
+	    vigra::fastCrossCorrelation(img, mask, corr);
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+LIBEXPORT int vigra_fastnormalizedcrosscorrelation_c(const PixelType *arr, const PixelType *arr2, const PixelType *arr3, const int width,const int height, const int mask_width, const int mask_height)
+{
+    try
+    {
+        vigra::Shape2 shape(width,height);
+        ImageView img(shape, arr);
+        vigra::Shape2 mask_shape(mask_width, mask_height);
+        ImageView mask(mask_shape, arr2);
+        ImageView corr(shape, arr3);
+        
+	    vigra::fastNormalizedCrossCorrelation(img, mask, corr);
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+
+LIBEXPORT int vigra_localmaxima_c(const PixelType *arr, const PixelType *arr2, const  int width, const  int height)
+{
+    try
+    {
+        // create a gray scale image of appropriate size
+        vigra::Shape2 shape(width,height);
+        ImageView img(shape, arr);
+        ImageView img2(shape, arr2);
+        
+        vigra::localMaxima(img, img2);
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    
+    return 0;
+}
+
+LIBEXPORT int vigra_localminima_c(const PixelType *arr, const PixelType *arr2, const  int width, const  int height)
+{
+    try
+    {
+        // create a gray scale image of appropriate size
+        vigra::Shape2 shape(width,height);
+        ImageView img(shape, arr);
+        ImageView img2(shape, arr2);
+        
+        vigra::localMinima(img, img2);
     }
     catch (vigra::StdException & e)
     {

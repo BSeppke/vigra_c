@@ -1,13 +1,14 @@
 #include "vigra_filters_c.h"
 
-#include "vigra/stdconvolution.hxx"
-#include "vigra/multi_convolution.hxx"
-#include "vigra/nonlineardiffusion.hxx" 
-#include "vigra/distancetransform.hxx"
-#include "vigra/tensorutilities.hxx"
-#include "vigra/gradient_energy_tensor.hxx"
-#include "vigra/boundarytensor.hxx"
-#include "vigra/orientedtensorfilters.hxx"
+#include <vigra/stdconvolution.hxx>
+#include <vigra/multi_convolution.hxx>
+#include <vigra/nonlineardiffusion.hxx>
+#include <vigra/distancetransform.hxx>
+#include <vigra/tensorutilities.hxx>
+#include <vigra/gradient_energy_tensor.hxx>
+#include <vigra/boundarytensor.hxx>
+#include <vigra/orientedtensorfilters.hxx>
+#include <vigra/shockfilter.hxx>
 
 
 //Helper function to generate a vigra::Kernel2D from a flat array
@@ -16,7 +17,7 @@ vigra::Kernel2D<T> kernel2dFromArray(const T* arr, const int width, const int he
 {
     //Create a view on the data
     vigra::Shape2 shape(width,height);
-    vigra::MultiArrayView<2, T> k_img(shape, arr);
+    vigra::MultiArrayView<2, T, vigra::UnstridedArrayTag> k_img(shape, arr);
     
     //Allocate a temp. BasicImage<T> for initialization of the Kernel2D,
     //which shall be returned.
@@ -70,7 +71,7 @@ LIBEXPORT int vigra_convolveimage_c(const PixelType *arr, PixelType *arr2, const
 		if ( (kernel_width % 2)==0 || (kernel_height % 2)==0)
 			return 2;
 
-		convolveImage(img,img2, kernel2dFromArray(kernel_arr, kernel_width, kernel_height));
+		vigra::convolveImage(img,img2, kernel2dFromArray(kernel_arr, kernel_width, kernel_height));
     }
     catch (vigra::StdException & e)
     {
@@ -93,7 +94,7 @@ LIBEXPORT int vigra_separableconvolveimage_c(const PixelType *arr, PixelType *ar
 		if ( (kernel_width % 2)==0 || (kernel_height % 2)==0)
 			return 2;
         
-		convolveImage(img, img2, kernel1dFromArray(kernel_arr_h, kernel_width), kernel1dFromArray(kernel_arr_v, kernel_height));
+		vigra::convolveImage(img, img2, kernel1dFromArray(kernel_arr_h, kernel_width), kernel1dFromArray(kernel_arr_v, kernel_height));
     }
     catch (vigra::StdException & e)
     {
@@ -583,8 +584,28 @@ LIBEXPORT int vigra_distancetransform_c(const PixelType *arr, const PixelType *a
 		ImageView img2(shape, arr2);
 		
 		if(norm>=0 && norm <= 2)
-			vigra::distanceTransform(   img, img2,
-									 background_label,   norm);
+			vigra::distanceTransform(img, img2, background_label, norm);
+		else
+			return 2;
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+LIBEXPORT int vigra_shockfilter_c(const PixelType *arr, const PixelType *arr2, const int width, const int height, const float sigma, const float rho, const float upwind_factor_h, const int iterations)
+{
+    try
+    {
+		// create a gray scale image of appropriate size
+        vigra::Shape2 shape(width,height);
+		ImageView img(shape, arr);
+		ImageView img2(shape, arr2);
+		
+		if(iterations>=0)
+			vigra::shockFilter(img, img2, sigma, rho, upwind_factor_h, iterations);
 		else
 			return 2;
     }

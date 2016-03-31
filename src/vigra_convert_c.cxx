@@ -1,4 +1,5 @@
 #include "vigra_convert_c.h"
+
 #include <cstring>
 
 
@@ -74,7 +75,6 @@ LIBEXPORT int vigra_convert_argb_to_rgbbands_c(const char* argb_arr, float *r_ar
     }
     return 0;
 }
-
 
 
 LIBEXPORT int vigra_copy_double_array_c(const double* src, double *dest, const int length)

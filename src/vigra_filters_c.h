@@ -22,5 +22,6 @@ LIBEXPORT int vigra_gaussiansharpening_c(const PixelType *arr, const PixelType *
 LIBEXPORT int vigra_simplesharpening_c(const PixelType *arr, const PixelType *arr2, const int width, const int height, float sharpening_factor);
 LIBEXPORT int vigra_nonlineardiffusion_c(const PixelType *arr, const PixelType *arr2, const int width, const int height, const float edge_threshold, const float scale);
 LIBEXPORT int vigra_distancetransform_c(const PixelType *arr, const PixelType *arr2, const int width, const int height, const float background_label, const int norm);
+LIBEXPORT int vigra_shockfilter_c(const PixelType *arr, const PixelType *arr2, const int width, const int height, const float sigma, const float rho, const float upwind_factor_h, const int iterations);
 
 #endif

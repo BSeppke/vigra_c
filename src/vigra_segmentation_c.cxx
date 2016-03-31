@@ -2,9 +2,9 @@
 
 #include <iostream> //Needed for <vigra/labelVolume.hxx>
 
-#include "vigra/labelimage.hxx"
-#include "vigra/watersheds.hxx"
-#include "vigra/edgedetection.hxx"
+#include <vigra/labelimage.hxx>
+#include <vigra/watersheds.hxx>
+#include <vigra/edgedetection.hxx>
 
 
 LIBEXPORT int vigra_labelimage_c(const PixelType *arr,const  PixelType *arr2, const int width, int height)
