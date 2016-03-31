@@ -190,7 +190,7 @@ LIBEXPORT int vigra_fouriertransform_c(const PixelType *arr, const PixelType *ar
 }
 
 
-LIBEXPORT int vigra_fastcrosscorrelation_c(const PixelType *arr, const PixelType *arr2, const PixelType *arr3, const int width,const int height, const int mask_width, const int mask_height)
+LIBEXPORT int vigra_fastcrosscorrelation_c(const PixelType *arr, const PixelType *arr2, const PixelType *arr3, const int width, const int height, const int mask_width, const int mask_height)
 {
     try
     {
