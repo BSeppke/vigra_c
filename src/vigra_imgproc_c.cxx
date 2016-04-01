@@ -200,6 +200,12 @@ LIBEXPORT int vigra_fastcrosscorrelation_c(const PixelType *arr, const PixelType
         ImageView mask(mask_shape, arr2);
         ImageView corr(shape, arr3);
         
+        //only allow odd masks (because results are in center coords)
+        if( mask_width % 2 == 0 || mask_height %2 == 0)
+        {
+            return 2;
+        }
+        
 	    vigra::fastCrossCorrelation(img, mask, corr);
     }
     catch (vigra::StdException & e)
@@ -215,6 +221,13 @@ LIBEXPORT int vigra_fastnormalizedcrosscorrelation_c(const PixelType *arr, const
     {
         vigra::Shape2 shape(width,height);
         ImageView img(shape, arr);
+        
+        //only allow odd masks (because results are in center coords)
+        if( mask_width % 2 == 0 || mask_height %2 == 0)
+        {
+            return 2;
+        }
+        
         vigra::Shape2 mask_shape(mask_width, mask_height);
         ImageView mask(mask_shape, arr2);
         ImageView corr(shape, arr3);
