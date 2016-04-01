@@ -266,3 +266,35 @@ LIBEXPORT int vigra_localminima_c(const PixelType *arr, const PixelType *arr2, c
     
     return 0;
 }
+
+LIBEXPORT int vigra_subimage_c(const PixelType *arr, const PixelType *arr2, const  int width, const int height,  const  int left, const int upper,  const  int right, const int lower)
+{
+    try
+    {
+        // create a gray scale image of appropriate size
+        vigra::Shape2 shape(width,height);
+        ImageView img(shape, arr);
+        
+        int cut_w = right - left,
+            cut_h = lower - upper;
+        
+        //Check for cuttof measures
+        if(cut_w > 0 && cut_w <= width && cut_h > 0 && cut_h <= height)
+        {
+            vigra::Shape2 cut_shape(cut_w,cut_h);
+            ImageView cut_img(cut_shape, arr2);
+            
+            cut_img = img.subarray(vigra::Shape2(left, upper), vigra::Shape2(right, lower));
+        }
+        else
+        {
+            return 2;
+        }
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    
+    return 0;
+}

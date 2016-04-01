@@ -12,5 +12,6 @@ LIBEXPORT int vigra_fastcrosscorrelation_c(const PixelType *arr, const PixelType
 LIBEXPORT int vigra_fastnormalizedcrosscorrelation_c(const PixelType *arr, const PixelType *arr2, const PixelType *arr3, const int width,const int height, const int mask_width, const int mask_height);
 LIBEXPORT int vigra_localmaxima_c(const PixelType *arr, const PixelType *arr2, const  int width, const  int height);
 LIBEXPORT int vigra_localminima_c(const PixelType *arr, const PixelType *arr2, const  int width, const  int height);
+LIBEXPORT int vigra_subimage_c(const PixelType *arr, const PixelType *arr2, const  int width, const int height,  const  int left, const int upper,  const  int right, const int lower);
 
 #endif
