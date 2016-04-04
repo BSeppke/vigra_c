@@ -38,7 +38,7 @@ endif()
 
 # Find the FFTWF lib
 find_library(FFTWF_LIBRARY
-     NAMES fftw-3.3f fftw3f fftwf)
+     NAMES fftw-3.3f fftw3f fftwf-3.3 fftwf3 fftwf)
 list(APPEND FFTW_LIBRARIES "${FFTWF_LIBRARY}")
 
 set(CMAKE_BUILD_TYPE Release)
