@@ -51,7 +51,7 @@ LIBEXPORT int vigra_convert_argb_to_grayband_c(const char* argb_arr, PixelType *
     {
         // since all bands are equal valued - we take the first one... 
         // argb_ptr[0] would be alpha!
-        *gray_ptr = (float)argb_ptr[1];
+        *gray_ptr = (unsigned char)argb_ptr[1];
     }
     return 0;
 }
@@ -69,9 +69,9 @@ LIBEXPORT int vigra_convert_argb_to_rgbbands_c(const char* argb_arr, float *r_ar
     for ( ; r_ptr != r_end ; ++r_ptr, ++g_ptr, ++b_ptr, argb_ptr+=4)
     {
         // argb_ptr[0] would be alpha!
-        *r_ptr = argb_ptr[1];
-        *g_ptr = argb_ptr[2];
-        *b_ptr = argb_ptr[3];
+        *r_ptr = (unsigned char)argb_ptr[1];
+        *g_ptr = (unsigned char)argb_ptr[2];
+        *b_ptr = (unsigned char)argb_ptr[3];
     }
     return 0;
 }
