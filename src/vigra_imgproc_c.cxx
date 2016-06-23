@@ -311,3 +311,34 @@ LIBEXPORT int vigra_subimage_c(const PixelType *arr, const PixelType *arr2, cons
     
     return 0;
 }
+LIBEXPORT int vigra_paddimage_c(const PixelType *arr, const PixelType *arr2, const  int width, const int height,  const  int left, const int upper,  const  int right, const int lower)
+{
+    try
+    {
+        // create a gray scale image of appropriate size
+        vigra::Shape2 shape(width,height);
+        ImageView img(shape, arr);
+        
+        int padd_w = right + left  + width,
+            padd_h = lower + upper + height;
+        
+        //Check for padding measures
+        if(padd_w > width && padd_h > height)
+        {
+            vigra::Shape2 padd_shape(padd_w, padd_h);
+            ImageView padd_img(padd_shape, arr2);
+            
+            padd_img.subarray(vigra::Shape2(left, upper), vigra::Shape2(right, lower)) = img;
+        }
+        else
+        {
+            return 2;
+        }
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    
+    return 0;
+}
