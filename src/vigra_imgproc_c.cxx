@@ -323,7 +323,7 @@ LIBEXPORT int vigra_paddimage_c(const PixelType *arr, const PixelType *arr2, con
             padd_h = lower + upper + height;
         
         //Check for padding measures
-        if(padd_w > width && padd_h > height)
+        if(padd_w >= width && padd_h >= height)
         {
             vigra::Shape2 padd_shape(padd_w, padd_h);
             ImageView padd_img(padd_shape, arr2);
