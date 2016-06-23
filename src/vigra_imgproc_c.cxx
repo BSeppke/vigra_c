@@ -328,7 +328,7 @@ LIBEXPORT int vigra_paddimage_c(const PixelType *arr, const PixelType *arr2, con
             vigra::Shape2 padd_shape(padd_w, padd_h);
             ImageView padd_img(padd_shape, arr2);
             
-            padd_img.subarray(vigra::Shape2(left, upper), vigra::Shape2(right, lower)) = img;
+            padd_img.subarray(vigra::Shape2(left, upper), vigra::Shape2(left+width, upper+height)) = img;
         }
         else
         {
