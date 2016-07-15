@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 3.1)
 
 project(vigra_c)
 
-set (CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)
 
 set(VIGRA_C_BIN_DIR  ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
