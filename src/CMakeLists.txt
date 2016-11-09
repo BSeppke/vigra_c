@@ -13,7 +13,7 @@ set(SOURCES
 	vigra_splineimageview_c.cxx)
 
 #find . -type f -name \*.h | sed 's,^\./,,'
-set(HEADERS  
+set(HEADERS 
 	config.h
 	vigra_c.h
 	vigra_convert_c.h

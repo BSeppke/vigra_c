@@ -4,7 +4,7 @@ project(vigra_c)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(VIGRA_C_BIN_DIR  ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+set(VIGRA_C_BIN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${VIGRA_C_BIN_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${VIGRA_C_BIN_DIR})
@@ -22,23 +22,23 @@ set(CMAKE_MACOSX_RPATH FALSE)
 # Find VIGRA
 find_package(Vigra)
 if(Vigra_FOUND)
-    message("Vigra found:   Includes @ ${Vigra_INCLUDE_DIRS}")
-    include_directories(${Vigra_INCLUDE_DIRS})
+  message("Vigra found:  Includes @ ${Vigra_INCLUDE_DIRS}")
+  include_directories(${Vigra_INCLUDE_DIRS})
 endif()
 
 # Find the FFTW lib
 find_library(FFTW_LIBRARY
-     NAMES fftw-3.3 fftw3 fftw)
+   NAMES fftw-3.3 fftw3 fftw)
 set(FFTW_LIBRARIES "${FFTW_LIBRARY}")
 if(UNIX AND NOT WIN32)
-     find_library(FFTW_libm_LIBRARY
-         NAMES m)
-     list(APPEND FFTW_LIBRARIES "${FFTW_libm_LIBRARY}")
+   find_library(FFTW_libm_LIBRARY
+     NAMES m)
+   list(APPEND FFTW_LIBRARIES "${FFTW_libm_LIBRARY}")
 endif()
 
 # Find the FFTWF lib
 find_library(FFTWF_LIBRARY
-     NAMES fftw-3.3f fftw3f fftwf-3.3 fftwf3 fftwf)
+   NAMES fftw-3.3f fftw3f fftwf-3.3 fftwf3 fftwf)
 list(APPEND FFTW_LIBRARIES "${FFTWF_LIBRARY}")
 
 add_subdirectory(src)

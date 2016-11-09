@@ -4,9 +4,9 @@
 
 // Library settings
 #ifdef _WIN32
-    #define LIBEXPORT  extern "C" __declspec(dllexport)
+  #define LIBEXPORT extern "C" __declspec(dllexport)
 #else
-    #define LIBEXPORT  extern "C"
+  #define LIBEXPORT extern "C"
 #endif
 
 

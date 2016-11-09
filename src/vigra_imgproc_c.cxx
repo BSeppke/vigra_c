@@ -19,7 +19,7 @@ LIBEXPORT int vigra_resizeimage_c(const PixelType *arr, const PixelType *arr2, c
         vigra::Shape2 shape2(width2,height2);
         ImageView img(shape, arr);
         ImageView img2(shape2, arr2);
-      
+        
         switch(resize_method)
         {
             case 4:
@@ -39,7 +39,7 @@ LIBEXPORT int vigra_resizeimage_c(const PixelType *arr, const PixelType *arr2, c
                 break;
             default:
                 return 2;
-          }
+        }
     }
     catch (vigra::StdException & e)
     {
@@ -87,7 +87,7 @@ LIBEXPORT int vigra_rotateimage_c( const PixelType *arr, const PixelType *arr2, 
     return 0;
 }
 
-LIBEXPORT int vigra_affinewarpimage_c( const PixelType *arr, const PixelType *arr2, double *affineMatrix, const int width, const  int height, const int resize_method)
+LIBEXPORT int vigra_affinewarpimage_c( const PixelType *arr, const PixelType *arr2, double *affineMatrix, const int width, const int height, const int resize_method)
 {
     try
     {
@@ -95,8 +95,8 @@ LIBEXPORT int vigra_affinewarpimage_c( const PixelType *arr, const PixelType *ar
         vigra::Shape2 shape(width,height);
         ImageView img(shape, arr);
         ImageView img2(shape, arr2);
-		
-		vigra::MultiArrayView<2, double, vigra::UnstridedArrayTag> mat(vigra::Shape2(3, 3) , affineMatrix);
+        
+        vigra::MultiArrayView<2, double, vigra::UnstridedArrayTag> mat(vigra::Shape2(3, 3) , affineMatrix);
         
         if (resize_method == 4)
         {
@@ -168,12 +168,12 @@ LIBEXPORT int vigra_fouriertransform_c(const PixelType *arr, const PixelType *ar
         ImageView img2(shape, arr2);
         ImageView img3(shape, arr3);
         vigra::MultiArray<2, vigra::FFTWComplex<PixelType> > fourier(shape);
-        	
+        
         vigra::fourierTransform(img, fourier);
         moveDCToCenter(fourier);
         
         auto i2_iter = img2.begin(),
-             i3_iter = img3.begin();
+        i3_iter = img3.begin();
         
         for(auto f_iter= fourier.begin(); f_iter != fourier.end(); ++f_iter, ++i2_iter, ++i3_iter)
         {
@@ -206,7 +206,7 @@ LIBEXPORT int vigra_fastcrosscorrelation_c(const PixelType *arr, const PixelType
             return 2;
         }
         
-	    vigra::fastCrossCorrelation(img, mask, corr);
+        vigra::fastCrossCorrelation(img, mask, corr);
     }
     catch (vigra::StdException & e)
     {
@@ -215,7 +215,7 @@ LIBEXPORT int vigra_fastcrosscorrelation_c(const PixelType *arr, const PixelType
     return 0;
 }
 
-LIBEXPORT int vigra_fastnormalizedcrosscorrelation_c(const PixelType *arr, const PixelType *arr2, const PixelType *arr3, const int width,const int height, const int mask_width, const int mask_height)
+LIBEXPORT int vigra_fastnormalizedcrosscorrelation_c(const PixelType *arr, const PixelType *arr2, const PixelType *arr3, const int width, const int height, const int mask_width, const int mask_height)
 {
     try
     {
@@ -232,7 +232,7 @@ LIBEXPORT int vigra_fastnormalizedcrosscorrelation_c(const PixelType *arr, const
         ImageView mask(mask_shape, arr2);
         ImageView corr(shape, arr3);
         
-	    vigra::fastNormalizedCrossCorrelation(img, mask, corr);
+        vigra::fastNormalizedCrossCorrelation(img, mask, corr);
     }
     catch (vigra::StdException & e)
     {
@@ -242,7 +242,7 @@ LIBEXPORT int vigra_fastnormalizedcrosscorrelation_c(const PixelType *arr, const
 }
 
 
-LIBEXPORT int vigra_localmaxima_c(const PixelType *arr, const PixelType *arr2, const  int width, const  int height)
+LIBEXPORT int vigra_localmaxima_c(const PixelType *arr, const PixelType *arr2, const int width, const int height)
 {
     try
     {
@@ -261,7 +261,7 @@ LIBEXPORT int vigra_localmaxima_c(const PixelType *arr, const PixelType *arr2, c
     return 0;
 }
 
-LIBEXPORT int vigra_localminima_c(const PixelType *arr, const PixelType *arr2, const  int width, const  int height)
+LIBEXPORT int vigra_localminima_c(const PixelType *arr, const PixelType *arr2, const int width, const int height)
 {
     try
     {
@@ -280,7 +280,7 @@ LIBEXPORT int vigra_localminima_c(const PixelType *arr, const PixelType *arr2, c
     return 0;
 }
 
-LIBEXPORT int vigra_subimage_c(const PixelType *arr, const PixelType *arr2, const  int width, const int height,  const  int left, const int upper,  const  int right, const int lower)
+LIBEXPORT int vigra_subimage_c(const PixelType *arr, const PixelType *arr2, const int width, const int height, const int left, const int upper, const int right, const int lower)
 {
     try
     {
@@ -289,7 +289,7 @@ LIBEXPORT int vigra_subimage_c(const PixelType *arr, const PixelType *arr2, cons
         ImageView img(shape, arr);
         
         int cut_w = right - left,
-            cut_h = lower - upper;
+        cut_h = lower - upper;
         
         //Check for cuttof measures
         if(cut_w > 0 && cut_w <= width && cut_h > 0 && cut_h <= height)
@@ -311,7 +311,7 @@ LIBEXPORT int vigra_subimage_c(const PixelType *arr, const PixelType *arr2, cons
     
     return 0;
 }
-LIBEXPORT int vigra_paddimage_c(const PixelType *arr, const PixelType *arr2, const  int width, const int height,  const  int left, const int upper,  const  int right, const int lower)
+LIBEXPORT int vigra_paddimage_c(const PixelType *arr, const PixelType *arr2, const int width, const int height, const int left, const int upper, const int right, const int lower)
 {
     try
     {
@@ -319,8 +319,8 @@ LIBEXPORT int vigra_paddimage_c(const PixelType *arr, const PixelType *arr2, con
         vigra::Shape2 shape(width,height);
         ImageView img(shape, arr);
         
-        int padd_w = right + left  + width,
-            padd_h = lower + upper + height;
+        int padd_w = right + left + width,
+        padd_h = lower + upper + height;
         
         //Check for padding measures
         if(padd_w >= width && padd_h >= height)
