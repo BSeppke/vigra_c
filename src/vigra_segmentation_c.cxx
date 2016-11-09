@@ -37,7 +37,7 @@ LIBEXPORT int vigra_watersheds_c(const PixelType *arr, const PixelType *arr2, co
     }
     catch (vigra::StdException & e)
     {
-        return 1;
+        return -1;
     }
 }
 
@@ -63,7 +63,7 @@ LIBEXPORT int vigra_slic_gray_c(const PixelType *arr, const PixelType *arr2, con
     }
     catch (vigra::StdException & e)
     {
-        return 1;
+        return -1;
     }
 }
 
@@ -97,7 +97,7 @@ LIBEXPORT int vigra_slic_rgb_c(const PixelType *arr_r, const PixelType *arr_g, c
     }
     catch (vigra::StdException & e)
     {
-        return 1;
+        return -1;
     }
 }
 
