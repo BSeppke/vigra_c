@@ -27,3 +27,6 @@ set(HEADERS
 # Tell CMake to create the library
 add_library(vigra_c SHARED ${SOURCES} ${HEADERS})
 target_link_libraries(vigra_c vigraimpex ${FFTW_LIBRARIES})
+
+# Add install target
+install(TARGETS vigra_c DESTINATION lib)
