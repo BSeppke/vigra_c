@@ -3,12 +3,12 @@
 #include <cstring>
 
 
-LIBEXPORT int vigra_convert_grayband_to_argb_c(const PixelType *arr, char* argb_arr, const int width, const int height)
+LIBEXPORT int vigra_convert_grayband_to_argb_c(const PixelType *arr_in, char* argb_arr_out, const int width, const int height)
 {
-    const PixelType* gray_ptr = arr;
+    const PixelType* gray_ptr = arr_in;
     const PixelType* gray_end = gray_ptr + (width*height);
     
-    unsigned char* argb_ptr = (unsigned char*)argb_arr;
+    unsigned char* argb_ptr = (unsigned char*)argb_arr_out;
     
     for ( ; gray_ptr != gray_end; ++gray_ptr, argb_ptr+=4)
     {
@@ -20,14 +20,14 @@ LIBEXPORT int vigra_convert_grayband_to_argb_c(const PixelType *arr, char* argb_
     return 0;
 }
 
-LIBEXPORT int vigra_convert_rgbbands_to_argb_c(const float *r_arr, const float *g_arr, const float *b_arr, char* argb_arr, const int width, const int height)
+LIBEXPORT int vigra_convert_rgbbands_to_argb_c(const float *r_arr_in, const float *g_arr_in, const float *b_arr_in, char* argb_arr_out, const int width, const int height)
 {
-    const PixelType* r_ptr = r_arr;
-    const PixelType* g_ptr = g_arr;
-    const PixelType* b_ptr = b_arr;
+    const PixelType* r_ptr = r_arr_in;
+    const PixelType* g_ptr = g_arr_in;
+    const PixelType* b_ptr = b_arr_in;
     const PixelType* r_end = r_ptr + (width*height);
     
-    unsigned char* argb_ptr = (unsigned char*)argb_arr;
+    unsigned char* argb_ptr = (unsigned char*)argb_arr_out;
     
     for ( ; r_ptr != r_end ; ++r_ptr, ++g_ptr, ++b_ptr, argb_ptr+=4)
     {
@@ -39,11 +39,11 @@ LIBEXPORT int vigra_convert_rgbbands_to_argb_c(const float *r_arr, const float *
     return 0;
 }
 
-LIBEXPORT int vigra_convert_argb_to_grayband_c(const char* argb_arr, PixelType *arr, const int width, const int height)
+LIBEXPORT int vigra_convert_argb_to_grayband_c(const char* argb_arr_in, PixelType *arr_out, const int width, const int height)
 {
-    const unsigned char* argb_ptr = (const unsigned char*)argb_arr;
+    const unsigned char* argb_ptr = (const unsigned char*)argb_arr_in;
     
-    PixelType* gray_ptr = arr;
+    PixelType* gray_ptr = arr_out;
     PixelType* gray_end = gray_ptr + (width*height);
     
     
@@ -56,13 +56,13 @@ LIBEXPORT int vigra_convert_argb_to_grayband_c(const char* argb_arr, PixelType *
     return 0;
 }
 
-LIBEXPORT int vigra_convert_argb_to_rgbbands_c(const char* argb_arr, float *r_arr, float *g_arr, float *b_arr, const int width, const int height)
+LIBEXPORT int vigra_convert_argb_to_rgbbands_c(const char* argb_arr_in, float *r_arr_out, float *g_arr_out, float *b_arr_out, const int width, const int height)
 {
-    const unsigned char* argb_ptr = (const unsigned char*)argb_arr;
+    const unsigned char* argb_ptr = (const unsigned char*)argb_arr_in;
     
-    PixelType* r_ptr = r_arr;
-    PixelType* g_ptr = g_arr;
-    PixelType* b_ptr = b_arr;
+    PixelType* r_ptr = r_arr_out;
+    PixelType* g_ptr = g_arr_out;
+    PixelType* b_ptr = b_arr_out;
     PixelType* r_end = r_ptr + (width*height);
     
     
@@ -77,26 +77,26 @@ LIBEXPORT int vigra_convert_argb_to_rgbbands_c(const char* argb_arr, float *r_ar
 }
 
 
-LIBEXPORT int vigra_copy_double_array_c(const double* src, double *dest, const int length)
+LIBEXPORT int vigra_copy_double_array_c(const double* arr_in, double *arr_out, const int size)
 {
-    memcpy(dest,src,length*sizeof(double));
+    memcpy(arr_out,arr_in,size*sizeof(double));
     return 0;
 }
 
-LIBEXPORT int vigra_copy_float_array_c(const float* src, float *dest, const int length)
+LIBEXPORT int vigra_copy_float_array_c(const float* arr_in, float *arr_out, const int size)
 {
-    memcpy(dest,src,length*sizeof(float));
+    memcpy(arr_out,arr_in,size*sizeof(float));
     return 0;
 }
 
-LIBEXPORT int vigra_copy_int_array_c(const int* src, int *dest, const int length)
+LIBEXPORT int vigra_copy_int_array_c(const int* arr_in, int *arr_out, const int size)
 {
-    memcpy(dest,src,length*sizeof(int));
+    memcpy(arr_out,arr_in,size*sizeof(int));
     return 0;
 }
 
-LIBEXPORT int vigra_copy_uint8_array_c(const unsigned char* src, unsigned char *dest, const int length)
+LIBEXPORT int vigra_copy_uint8_array_c(const unsigned char* arr_in, unsigned char *arr_out, const int size)
 { 
-    memcpy(dest,src,length*sizeof(unsigned char));
+    memcpy(arr_out,arr_in,size*sizeof(unsigned char));
     return 0;
 }

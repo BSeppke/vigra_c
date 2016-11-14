@@ -11,9 +11,9 @@ typedef vigra::SplineImageView<5, float> SplineImageView5;
 /************ POINTER BASED FUNCTIONS *****************/
 
 #define SIV_CREATION_FUNCTION(splineDegree) \
-LIBEXPORT void * vigra_create_splineimageview##splineDegree##_c (const PixelType *arr, const int width, const int height)	\
+LIBEXPORT void * vigra_create_splineimageview##splineDegree##_c (const PixelType *arr_in, const int width, const int height)	\
 {																														\
-  ImageView img(vigra::Shape2(width,height), arr);																\
+  ImageView img(vigra::Shape2(width, height), arr_in);																\
   return new SplineImageView##splineDegree (img);														\
 }
 
@@ -157,10 +157,10 @@ SIV_ACCESSOR_FUNCTION(5)
 
 
 #define SIV_ADDRESS_CREATION_FUNCTION(splineDegree) \
-LIBEXPORT unsigned long vigra_create_splineimageview##splineDegree##_address_c (const PixelType *arr, const int width, const int height)	\
+LIBEXPORT unsigned long vigra_create_splineimageview##splineDegree##_address_c (const PixelType *arr_in, const int width, const int height)	\
 {                                                                    \
-  ImageView img(vigra::Shape2(width,height), arr);                                        \
-  SplineImageView##splineDegree* siv = new SplineImageView##splineDegree (img);                    \
+  ImageView img(vigra::Shape2(width, height), arr_in);                                        \
+  SplineImageView##splineDegree* siv = new SplineImageView##splineDegree(img);                    \
   return (unsigned long) siv;                                                     \
 }
 

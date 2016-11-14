@@ -9,15 +9,15 @@
 #include <vigra/colorconversions.hxx>
 
 
-LIBEXPORT int vigra_labelimage_c(const PixelType *arr, const PixelType *arr2, const int width, int height)
+LIBEXPORT int vigra_labelimage_c(const PixelType *arr_in, const PixelType *arr_out, const int width, int height)
 {
     try
     {
         vigra::Shape2 shape(width,height);
-        ImageView img(shape, arr);
-        ImageView img2(shape, arr2);
+        ImageView img_in(shape, arr_in);
+        ImageView img_out(shape, arr_out);
         
-        return vigra::labelImage(img, img2, true);
+        return vigra::labelImage(img_in, img_out, true);
     }
     catch (vigra::StdException & e)
     {
@@ -25,15 +25,15 @@ LIBEXPORT int vigra_labelimage_c(const PixelType *arr, const PixelType *arr2, co
     }
 }
 
-LIBEXPORT int vigra_watersheds_c(const PixelType *arr, const PixelType *arr2, const int width, const int height)
+LIBEXPORT int vigra_watersheds_c(const PixelType *arr_in, const PixelType *arr_out, const int width, const int height)
 {
     try
     {
         vigra::Shape2 shape(width,height);
-        ImageView img(shape, arr);
-        ImageView img2(shape, arr2);
+        ImageView img_in(shape, arr_in);
+        ImageView img_out(shape, arr_out);
         
-        return vigra::watershedsUnionFind(img, img2);
+        return vigra::watershedsUnionFind(img_in, img_out);
     }
     catch (vigra::StdException & e)
     {
@@ -41,13 +41,14 @@ LIBEXPORT int vigra_watersheds_c(const PixelType *arr, const PixelType *arr2, co
     }
 }
 
-LIBEXPORT int vigra_slic_gray_c(const PixelType *arr, const PixelType *arr2, const int width, const int height, const int seedDistance, const double intensityScaling, const int iterations)
+LIBEXPORT int vigra_slic_gray_c(const PixelType *arr_in, const PixelType *arr_out, const int width, const int height, const int seedDistance, const double intensityScaling, const int iterations)
 {
     try
     {
         vigra::Shape2 shape(width,height);
-        ImageView img(shape, arr);
-        ImageView img2(shape, arr2);
+        ImageView img_in(shape, arr_in);
+        ImageView img_out(shape, arr_out);
+        
         //We need to define a new array here to avoid abiguities inside the extractFeatures for (float, float)
         vigra::MultiArray<2, unsigned int> labels(shape);
         
@@ -56,9 +57,9 @@ LIBEXPORT int vigra_slic_gray_c(const PixelType *arr, const PixelType *arr2, con
         
         // compute seeds automatically, perform 40 iterations, and scale intensity differences
         // down to 1/20 before comparing with spatial distances
-        unsigned int count = vigra::slicSuperpixels(img, labels, intensityScaling, seedDistance, vigra::SlicOptions().iterations(iterations));
+        unsigned int count = vigra::slicSuperpixels(img_in, labels, intensityScaling, seedDistance, vigra::SlicOptions().iterations(iterations));
         
-        img2 = labels;
+        img_out = labels;
         return count;
     }
     catch (vigra::StdException & e)
@@ -67,17 +68,17 @@ LIBEXPORT int vigra_slic_gray_c(const PixelType *arr, const PixelType *arr2, con
     }
 }
 
-LIBEXPORT int vigra_slic_rgb_c(const PixelType *arr_r, const PixelType *arr_g, const PixelType *arr_b, const PixelType *arr2, const int width, const int height, const int seedDistance, const double intensityScaling, const int iterations)
+LIBEXPORT int vigra_slic_rgb_c(const PixelType *arr_r_in, const PixelType *arr_g_in, const PixelType *arr_b_in, const PixelType *arr_out, const int width, const int height, const int seedDistance, const double intensityScaling, const int iterations)
 {
     try
     {
         //write the color channels from the different arrays
-        vigra::Shape2 shape(width,height);
-        ImageView img_red(shape, arr_r);
-        ImageView img_green(shape, arr_g);
-        ImageView img_blue(shape, arr_b);
+        vigra::Shape2 shape(width, height);
+        ImageView img_red(shape, arr_r_in);
+        ImageView img_green(shape, arr_g_in);
+        ImageView img_blue(shape, arr_b_in);
         
-        ImageView img2(shape, arr2);
+        ImageView img_out(shape, arr_out);
         
         vigra::MultiArray<2, vigra::RGBValue<float> > src(shape);
         // fill src image
@@ -93,7 +94,7 @@ LIBEXPORT int vigra_slic_rgb_c(const PixelType *arr_r, const PixelType *arr_g, c
         
         // compute seeds automatically, perform 40 iterations, and scale intensity differences
         // down to 1/20 before comparing with spatial distances
-        return vigra::slicSuperpixels(src, img2, intensityScaling, seedDistance, vigra::SlicOptions().iterations(iterations));
+        return vigra::slicSuperpixels(src, img_out, intensityScaling, seedDistance, vigra::SlicOptions().iterations(iterations));
     }
     catch (vigra::StdException & e)
     {
@@ -101,15 +102,15 @@ LIBEXPORT int vigra_slic_rgb_c(const PixelType *arr_r, const PixelType *arr_g, c
     }
 }
 
-LIBEXPORT int vigra_cannyedgeimage_c(const PixelType *arr, const PixelType *arr2, const int width, const int height, const float scale, const float gradient_threshold, const float mark)
+LIBEXPORT int vigra_cannyedgeimage_c(const PixelType *arr_in, const PixelType *arr_out, const int width, const int height, const float scale, const float gradient_threshold, const float mark)
 {
     try
     {
         vigra::Shape2 shape(width,height);
-        ImageView img(shape, arr);
-        ImageView img2(shape, arr2);
+        ImageView img_in(shape, arr_in);
+        ImageView img_out(shape, arr_out);
         
-        vigra::cannyEdgeImage(img, img2, scale, gradient_threshold, mark);
+        vigra::cannyEdgeImage(img_in, img_out, scale, gradient_threshold, mark);
     }
     catch (vigra::StdException & e)
     {
@@ -118,15 +119,15 @@ LIBEXPORT int vigra_cannyedgeimage_c(const PixelType *arr, const PixelType *arr2
     return 0;
 }
 
-LIBEXPORT int vigra_differenceofexponentialedgeimage_c(const PixelType *arr, const PixelType *arr2, const int width, const int height, const float scale, const float gradient_threshold, const float mark)
+LIBEXPORT int vigra_differenceofexponentialedgeimage_c(const PixelType *arr_in, const PixelType *arr_out, const int width, const int height, const float scale, const float gradient_threshold, const float mark)
 {
     try
     {
         vigra::Shape2 shape(width,height);
-        ImageView img(shape, arr);
-        ImageView img2(shape, arr2);
+        ImageView img_in(shape, arr_in);
+        ImageView img_out(shape, arr_out);
         
-        vigra::differenceOfExponentialEdgeImage(img, img2, scale, gradient_threshold, mark);
+        vigra::differenceOfExponentialEdgeImage(img_in, img_out, scale, gradient_threshold, mark);
     }
     catch (vigra::StdException & e)
     {
@@ -135,16 +136,16 @@ LIBEXPORT int vigra_differenceofexponentialedgeimage_c(const PixelType *arr, con
     return 0;
 }
 
-LIBEXPORT int vigra_regionimagetocrackedgeimage_c(const PixelType *arr, const PixelType *arr2, const int width, const int height, const float mark)
+LIBEXPORT int vigra_regionimagetocrackedgeimage_c(const PixelType *arr_in, const PixelType *arr_out, const int width_in, const int height_in, const float mark)
 {
     try
     {
-        vigra::Shape2 shape(width,height);
-        ImageView img(shape, arr);
-        vigra::Shape2 shape2(2*width-1, 2*height-1);
-        ImageView img2(shape2, arr2);
+        vigra::Shape2 shape_in(width_in,height_in);
+        ImageView img_in(shape_in, arr_in);
+        vigra::Shape2 shape_out(2*width_in-1, 2*height_in-1);
+        ImageView img_out(shape_out, arr_out);
         
-        vigra::regionImageToCrackEdgeImage(img, img2, mark);
+        vigra::regionImageToCrackEdgeImage(img_in, img_out, mark);
     }
     catch (vigra::StdException & e)
     {

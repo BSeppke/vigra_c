@@ -6,7 +6,7 @@
 /************ POINTER BASED FUNCTIONS *****************/
 
 #define SIV_CREATION_FUNCTION_SIGNATURE(splineDegree) \
-LIBEXPORT void * vigra_create_splineimageview##splineDegree##_c (const PixelType *arr, const int width, const int height);
+LIBEXPORT void * vigra_create_splineimageview##splineDegree##_c (const PixelType *arr_in, const int width, const int height);
 
 SIV_CREATION_FUNCTION_SIGNATURE(1)
 SIV_CREATION_FUNCTION_SIGNATURE(2)
@@ -134,7 +134,7 @@ SIV_ACCESSOR_FUNCTION_SIGNATURE(5)
 /************ ADDRESS BASED FUNCTIONS *****************/
 
 #define SIV_ADDRESS_CREATION_FUNCTION_SIGNATURE(splineDegree) \
-LIBEXPORT unsigned long vigra_create_splineimageview##splineDegree##_address_c (const PixelType *arr, const int width, const int height);
+LIBEXPORT unsigned long vigra_create_splineimageview##splineDegree##_address_c (const PixelType *arr_in, const int width, const int height);
 
 SIV_ADDRESS_CREATION_FUNCTION_SIGNATURE(1)
 SIV_ADDRESS_CREATION_FUNCTION_SIGNATURE(2)
