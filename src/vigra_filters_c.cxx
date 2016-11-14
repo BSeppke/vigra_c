@@ -58,7 +58,7 @@ vigra::Kernel1D<T> kernel1dFromArray(const T* arr_in, const int size)
     return kernel;
 }
 
-LIBEXPORT int vigra_convolveimage_c(const PixelType *arr_in, const PixelType *arr_out, const double *kernel_arr_in, const int width, const int height, const int kernel_width, const int kernel_height)
+LIBEXPORT int vigra_convolveimage_c(const PixelType *arr_in, const double *kernel_arr_in, const PixelType *arr_out, const int width, const int height, const int kernel_width, const int kernel_height)
 {
     try
     {
@@ -81,7 +81,7 @@ LIBEXPORT int vigra_convolveimage_c(const PixelType *arr_in, const PixelType *ar
     return 0;
 }
 
-LIBEXPORT int vigra_separableconvolveimage_c(const PixelType *arr_in, const PixelType *arr_out, const double *kernel_arr_h, const double *kernel_arr_v, const int width, const int height, const int kernel_width, const int kernel_height)
+LIBEXPORT int vigra_separableconvolveimage_c(const PixelType *arr_in, const double *kernel_arr_h, const double *kernel_arr_v, const PixelType *arr_out, const int width, const int height, const int kernel_width, const int kernel_height)
 {
     try
     {
