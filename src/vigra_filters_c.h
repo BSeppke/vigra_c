@@ -8,7 +8,7 @@
  * C to perform a convolution for a single band and a kernel. 
  * All arrays must have been allocated before the call of this function.
  *
- * \param arr_in Flat input array (band)of size width*height.
+ * \param arr_in Flat input array (band) of size width*height.
  * \param kernel_arr_in Flat input array (kernel) of size kernel_width*kernel_height.
  * \param[out] arr_out Flat array of the convolution result (band) of size width*height.
  * \param width The width of the flat array.
@@ -33,7 +33,7 @@ LIBEXPORT int vigra_convolveimage_c(const PixelType * arr_in,
  * function to C to perform a convolution for a single band and a kernel.
  * All arrays must have been allocated before the call of this function.
  *
- * \param arr_in Flat input array (band)of size width*height.
+ * \param arr_in Flat input array (band) of size width*height.
  * \param kernel_h_arr_in Flat input array (horizonal kernel) of size kernel_width.
  * \param kernel_v_arr_in Flat input array (vertical kernel) of size kernel_height.
  * \param[out] arr_out Flat array of the convolution result (band) of size width*height.
@@ -62,12 +62,12 @@ LIBEXPORT int vigra_separableconvolveimage_c(const PixelType * arr_in,
  * partial derivates (in x- and y-direction) at a given scale (Gaussian std.dev.).
  * All arrays must have been allocated before the call of this function.
  *
- * \param arr_in Flat input array (band)of size width*height.
+ * \param arr_in Flat input array (band) of size width*height.
  * \param[out] arr_gx_out Flat array (the partial derivative in x-direction) of size width*height.
  * \param[out] arr_gy_out Flat array (the partial derivative in y-direction) of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
- * \param sigma The scale (Gaussian std.dev.) for with the gradient shall be computed.
+ * \param sigma The scale (Gaussian std.dev.) for which the gradient shall be computed.
  *
  * \return 0 if the gradient computation was successful, 1 else.
  */
@@ -85,11 +85,11 @@ LIBEXPORT int vigra_gaussiangradient_c(const PixelType * arr_in,
  * the gradient magnitude at a given scale (Gaussian std.dev.).
  * All arrays must have been allocated before the call of this function.
  *
- * \param arr_in Flat input array (band)of size width*height.
+ * \param arr_in Flat input array (band) of size width*height.
  * \param[out] arr_out Flat array (gradient magnitude) of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
- * \param sigma The scale (Gaussian std.dev.) for with the gradient shall be computed.
+ * \param sigma The scale (Gaussian std.dev.) for which the gradient shall be computed.
  *
  * \return 0 if the gradient computation was successful, 1 else.
  */
@@ -106,11 +106,11 @@ LIBEXPORT int vigra_gaussiangradientmagnitude_c(const PixelType * arr_in,
  * the result at a given scale (Gaussian std.dev.).
  * All arrays must have been allocated before the call of this function.
  *
- * \param arr_in Flat input array (band)of size width*height.
+ * \param arr_in Flat input array (band) of size width*height.
  * \param[out] arr_out Flat array (smoothed) of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
- * \param sigma The scale (Gaussian std.dev.) for with the smoothing shall be computed.
+ * \param sigma The scale (Gaussian std.dev.) for which the smoothing shall be computed.
  *
  * \return 0 if the smoothing was successful, 1 else.
  */
@@ -130,7 +130,7 @@ LIBEXPORT int vigra_gaussiansmoothing_c(const PixelType * arr_in,
  * \param[out] arr_out Flat array (LoG) of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
- * \param sigma The scale (gaussian std.dev.) for with the LoG shall be computed.
+ * \param sigma The scale (gaussian std.dev.) for which the LoG shall be computed.
  *
  * \return 0 if the LoG was computed successfully, 1 else.
  */
@@ -153,7 +153,7 @@ LIBEXPORT int vigra_laplacianofgaussian_c(const PixelType * arr_in,
  * \param[out] arr_yy_out Flat array (second derivative in y-direction) of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
- * \param sigma The scale (gaussian std.dev.) for with the Hessian shall be computed.
+ * \param sigma The scale (gaussian std.dev.) for which the Hessian shall be computed.
  *
  * \return 0 if the Hessian was computed successfully, 1 else.
  */
@@ -171,12 +171,12 @@ LIBEXPORT int vigra_hessianmatrixofgaussian_c(const PixelType * arr_in,
  * the result at a given scale (Gaussian std.dev.) and using a sharpening factor.
  * All arrays must have been allocated before the call of this function.
  *
- * \param arr_in Flat input array (band)of size width*height.
+ * \param arr_in Flat input array (band) of size width*height.
  * \param[out] arr_out Flat array (sharpened) of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
  * \param sharpening_factor The sharpening factor.
- * \param scale The scale for with the sharpening shall be computed.
+ * \param scale The scale for which the sharpening shall be computed.
  *
  * \return 0 if the sharpening was successful, 1 else.
  */
@@ -193,7 +193,7 @@ LIBEXPORT int vigra_gaussiansharpening_c(const PixelType * arr_in,
  * the result using a sharpening factor.
  * All arrays must have been allocated before the call of this function.
  *
- * \param arr_in Flat input array (band)of size width*height.
+ * \param arr_in Flat input array (band) of size width*height.
  * \param[out] arr_out Flat array (sharpened) of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
@@ -213,12 +213,12 @@ LIBEXPORT int vigra_simplesharpening_c(const PixelType * arr_in,
  * the result at a given scale (Gaussian std.dev.) and using an edge threshold.
  * All arrays must have been allocated before the call of this function.
  *
- * \param arr_in Flat input array (band)of size width*height.
+ * \param arr_in Flat input array (band) of size width*height.
  * \param[out] arr_out Flat array (nl-diffused) of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
  * \param edge_threshold The edge threshold factor.
- * \param scale The scale for with the nl diffusion shall be computed.
+ * \param scale The scale for which the nl diffusion shall be computed.
  *
  * \return 0 if the nl diffusion was successful, 1 else.
  */
@@ -235,12 +235,12 @@ LIBEXPORT int vigra_nonlineardiffusion_c(const PixelType * arr_in,
  * the result in an iterative fashion.
  * All arrays must have been allocated before the call of this function.
  *
- * \param arr_in Flat input array (band)of size width*height.
+ * \param arr_in Flat input array (band) of size width*height.
  * \param[out] arr_out Flat array (shock filtered) of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
- * \param sigma The inner scale for with the filter shall be computed.
- * \param rho The outer scale for with the filter shall be computed.
+ * \param sigma The inner scale for which the filter shall be computed.
+ * \param rho The outer scale for which the filter shall be computed.
  * \param upwind_factor_h The morpholical strength of the filter.
  * \param iterations The iterations to be carried out.
  *
