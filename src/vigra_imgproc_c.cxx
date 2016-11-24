@@ -10,11 +10,17 @@
 #include <vigra/multi_localminmax.hxx>
 
 
-LIBEXPORT int vigra_resizeimage_c(const PixelType *arr_in, const PixelType *arr_out, const int width_in, const int height_in, const int width_out, const int height_out, const int resample_method)
+LIBEXPORT int vigra_resizeimage_c(const PixelType * arr_in,
+                                  const PixelType * arr_out,
+                                  const int width_in,
+                                  const int height_in,
+                                  const int width_out,
+                                  const int height_out,
+                                  const int resample_method)
 {
     try
     {
-        // create a gray scale image of appropriate size
+        //Create gray scale image views for the arrays
         vigra::Shape2 shape_in(width_in,height_in);
         vigra::Shape2 shape_out(width_out,height_out);
         ImageView img_in(shape_in, arr_in);
@@ -49,11 +55,16 @@ LIBEXPORT int vigra_resizeimage_c(const PixelType *arr_in, const PixelType *arr_
     return 0;
 }
 
-LIBEXPORT int vigra_rotateimage_c( const PixelType *arr_in, const PixelType *arr_out, const int width, const int height, const float angle, const int resample_method)
+LIBEXPORT int vigra_rotateimage_c(const PixelType * arr_in,
+                                  const PixelType * arr_out,
+                                  const int width,
+                                  const int height,
+                                  const float angle,
+                                  const int resample_method)
 {
     try
     {
-        // create a gray scale image of appropriate size
+        //Create gray scale image views for the arrays
         vigra::Shape2 shape(width,height);
         ImageView img_in(shape, arr_in);
         ImageView img_out(shape, arr_out);
@@ -91,11 +102,16 @@ LIBEXPORT int vigra_rotateimage_c( const PixelType *arr_in, const PixelType *arr
     return 0;
 }
 
-LIBEXPORT int vigra_affinewarpimage_c(const PixelType *arr_in, const PixelType *arr_out, double *affineMatrix, const int width, const int height, const int resample_method)
+LIBEXPORT int vigra_affinewarpimage_c(const PixelType * arr_in,
+                                      const PixelType * arr_out,
+                                      double * affineMatrix,
+                                      const int width,
+                                      const int height,
+                                      const int resample_method)
 {
     try
     {
-        // create a gray scale image of appropriate size
+        //Create gray scale image views for the arrays
         vigra::Shape2 shape(width,height);
         ImageView img_in(shape, arr_in);
         ImageView img_out(shape, arr_out);
@@ -136,18 +152,23 @@ LIBEXPORT int vigra_affinewarpimage_c(const PixelType *arr_in, const PixelType *
 }
 
 
-LIBEXPORT int vigra_reflectimage_c(const PixelType *arr_in, const PixelType *arr_out, const int width, const int height, const int reflect_method)
+LIBEXPORT int vigra_reflectimage_c(const PixelType * arr_in,
+                                   const PixelType * arr_out,
+                                   const int width,
+                                   const int height,
+                                   const int reflect_method)
 {
     try
     {
-        // create a gray scale image of appropriate size
+        //Create gray scale image views for the arrays
         vigra::Shape2 shape(width, height);
         ImageView img_in(shape, arr_in);
         ImageView img_out(shape, arr_out);
         
         if(reflect_method>=1 && reflect_method <=3)
         {
-            vigra::reflectImage(img_in, img_out, static_cast<vigra::Reflect>(reflect_method));
+            vigra::reflectImage(img_in, img_out,
+                                static_cast<vigra::Reflect>(reflect_method));
         }
         else
         {
@@ -162,11 +183,15 @@ LIBEXPORT int vigra_reflectimage_c(const PixelType *arr_in, const PixelType *arr
     return 0;
 }
 
-LIBEXPORT int vigra_fouriertransform_c(const PixelType *arr_in, const PixelType *arr_real_out, const PixelType *arr_imag_out, const int width, const int height)
+LIBEXPORT int vigra_fouriertransform_c(const PixelType * arr_in,
+                                       const PixelType * arr_real_out,
+                                       const PixelType * arr_imag_out,
+                                       const int width,
+                                       const int height)
 {
     try
     {
-        // create a gray scale image of appropriate size
+        //Create gray scale image views for the arrays
         vigra::Shape2 shape(width, height);
         ImageView img(shape, arr_in);
         ImageView img_real(shape, arr_real_out);
@@ -179,7 +204,9 @@ LIBEXPORT int vigra_fouriertransform_c(const PixelType *arr_in, const PixelType 
         auto img_real_iter = img_real.begin(),
              img_imag_iter = img_imag.begin();
         
-        for(auto f_iter= fourier.begin(); f_iter != fourier.end(); ++f_iter, ++img_real_iter, ++img_imag_iter)
+        for(auto f_iter= fourier.begin();
+            f_iter != fourier.end();
+            ++f_iter, ++img_real_iter, ++img_imag_iter)
         {
             *img_real_iter = f_iter->real();
             *img_imag_iter = f_iter->imag();
@@ -194,7 +221,13 @@ LIBEXPORT int vigra_fouriertransform_c(const PixelType *arr_in, const PixelType 
 }
 
 
-LIBEXPORT int vigra_fastcrosscorrelation_c(const PixelType *arr_in, const PixelType *arr_mask_in, const PixelType *arr_out, const int width, const int height, const int mask_width, const int mask_height)
+LIBEXPORT int vigra_fastcrosscorrelation_c(const PixelType * arr_in,
+                                           const PixelType * arr_mask_in,
+                                           const PixelType * arr_out,
+                                           const int width,
+                                           const int height,
+                                           const int mask_width,
+                                           const int mask_height)
 {
     try
     {
@@ -219,7 +252,13 @@ LIBEXPORT int vigra_fastcrosscorrelation_c(const PixelType *arr_in, const PixelT
     return 0;
 }
 
-LIBEXPORT int vigra_fastnormalizedcrosscorrelation_c(const PixelType *arr_in, const PixelType *arr_mask_in, const PixelType *arr_out, const int width, const int height, const int mask_width, const int mask_height)
+LIBEXPORT int vigra_fastnormalizedcrosscorrelation_c(const PixelType * arr_in,
+                                                     const PixelType * arr_mask_in,
+                                                     const PixelType * arr_out,
+                                                     const int width,
+                                                     const int height,
+                                                     const int mask_width,
+                                                     const int mask_height)
 {
     try
     {
@@ -246,11 +285,14 @@ LIBEXPORT int vigra_fastnormalizedcrosscorrelation_c(const PixelType *arr_in, co
 }
 
 
-LIBEXPORT int vigra_localmaxima_c(const PixelType *arr_in, const PixelType *arr_out, const int width, const int height)
+LIBEXPORT int vigra_localmaxima_c(const PixelType * arr_in,
+                                  const PixelType * arr_out,
+                                  const int width,
+                                  const int height)
 {
     try
     {
-        // create a gray scale image of appropriate size
+        //Create gray scale image views for the arrays
         vigra::Shape2 shape(width, height);
         ImageView img_in(shape, arr_in);
         ImageView img_out(shape, arr_out);
@@ -265,11 +307,14 @@ LIBEXPORT int vigra_localmaxima_c(const PixelType *arr_in, const PixelType *arr_
     return 0;
 }
 
-LIBEXPORT int vigra_localminima_c(const PixelType *arr_in, const PixelType *arr_out, const int width, const int height)
+LIBEXPORT int vigra_localminima_c(const PixelType * arr_in,
+                                  const PixelType * arr_out,
+                                  const int width,
+                                  const int height)
 {
     try
     {
-        // create a gray scale image of appropriate size
+        //Create gray scale image views for the arrays
         vigra::Shape2 shape(width, height);
         ImageView img_in(shape, arr_in);
         ImageView img_out(shape, arr_out);
@@ -284,11 +329,18 @@ LIBEXPORT int vigra_localminima_c(const PixelType *arr_in, const PixelType *arr_
     return 0;
 }
 
-LIBEXPORT int vigra_subimage_c(const PixelType *arr_in, const PixelType *arr_out, const int width_in, const int height_in, const int left, const int upper, const int right, const int lower)
+LIBEXPORT int vigra_subimage_c(const PixelType * arr_in,
+                               const PixelType * arr_out,
+                               const int width_in,
+                               const int height_in,
+                               const int left,
+                               const int upper,
+                               const int right,
+                               const int lower)
 {
     try
     {
-        // create a gray scale image of appropriate size
+        //Create gray scale image views for the arrays
         vigra::Shape2 shape_in(width_in,height_in);
         ImageView img(shape_in, arr_in);
         
@@ -301,7 +353,8 @@ LIBEXPORT int vigra_subimage_c(const PixelType *arr_in, const PixelType *arr_out
             vigra::Shape2 cut_shape_in(cut_w,cut_h);
             ImageView cut_img(cut_shape_in, arr_out);
             
-            cut_img = img.subarray(vigra::Shape2(left, upper), vigra::Shape2(right, lower));
+            cut_img = img.subarray(vigra::Shape2(left, upper),
+                                   vigra::Shape2(right, lower));
         }
         else
         {
@@ -315,11 +368,19 @@ LIBEXPORT int vigra_subimage_c(const PixelType *arr_in, const PixelType *arr_out
     
     return 0;
 }
-LIBEXPORT int vigra_paddimage_c(const PixelType *arr_in, const PixelType *arr_out, const int width_in, const int height_in, const int left, const int upper, const int right, const int lower)
+
+LIBEXPORT int vigra_paddimage_c(const PixelType * arr_in,
+                                const PixelType * arr_out,
+                                const int width_in,
+                                const int height_in,
+                                const int left,
+                                const int upper,
+                                const int right,
+                                const int lower)
 {
     try
     {
-        // create a gray scale image of appropriate size
+        //Create gray scale image views for the arrays
         vigra::Shape2 shape_in(width_in,height_in);
         ImageView img(shape_in, arr_in);
         
@@ -332,7 +393,8 @@ LIBEXPORT int vigra_paddimage_c(const PixelType *arr_in, const PixelType *arr_ou
             vigra::Shape2 padd_shape_in(padd_w, padd_h);
             ImageView padd_img(padd_shape_in, arr_out);
             
-            padd_img.subarray(vigra::Shape2(left, upper), vigra::Shape2(left+width_in, upper+height_in)) = img;
+            padd_img.subarray(vigra::Shape2(left, upper),
+                              vigra::Shape2(left+width_in, upper+height_in)) = img;
         }
         else
         {

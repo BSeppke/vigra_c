@@ -9,7 +9,10 @@
 #include <vigra/colorconversions.hxx>
 
 
-LIBEXPORT int vigra_labelimage_c(const PixelType *arr_in, const PixelType *arr_out, const int width, int height)
+LIBEXPORT int vigra_labelimage_c(const PixelType * arr_in,
+                                 const PixelType * arr_out,
+                                 const int width,
+                                 const int height)
 {
     try
     {
@@ -25,7 +28,10 @@ LIBEXPORT int vigra_labelimage_c(const PixelType *arr_in, const PixelType *arr_o
     }
 }
 
-LIBEXPORT int vigra_watersheds_c(const PixelType *arr_in, const PixelType *arr_out, const int width, const int height)
+LIBEXPORT int vigra_watersheds_c(const PixelType * arr_in,
+                                 const PixelType * arr_out,
+                                 const int width,
+                                 const int height)
 {
     try
     {
@@ -41,7 +47,13 @@ LIBEXPORT int vigra_watersheds_c(const PixelType *arr_in, const PixelType *arr_o
     }
 }
 
-LIBEXPORT int vigra_slic_gray_c(const PixelType *arr_in, const PixelType *arr_out, const int width, const int height, const int seedDistance, const double intensityScaling, const int iterations)
+LIBEXPORT int vigra_slic_gray_c(const PixelType * arr_in,
+                                const PixelType * arr_out,
+                                const int width,
+                                const int height,
+                                const int seedDistance,
+                                const double intensityScaling,
+                                const int iterations)
 {
     try
     {
@@ -68,7 +80,15 @@ LIBEXPORT int vigra_slic_gray_c(const PixelType *arr_in, const PixelType *arr_ou
     }
 }
 
-LIBEXPORT int vigra_slic_rgb_c(const PixelType *arr_r_in, const PixelType *arr_g_in, const PixelType *arr_b_in, const PixelType *arr_out, const int width, const int height, const int seedDistance, const double intensityScaling, const int iterations)
+LIBEXPORT int vigra_slic_rgb_c(const PixelType * arr_r_in,
+                               const PixelType * arr_g_in,
+                               const PixelType * arr_b_in,
+                               const PixelType * arr_out,
+                               const int width,
+                               const int height,
+                               const int seedDistance,
+                               const double intensityScaling,
+                               const int iterations)
 {
     try
     {
@@ -87,14 +107,16 @@ LIBEXPORT int vigra_slic_rgb_c(const PixelType *arr_r_in, const PixelType *arr_g
         src.bindElementChannel(2) = img_blue;
         
         // transform image to Lab color space
-        vigra::transformMultiArray(srcMultiArrayRange(src), destMultiArray(src), vigra::RGBPrime2LabFunctor<float>() );
+        vigra::transformMultiArray(srcMultiArrayRange(src), destMultiArray(src),
+                                   vigra::RGBPrime2LabFunctor<float>());
         
         //int seedDistance = 15;
         //double intensityScaling = 20.0;
         
         // compute seeds automatically, perform 40 iterations, and scale intensity differences
         // down to 1/20 before comparing with spatial distances
-        return vigra::slicSuperpixels(src, img_out, intensityScaling, seedDistance, vigra::SlicOptions().iterations(iterations));
+        return vigra::slicSuperpixels(src, img_out, intensityScaling, seedDistance,
+                                      vigra::SlicOptions().iterations(iterations));
     }
     catch (vigra::StdException & e)
     {
@@ -102,7 +124,13 @@ LIBEXPORT int vigra_slic_rgb_c(const PixelType *arr_r_in, const PixelType *arr_g
     }
 }
 
-LIBEXPORT int vigra_cannyedgeimage_c(const PixelType *arr_in, const PixelType *arr_out, const int width, const int height, const float scale, const float gradient_threshold, const float mark)
+LIBEXPORT int vigra_cannyedgeimage_c(const PixelType * arr_in,
+                                     const PixelType * arr_out,
+                                     const int width,
+                                     const int height,
+                                     const float scale,
+                                     const float gradient_threshold,
+                                     const float mark)
 {
     try
     {
@@ -119,7 +147,13 @@ LIBEXPORT int vigra_cannyedgeimage_c(const PixelType *arr_in, const PixelType *a
     return 0;
 }
 
-LIBEXPORT int vigra_differenceofexponentialedgeimage_c(const PixelType *arr_in, const PixelType *arr_out, const int width, const int height, const float scale, const float gradient_threshold, const float mark)
+LIBEXPORT int vigra_differenceofexponentialedgeimage_c(const PixelType * arr_in,
+                                                       const PixelType * arr_out,
+                                                       const int width,
+                                                       const int height,
+                                                       const float scale,
+                                                       const float gradient_threshold,
+                                                       const float mark)
 {
     try
     {
@@ -136,7 +170,11 @@ LIBEXPORT int vigra_differenceofexponentialedgeimage_c(const PixelType *arr_in, 
     return 0;
 }
 
-LIBEXPORT int vigra_regionimagetocrackedgeimage_c(const PixelType *arr_in, const PixelType *arr_out, const int width_in, const int height_in, const float mark)
+LIBEXPORT int vigra_regionimagetocrackedgeimage_c(const PixelType * arr_in,
+                                                  const PixelType * arr_out,
+                                                  const int width_in,
+                                                  const int height_in,
+                                                  const float mark)
 {
     try
     {

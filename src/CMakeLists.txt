@@ -6,6 +6,7 @@ project(vigra_c)
 set(SOURCES 
 	vigra_convert_c.cxx
 	vigra_filters_c.cxx
+	vigra_tensors_c.cxx
 	vigra_imgproc_c.cxx
 	vigra_impex_c.cxx
 	vigra_morphology_c.cxx
@@ -16,8 +17,10 @@ set(SOURCES
 set(HEADERS 
 	config.h
 	vigra_c.h
+	vigra_kernelutils_c.h
 	vigra_convert_c.h
 	vigra_filters_c.h
+	vigra_tensors_c.h
 	vigra_imgproc_c.h
 	vigra_impex_c.h
 	vigra_morphology_c.h

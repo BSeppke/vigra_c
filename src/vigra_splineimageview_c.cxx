@@ -8,13 +8,15 @@ typedef vigra::SplineImageView<3, float> SplineImageView3;
 typedef vigra::SplineImageView<4, float> SplineImageView4;
 typedef vigra::SplineImageView<5, float> SplineImageView5;
 
-/************ POINTER BASED FUNCTIONS *****************/
+/************ POINTER BASED FUNCTION SIGNATURES *****************/
 
-#define SIV_CREATION_FUNCTION(splineDegree) \
-LIBEXPORT void * vigra_create_splineimageview##splineDegree##_c (const PixelType *arr_in, const int width, const int height)	\
-{																														\
-  ImageView img(vigra::Shape2(width, height), arr_in);																\
-  return new SplineImageView##splineDegree (img);														\
+#define SIV_CREATION_FUNCTION(order)                                              \
+LIBEXPORT void * vigra_create_splineimageview##order##_c(const PixelType *arr_in, \
+                                                         const int width,         \
+                                                         const int height)	      \
+{                                                                                 \
+  ImageView img(vigra::Shape2(width, height), arr_in);							  \
+  return new SplineImageView##order (img);								          \
 }
 
 SIV_CREATION_FUNCTION(1)
@@ -24,12 +26,12 @@ SIV_CREATION_FUNCTION(4)
 SIV_CREATION_FUNCTION(5)
 
 
-#define SIV_DELETION_FUNCTION(splineDegree) \
-LIBEXPORT int vigra_delete_splineimageview##splineDegree##_c (void * siv)        \
-{                                            \
-  SplineImageView##splineDegree * siv_ptr = (SplineImageView##splineDegree * ) siv; \
-  delete siv_ptr;                                     \
-  return 0;                                      \
+#define SIV_DELETION_FUNCTION(order)                                  \
+LIBEXPORT int vigra_delete_splineimageview##order##_c(void * siv)     \
+{                                                                     \
+  SplineImageView##order * siv_ptr = (SplineImageView##order * ) siv; \
+  delete siv_ptr;                                                     \
+  return 0;                                                           \
 }
 
 SIV_DELETION_FUNCTION(1)
@@ -40,11 +42,13 @@ SIV_DELETION_FUNCTION(5)
 
 
 
-#define SIV_OPERATION_FUNCTION(function, splineDegree) \
-LIBEXPORT float vigra_splineimageview##splineDegree##_##function##_c (void * siv, double x, double y)	\
-{                                                    \
-  SplineImageView##splineDegree * siv_ptr = (SplineImageView##splineDegree * ) siv;         \
-	return siv_ptr -> function (x,y);                                  \
+#define SIV_OPERATION_FUNCTION(function, order)                               \
+LIBEXPORT float vigra_splineimageview##order##_##function##_c(void * siv,     \
+                                                              const double x, \
+                                                              const double y) \
+{                                                                             \
+  SplineImageView##order * siv_ptr = (SplineImageView##order * ) siv;         \
+	return siv_ptr -> function (x,y);                                         \
 }
 
 SIV_OPERATION_FUNCTION(dx,1)
@@ -137,12 +141,13 @@ SIV_OPERATION_FUNCTION(g2yy,3)
 SIV_OPERATION_FUNCTION(g2yy,4)
 SIV_OPERATION_FUNCTION(g2yy,5)
 
-
-#define SIV_ACCESSOR_FUNCTION(splineDegree) \
-LIBEXPORT float vigra_splineimageview##splineDegree##_accessor_c(void * siv, double x, double y)  \
-{                                                  \
-  SplineImageView##splineDegree * siv_ptr = (SplineImageView##splineDegree * ) siv;       \
-	return (* siv_ptr)(x,y);                                    \
+#define SIV_ACCESSOR_FUNCTION(order)                                      \
+LIBEXPORT float vigra_splineimageview##order##_accessor_c(void * siv,     \
+                                                          const double x, \
+                                                          const double y) \
+{                                                                         \
+  SplineImageView##order * siv_ptr = (SplineImageView##order * ) siv;     \
+	return (* siv_ptr)(x,y);                                              \
 }
 
 SIV_ACCESSOR_FUNCTION(1)
@@ -153,15 +158,15 @@ SIV_ACCESSOR_FUNCTION(5)
 
 
 
-/************ ADDRESS BASED FUNCTIONS *****************/
-
-
-#define SIV_ADDRESS_CREATION_FUNCTION(splineDegree) \
-LIBEXPORT unsigned long vigra_create_splineimageview##splineDegree##_address_c (const PixelType *arr_in, const int width, const int height)	\
-{                                                                    \
-  ImageView img(vigra::Shape2(width, height), arr_in);                                        \
-  SplineImageView##splineDegree* siv = new SplineImageView##splineDegree(img);                    \
-  return (unsigned long) siv;                                                     \
+/************ ADDRESS BASED FUNCTION SIGNATURES *****************/
+#define SIV_ADDRESS_CREATION_FUNCTION(order)                                                     \
+LIBEXPORT unsigned long vigra_create_splineimageview##order##_address_c(const PixelType *arr_in, \
+                                                                        const int width,         \
+                                                                        const int height)	     \
+{                                                                                                \
+  ImageView img(vigra::Shape2(width, height), arr_in);                                           \
+  SplineImageView##order* siv = new SplineImageView##order(img);                                 \
+  return (unsigned long) siv;                                                                    \
 }
 
 SIV_ADDRESS_CREATION_FUNCTION(1)
@@ -170,12 +175,13 @@ SIV_ADDRESS_CREATION_FUNCTION(3)
 SIV_ADDRESS_CREATION_FUNCTION(4)
 SIV_ADDRESS_CREATION_FUNCTION(5)
 
-#define SIV_DELETION_BY_ADDRESS_FUNCTION(splineDegree) \
-LIBEXPORT int vigra_delete_splineimageview##splineDegree##_by_address_c (unsigned long address)	\
-{                                                \
-  SplineImageView##splineDegree * siv = (SplineImageView##splineDegree * ) address;      \
-  delete siv;                                         \
-  return 0;                                          \
+
+#define SIV_DELETION_BY_ADDRESS_FUNCTION(order)                                               \
+LIBEXPORT int vigra_delete_splineimageview##order##_by_address_c(const unsigned long address) \
+{                                                                                             \
+  SplineImageView##order * siv = (SplineImageView##order * ) address;                         \
+  delete siv;                                                                                 \
+  return 0;                                                                                   \
 }
 
 SIV_DELETION_BY_ADDRESS_FUNCTION(1)
@@ -185,11 +191,13 @@ SIV_DELETION_BY_ADDRESS_FUNCTION(4)
 SIV_DELETION_BY_ADDRESS_FUNCTION(5)
 
 
-#define SIV_OPERATION_BY_ADDRESS_FUNCTION(function, splineDegree) \
-LIBEXPORT float vigra_splineimageview##splineDegree##_##function##_by_address_c (unsigned long address, double x, double y)	\
-{                                                              \
-  SplineImageView##splineDegree * siv = (SplineImageView##splineDegree * ) address;                    \
-  return siv -> function (x,y);                                              \
+#define SIV_OPERATION_BY_ADDRESS_FUNCTION(function, order)                                            \
+LIBEXPORT float vigra_splineimageview##order##_##function##_by_address_c(const unsigned long address, \
+                                                                         const double x,              \
+                                                                         const double y)	          \
+{                                                                                                     \
+  SplineImageView##order * siv = (SplineImageView##order * ) address;                                 \
+  return siv -> function (x,y);                                                                       \
 }
 
 SIV_OPERATION_BY_ADDRESS_FUNCTION(dx,1)
@@ -283,11 +291,13 @@ SIV_OPERATION_BY_ADDRESS_FUNCTION(g2yy,4)
 SIV_OPERATION_BY_ADDRESS_FUNCTION(g2yy,5)
 
 
-#define SIV_ACCESSOR_BY_ADDRESS_FUNCTION(splineDegree) \
-LIBEXPORT float vigra_splineimageview##splineDegree##_accessor_by_address_c(unsigned long address, double x, double y)	\
-{                                                            \
-  SplineImageView##splineDegree * siv = (SplineImageView##splineDegree *) address;                  \
-  return (* siv)(x,y);                                                \
+#define SIV_ACCESSOR_BY_ADDRESS_FUNCTION(order)                                                   \
+LIBEXPORT float vigra_splineimageview##order##_accessor_by_address_c(const unsigned long address, \
+                                                                     const double x,              \
+                                                                     const double y)	          \
+{                                                                                                 \
+  SplineImageView##order * siv = (SplineImageView##order *) address;                              \
+  return (* siv)(x,y);                                                                            \
 }
 
 SIV_ACCESSOR_BY_ADDRESS_FUNCTION(1)
