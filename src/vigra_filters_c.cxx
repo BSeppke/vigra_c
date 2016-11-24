@@ -1,7 +1,39 @@
+/************************************************************************/
+/*                                                                      */
+/*               Copyright 2008-2016 by Benjamin Seppke                 */
+/*       Cognitive Systems Group, University of Hamburg, Germany        */
+/*                                                                      */
+/*    This file is part of VIGRA_C package. For more infos visit:       */
+/*        https://github.com/bseppke/vigra_c                            */
+/*    Please direct questions, bug reports, and contributions to        */
+/*    the GitHub page and use the methods provided there.               */
+/*                                                                      */
+/*    Permission is hereby granted, free of charge, to any person       */
+/*    obtaining a copy of this software and associated documentation    */
+/*    files (the "Software"), to deal in the Software without           */
+/*    restriction, including without limitation the rights to use,      */
+/*    copy, modify, merge, publish, distribute, sublicense, and/or      */
+/*    sell copies of the Software, and to permit persons to whom the    */
+/*    Software is furnished to do so, subject to the following          */
+/*    conditions:                                                       */
+/*                                                                      */
+/*    The above copyright notice and this permission notice shall be    */
+/*    included in all copies or substantial portions of the             */
+/*    Software.                                                         */
+/*                                                                      */
+/*    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND    */
+/*    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES   */
+/*    OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND          */
+/*    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT       */
+/*    HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,      */
+/*    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING      */
+/*    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR     */
+/*    OTHER DEALINGS IN THE SOFTWARE.                                   */
+/*                                                                      */
+/************************************************************************/
+
 #include "vigra_filters_c.h"
-
 #include "vigra_kernelutils_c.h"
-
 #include <vigra/nonlineardiffusion.hxx>
 #include <vigra/shockfilter.hxx>
 
@@ -230,7 +262,7 @@ LIBEXPORT int vigra_gaussiansmoothing_c(const PixelType * arr_in,
  * \param[out] arr_out Flat array (LoG) of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
- * \param sigma The scale (gaussian std.dev.) for which the LoG shall be computed.
+ * \param scale The scale (gaussian std.dev.) for which the LoG shall be computed.
  *
  * \return 0 if the LoG was computed successfully, 1 else.
  */
@@ -269,7 +301,7 @@ LIBEXPORT int vigra_laplacianofgaussian_c(const PixelType * arr_in,
  * \param[out] arr_yy_out Flat array (second derivative in y-direction) of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
- * \param sigma The scale (gaussian std.dev.) for which the Hessian shall be computed.
+ * \param scale The scale (gaussian std.dev.) for which the Hessian shall be computed.
  *
  * \return 0 if the Hessian was computed successfully, 1 else.
  */

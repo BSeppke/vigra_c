@@ -42,3 +42,4 @@ find_library(FFTWF_LIBRARY
 list(APPEND FFTW_LIBRARIES "${FFTWF_LIBRARY}")
 
 add_subdirectory(src)
+add_subdirectory(doc)

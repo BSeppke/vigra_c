@@ -1,8 +1,44 @@
+/************************************************************************/
+/*                                                                      */
+/*               Copyright 2008-2016 by Benjamin Seppke                 */
+/*       Cognitive Systems Group, University of Hamburg, Germany        */
+/*                                                                      */
+/*    This file is part of VIGRA_C package. For more infos visit:       */
+/*        https://github.com/bseppke/vigra_c                            */
+/*    Please direct questions, bug reports, and contributions to        */
+/*    the GitHub page and use the methods provided there.               */
+/*                                                                      */
+/*    Permission is hereby granted, free of charge, to any person       */
+/*    obtaining a copy of this software and associated documentation    */
+/*    files (the "Software"), to deal in the Software without           */
+/*    restriction, including without limitation the rights to use,      */
+/*    copy, modify, merge, publish, distribute, sublicense, and/or      */
+/*    sell copies of the Software, and to permit persons to whom the    */
+/*    Software is furnished to do so, subject to the following          */
+/*    conditions:                                                       */
+/*                                                                      */
+/*    The above copyright notice and this permission notice shall be    */
+/*    included in all copies or substantial portions of the             */
+/*    Software.                                                         */
+/*                                                                      */
+/*    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND    */
+/*    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES   */
+/*    OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND          */
+/*    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT       */
+/*    HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,      */
+/*    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING      */
+/*    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR     */
+/*    OTHER DEALINGS IN THE SOFTWARE.                                   */
+/*                                                                      */
+/************************************************************************/
+
 #ifndef VIGRA_TENSORS_C_H
 #define VIGRA_TENSORS_C_H
 
 #include "config.h"
 
+// @file
+// @brief Contains functions for Tensor based image processing and analysis
 
 /**
  * Computation of the Structure Tensor of an image band. This function wraps the
@@ -92,8 +128,8 @@ LIBEXPORT int vigra_boundarytensor1_c(const PixelType * arr_in,
  * \param[out] arr_yy_out Flat array (Boundary Tensor yy) of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
- * \param derivKernel The size of the derivative kernel array.
- * \param smoothKernel The size of the smoothing kernel array.
+ * \param derivKernel_size The size of the derivative kernel array.
+ * \param smoothKernel_size The size of the smoothing kernel array.
  *
  * \return 0 if the Gradient Energy Tensor was computed successfully,
  *         2 if kernel dimensions are not odd,
@@ -166,7 +202,7 @@ LIBEXPORT int vigra_tensortrace_c(const PixelType * arr_xx_in,
  * \param arr_yy_in Flat array (Tensor yy) of size width*height.
  * \param[out] arr_edgeness_out Flat array (edgeness) of size width*height.
  * \param[out] arr_orientation_out Flat array (orientation of the edge) of size width*height.
- * \param[out] arr_ang_outarr_cornerness_outFlat array (cornerness) of size width*height.
+ * \param[out] arr_cornerness_out Flat array (cornerness) of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
  *

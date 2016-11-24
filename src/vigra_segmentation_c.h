@@ -1,7 +1,45 @@
+/************************************************************************/
+/*                                                                      */
+/*               Copyright 2008-2016 by Benjamin Seppke                 */
+/*       Cognitive Systems Group, University of Hamburg, Germany        */
+/*                                                                      */
+/*    This file is part of VIGRA_C package. For more infos visit:       */
+/*        https://github.com/bseppke/vigra_c                            */
+/*    Please direct questions, bug reports, and contributions to        */
+/*    the GitHub page and use the methods provided there.               */
+/*                                                                      */
+/*    Permission is hereby granted, free of charge, to any person       */
+/*    obtaining a copy of this software and associated documentation    */
+/*    files (the "Software"), to deal in the Software without           */
+/*    restriction, including without limitation the rights to use,      */
+/*    copy, modify, merge, publish, distribute, sublicense, and/or      */
+/*    sell copies of the Software, and to permit persons to whom the    */
+/*    Software is furnished to do so, subject to the following          */
+/*    conditions:                                                       */
+/*                                                                      */
+/*    The above copyright notice and this permission notice shall be    */
+/*    included in all copies or substantial portions of the             */
+/*    Software.                                                         */
+/*                                                                      */
+/*    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND    */
+/*    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES   */
+/*    OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND          */
+/*    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT       */
+/*    HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,      */
+/*    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING      */
+/*    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR     */
+/*    OTHER DEALINGS IN THE SOFTWARE.                                   */
+/*                                                                      */
+/************************************************************************/
+
 #ifndef VIGRA_SEGMENTATION_C_H
 #define VIGRA_SEGMENTATION_C_H
 
 #include "config.h"
+
+// @file
+// @brief Contains segmentation algorithms.
+
 /**
  * Labels the connected components of an image band.
  * This function wraps the vigra::labelImage function to C to carry out a
@@ -163,7 +201,7 @@ LIBEXPORT int vigra_differenceofexponentialedgeimage_c(const PixelType * arr_in,
  * \param arr_in Flat input array (band) of size width_in*height_in.
  * \param[out] arr_out Flat array (crack-edges) of size (2*width_in-1)*(2*height_in-1).
  * \param width_in The width of the flat array.
- * \param height-IN The height of the flat array.
+ * \param height_in The height of the flat array.
  * \param mark The intensity for marking the crack-edges in the resulting band.
  *
  * \return 0 if the nl diffusion was successful, 1 else.
