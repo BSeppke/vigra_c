@@ -36,6 +36,11 @@
 #include <vigra/splineimageview.hxx>
 
 
+/**
+ * @file
+ * @brief Implementation of Spline Image Views on images
+ */
+
 typedef vigra::SplineImageView<1, float> SplineImageView1;
 typedef vigra::SplineImageView<2, float> SplineImageView2;
 typedef vigra::SplineImageView<3, float> SplineImageView3;

@@ -37,6 +37,14 @@
 
 #include "config.h"
 
+/**
+ * @file
+ * @brief Header file for image import and export
+ *
+ * @defgroup impex Image import and export
+ * @{
+ *    @brief Contains image import and export facilities.
+ */
 // @file
 // @brief Contains image import and export facilities.
 
@@ -216,4 +224,9 @@ LIBEXPORT int vigra_imagenumbands_c(const char * filename);
  */
 LIBEXPORT int vigra_imagenumextrabands_c(const char * filename);
 
+
+/**
+ * @}
+ */
+ 
 #endif

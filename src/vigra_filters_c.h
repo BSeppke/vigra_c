@@ -37,8 +37,14 @@
 
 #include "config.h"
 
-// @file
-// @brief Contains many linear and non-linear image filtering algorithms.
+/**
+ * @file
+ * @brief Header file for image filters
+ *
+ * @defgroup filters Image Filters
+ * @{
+ *    @brief Contains many linear and non-linear image filtering algorithms.
+ */
 
 /**
  * Image convolution. This function wraps the vigra::convolveImage function to
@@ -294,4 +300,8 @@ LIBEXPORT int vigra_shockfilter_c(const PixelType *arr_in,
                                   const float upwind_factor_h,
                                   const int iterations);
 
+/**
+ * @}
+ */
+ 
 #endif

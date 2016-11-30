@@ -39,6 +39,10 @@
 #include <vigra/boundarytensor.hxx>
 #include <vigra/orientedtensorfilters.hxx>
 
+/**
+ * @file 
+ * @brief Implementation of Tensor-based algorithms
+ */
 
 /**
  * Computation of the Structure Tensor of an image band. This function wraps the

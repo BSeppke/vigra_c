@@ -38,6 +38,11 @@
 
 
 /**
+ * @file
+ * @brief Implementation of image import and export
+ */
+
+/**
  * Import of a grayscale image from filesystem into a single band array.
  * This function checks if an image exists on file system and if it is grayscale.
  * If so, it is imported into the given flat array, which needs already to 

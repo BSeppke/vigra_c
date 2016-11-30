@@ -37,9 +37,15 @@
 
 #include "config.h"
 
-// @file
-// @brief Contains morphological operators, mainly applicable to binary images.
-
+/**
+ * @file
+ * @brief Header file for morphological operators
+ *
+ * @defgroup morphology Morphological operators
+ * @{
+ *    @brief Contains morphological operators, mainly applicable to binary images.
+ */
+ 
 /**
  * Computation of the distance transform.
  * This function wraps the vigra::distanceTransform function to C to compute
@@ -128,4 +134,8 @@ LIBEXPORT int vigra_upwindimage_c(const PixelType * arr_in,
                                   const int height,
                                   const float weight);
 
+/**
+ * @}
+ */
+ 
 #endif

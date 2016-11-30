@@ -37,6 +37,14 @@
 
 #include "config.h"
 
+/**
+ * @file
+ * @brief Header file for image processing algorithms
+ *
+ * @defgroup imgproc Image Processing
+ * @{
+ *    @brief Contains many linear and non-linear image filtering algorithms.
+ */
 // @file
 // @brief Contains basic image processing algorithms.
 
@@ -303,5 +311,9 @@ LIBEXPORT int vigra_paddimage_c(const PixelType * arr_in,
                                 const int upper,
                                 const int right,
                                 const int lower);
+
+/**
+ * @}
+ */
 
 #endif

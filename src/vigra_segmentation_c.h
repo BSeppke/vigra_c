@@ -37,9 +37,15 @@
 
 #include "config.h"
 
-// @file
-// @brief Contains segmentation algorithms.
-
+/**
+ * @file
+ * @brief Header file for segmentation algorithms
+ *
+ * @defgroup segmentation Image Segmentation
+ * @{
+ *    @brief Contains segmentation algorithms.
+ */
+ 
 /**
  * Labels the connected components of an image band.
  * This function wraps the vigra::labelImage function to C to carry out a
@@ -211,5 +217,9 @@ LIBEXPORT int vigra_regionimagetocrackedgeimage_c(const PixelType * arr_in,
                                                   const int width_in,
                                                   const int height_in,
                                                   const float mark);
+
+/**
+ * @}
+ */
 
 #endif

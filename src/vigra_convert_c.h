@@ -37,13 +37,19 @@
 
 #include "config.h"
 
-// @file
-// @brief Contains conversion functions between internal external image representations.
+/**
+ * @file
+ * @brief Header file for conversion functions
+ *
+ * @defgroup convert Conversion Functions
+ * @{
+ *    @brief Contains conversion functions between internal external image representations.
+ */
 
 /**
  * Converts a single band grayvalue image into its Alpha,RGB representation.
  * The greyavalue is therefore copied and casted to 0..255 into each R,B, and B
- * value and the alpha value is set to 255 (opaque).All arrays must have been
+ * value and the alpha value is set to 255 (opaque). All arrays must have been
  * allocated before the call of this function.
  *
  * \param arr_in Flat input array of size width*height.
@@ -51,7 +57,7 @@
  * \param width The width of the image.
  * \param height The height of the image.
  *
- * \return 0 if the conversion was successfull, else uncatched error.
+ * \return 0 if the conversion was successful, else uncought error.
  */
 LIBEXPORT int vigra_convert_grayband_to_argb_c(const PixelType *arr_in,
                                                char * argb_arr_out,
@@ -61,7 +67,7 @@ LIBEXPORT int vigra_convert_grayband_to_argb_c(const PixelType *arr_in,
 /**
  * Converts the single band images (r,g,b) into its combined Alpha,RGB representation.
  * The r,g,b-vaues are therefore copied and casted to 0..255 into each R,B, and B
- * value and the alpha value is set to 255 (opaque).All arrays must have been
+ * value and the alpha value is set to 255 (opaque). All arrays must have been
  * allocated before the call of this function.
  *
  * \param arr_r_in Flat input array (red band) of size width*height.
@@ -71,7 +77,7 @@ LIBEXPORT int vigra_convert_grayband_to_argb_c(const PixelType *arr_in,
  * \param width The width of the image.
  * \param height The height of the image.
  *
- * \return 0 if the conversion was successfull, else uncatched error.
+ * \return 0 if the conversion was successful, else uncought error.
  */
 LIBEXPORT int vigra_convert_rgbbands_to_argb_c(const float * arr_r_in,
                                                const float * arr_g_in,
@@ -86,12 +92,12 @@ LIBEXPORT int vigra_convert_rgbbands_to_argb_c(const float * arr_r_in,
  * we simply cast the values of the R-band to float, the alpha value is omitted.
  * All arrays must have been allocated before the call of this function.
  *
- * \param argb_arr_in Flat input arrayof  size width*height*4.
+ * \param argb_arr_in Flat input array of  size width*height*4.
  * \param[out] arr_out Flat output array of size width*height.
  * \param width The width of the image.
  * \param height The height of the image.
  *
- * \return 0 if the conversion was successfull, else uncatched error.
+ * \return 0 if the conversion was successful, else uncought error.
  */
 LIBEXPORT int vigra_convert_argb_to_grayband_c(const char * argb_arr_in,
                                                PixelType * arr_out,
@@ -101,7 +107,7 @@ LIBEXPORT int vigra_convert_argb_to_grayband_c(const char * argb_arr_in,
 /**
  * Converts the combined Alpha,RGB representation into its single band images (r,g,b).
  * The R,G,B-vaues are therefore copied and casted to float into each r,g, and b
- * output band and the alpha value is omitted.All arrays must have been
+ * output band and the alpha value is omitted. All arrays must have been
  * allocated before the call of this function.
  *
  * \param argb_arr_in Flat input array of size width*height*4.
@@ -111,7 +117,7 @@ LIBEXPORT int vigra_convert_argb_to_grayband_c(const char * argb_arr_in,
  * \param width The width of the image.
  * \param height The height of the image.
  *
- * \return 0 if the conversion was successfull, else uncatched error.
+ * \return 0 if the conversion was successful, else uncought error.
  */
 LIBEXPORT int vigra_convert_argb_to_rgbbands_c(const char * argb_arr_in,
                                                float * arr_r_out,
@@ -128,7 +134,7 @@ LIBEXPORT int vigra_convert_argb_to_rgbbands_c(const char * argb_arr_in,
  * \param arr_out Flat output array of size size.
  * \param size The size of both arrays.
  *
- * \return 0 if the copying was successfull, else uncatched error.
+ * \return 0 if the copying was successful, else uncought error.
  */
 LIBEXPORT int vigra_copy_double_array_c(const double * arr_in,
                                         double * arr_out,
@@ -142,7 +148,7 @@ LIBEXPORT int vigra_copy_double_array_c(const double * arr_in,
  * \param arr_out Flat output array of size size.
  * \param size The size of both arrays.
  *
- * \return 0 if the copying was successfull, else uncatched error.
+ * \return 0 if the copying was successful, else uncought error.
  */
 LIBEXPORT int vigra_copy_float_array_c(const float * arr_in,
                                        float * arr_out,
@@ -156,7 +162,7 @@ LIBEXPORT int vigra_copy_float_array_c(const float * arr_in,
  * \param arr_out Flat output array of size size.
  * \param size The size of both arrays.
  *
- * \return 0 if the copying was successfull, else uncatched error.
+ * \return 0 if the copying was successful, else uncought error.
  */
 LIBEXPORT int vigra_copy_int_array_c(const int * arr_in,
                                      int * arr_out,
@@ -170,10 +176,13 @@ LIBEXPORT int vigra_copy_int_array_c(const int * arr_in,
  * \param arr_out Flat output array of size size.
  * \param size The size of both arrays.
  *
- * \return 0 if the copying was successfull, else uncatched error.
+ * \return 0 if the copying was successful, else uncought error.
  */
 LIBEXPORT int vigra_copy_uint8_array_c(const unsigned char * arr_in,
                                        unsigned char * arr_out,
                                        const int size);
-                                       
+
+/**
+ * @}
+ */
 #endif

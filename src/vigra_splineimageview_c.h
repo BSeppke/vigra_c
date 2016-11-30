@@ -37,8 +37,14 @@
 
 #include "config.h"
 
-// @file
-// @brief Contains interpolation access to images with repect to Spline Interpolation.
+/**
+ * @file
+ * @brief Header file for Spline Image Views on images
+ *
+ * @defgroup splineimageview Spline interpolation
+ * @{
+ *    @brief Contains interpolation access to images with repect to Spline Interpolation.
+ */
 
 /************ POINTER BASED FUNCTIONS *****************/
 
@@ -376,5 +382,8 @@ SIV_ACCESSOR_BY_ADDRESS_FUNCTION_INTERFACE(3)
 SIV_ACCESSOR_BY_ADDRESS_FUNCTION_INTERFACE(4)
 SIV_ACCESSOR_BY_ADDRESS_FUNCTION_INTERFACE(5)
 
+/**
+ * @}
+ */
 
 #endif

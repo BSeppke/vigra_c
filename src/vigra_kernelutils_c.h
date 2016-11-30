@@ -38,9 +38,15 @@
 #include <vigra/stdconvolution.hxx>
 #include <vigra/multi_convolution.hxx>
 
-// @file
-// @brief Contains internal helpers (not exported by VIGRA_C) to convert arrays to kernels.
-
+/**
+ * @file
+ * @brief Header-only file for Kernel conversion utilities
+ *
+ * @defgroup kernelutils Kernel utilities
+ * @{
+ *    @brief Contains internal helpers (not exported by VIGRA_C) to convert arrays to kernels (Header-only file).
+ */
+ 
 /**
  * Internal helper function to generate a vigra::Kernel2D from a flat array.
  * The template argument determines the data type of the array and the resulting
@@ -109,4 +115,8 @@ vigra::Kernel1D<T> kernel1dFromArray(const T * arr_in,
     return kernel;
 }
 
+/**
+ * @}
+ */
+ 
 #endif

@@ -42,6 +42,11 @@
 
 
 /**
+ * @file
+ * @brief Implementation of segmentation algorithms
+ */
+
+/**
  * Labels the connected components of an image band.
  * This function wraps the vigra::labelImage function to C to carry out a
  * union-find algorithm. This finds the and sets unique labels for the connected

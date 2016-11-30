@@ -39,6 +39,11 @@
 
 
 /**
+ * @file
+ * @brief Implementation of image filters
+ */
+
+/**
  * Image convolution. This function wraps the vigra::convolveImage function to
  * C to perform a convolution for a single band and a kernel. 
  * All arrays must have been allocated before the call of this function.

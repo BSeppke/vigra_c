@@ -37,9 +37,15 @@
 
 #include "config.h"
 
-// @file
-// @brief Contains functions for Tensor based image processing and analysis
-
+/**
+ * @file 
+ * @brief Header file for Tensor-based algorithms
+ *
+ * @defgroup tensors Tensor-based algorithms
+ * @{
+ *    @brief Contains functions for Tensor based image processing and analysis.
+ */
+ 
 /**
  * Computation of the Structure Tensor of an image band. This function wraps the
  * vigra::structureTensor function to C to compute the spatially smoothed products 
@@ -248,4 +254,8 @@ LIBEXPORT int vigra_hourglassfilter_c(const PixelType * arr_xx_in,
                                       const float rho);
 
 
+/**
+ * @}
+ */
+ 
 #endif

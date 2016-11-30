@@ -39,6 +39,11 @@
 
 
 /**
+ * @file
+ * @brief Implementation of morphological operators
+ */
+
+/**
  * Computation of the distance transform.
  * This function wraps the vigra::distanceTransform function to C to compute
  * the distance transform for a (binary) image band w.r.t. a given background label

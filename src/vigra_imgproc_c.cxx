@@ -41,6 +41,12 @@
 #include <vigra/correlation.hxx>
 #include <vigra/multi_localminmax.hxx>
 
+
+/**
+ * @file
+ * @brief Implemenation of image processing algorithms
+ */
+
 /**
  * Resizing of image bands. This function wraps the vigra::resizeImageSplineInterpolation
  * function to C to perform an interpolated resizing of two flat image arrays,
