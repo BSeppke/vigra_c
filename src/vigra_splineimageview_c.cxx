@@ -41,23 +41,46 @@
  * @brief Implementation of Spline Image Views on images
  */
 
+
+/************ CONVENIENT TYPEDEFS *****************/
+/** 
+ * SplineImageView using B-Splines or first order
+ */
 typedef vigra::SplineImageView<1, float> SplineImageView1;
+/** 
+ * SplineImageView using B-Splines or second order
+ */
 typedef vigra::SplineImageView<2, float> SplineImageView2;
+/** 
+ * SplineImageView using B-Splines or third order
+ */
 typedef vigra::SplineImageView<3, float> SplineImageView3;
+/** 
+ * SplineImageView using B-Splines or fourth order
+ */
 typedef vigra::SplineImageView<4, float> SplineImageView4;
+/** 
+ * SplineImageView using B-Splines or fifth order
+ */
 typedef vigra::SplineImageView<5, float> SplineImageView5;
 
-/************ POINTER BASED FUNCTION SIGNATURES *****************/
 
+
+
+/************ POINTER BASED FUNCTIONS *****************/
+
+/**
+ * Defines a preprocessor macro for the spline image view access
+ */
 #define SIV_CREATION_FUNCTION(order)                                              \
-/**                                                                               \
- * Creates a SplineImageView for a given image band of ##order degree.            \
- *                                                                                \
- * \param arr_in Flat input array (band) of size width*height.                    \
- * \param width The width of the flat array.                                      \
- * \param height The height of the flat array.                                    \
- *                                                                                \
- * \return a (void) pointer to the created SplineImageView of order ##order       \
+/**
+ * Creates a SplineImageView for a given image band of degree order.
+ *
+ * \param arr_in Flat input array (band) of size width*height.
+ * \param width The width of the flat array.
+ * \param height The height of the flat array.
+ *
+ * \return a (void) pointer to the created SplineImageView of degree order.
  */                                                                               \
 LIBEXPORT void * vigra_create_splineimageview##order##_c(const PixelType *arr_in, \
                                                          const int width,         \
@@ -74,6 +97,9 @@ SIV_CREATION_FUNCTION(4)
 SIV_CREATION_FUNCTION(5)
 
 
+/**
+ * Defines a preprocessor macro for the spline image view deletion
+ */
 #define SIV_DELETION_FUNCTION(order)                                  \
 /**                                                                   \
  * Deletes a SplineImageView of ##order degree.                       \
@@ -96,18 +122,20 @@ SIV_DELETION_FUNCTION(4)
 SIV_DELETION_FUNCTION(5)
 
 
-
+/**
+ * Defines a preprocessor macro for the spline image view function access
+ */
 #define SIV_OPERATION_FUNCTION(function, order)                               \
-/**                                                                           \
- * Accesses the ##function of a SplineImageView of ##order degree             \
- * at a given position (inside the image/spline image view)                   \
- *                                                                            \
- * \param siv The pointer to the SplineImageView                              \
- * \param x The x position                                                    \
- * \param y The y position                                                    \
- *                                                                            \
- * \return The result of the function ##function at position x,y of the       \
- *         given SplineImageView of order ##order.                            \
+/**
+  Accesses the ##function of a SplineImageView of degree order
+  at a given position (inside the image/spline image view)
+
+  \param siv The pointer to the SplineImageView
+  \param x The x position
+  \param y The y position
+
+  \return The result of the function at position x,y of the
+          given SplineImageView of degree order.
  */                                                                           \
 LIBEXPORT float vigra_splineimageview##order##_##function##_c(void * siv,     \
                                                               const double x, \
@@ -207,17 +235,20 @@ SIV_OPERATION_FUNCTION(g2yy,3)
 SIV_OPERATION_FUNCTION(g2yy,4)
 SIV_OPERATION_FUNCTION(g2yy,5)
 
+/**
+ * Defines a preprocessor macro for the spline image view access interface
+ */
 #define SIV_ACCESSOR_FUNCTION(order)                                      \
-/**                                                                       \
- * Accesses the grayvalue of a SplineImageView of ##order degree          \
- * at a given position (inside the image/spline image view)               \
- *                                                                        \
- * \param siv The pointer to the SplineImageView                          \
- * \param x The x position                                                \
- * \param y The y position                                                \
- *                                                                        \
- * \return The grayvalue at position x,y of th given SplineImageView      \
- *          of order ##order.                                             \
+/**
+  Accesses the grayvalue of a SplineImageView of degree order
+  at a given position (inside the image/spline image view)
+
+  \param siv The pointer to the SplineImageView
+  \param x The x position
+  \param y The y position
+
+  \return The grayvalue at position x,y of th given SplineImageView
+           of degree order.
  */                                                                       \
 LIBEXPORT float vigra_splineimageview##order##_accessor_c(void * siv,     \
                                                           const double x, \
@@ -236,17 +267,20 @@ SIV_ACCESSOR_FUNCTION(5)
 
 
 
-/************ ADDRESS BASED FUNCTION SIGNATURES *****************/
+/************ ADDRESS BASED FUNCTIONS *****************/
 
+/**
+ * Defines a preprocessor macro for the address-based spline image view creation
+ */
 #define SIV_ADDRESS_CREATION_FUNCTION(order)                                                     \
-/**                                                                                              \
- * Creates a SplineImageView for a given image band of ##order degree.                           \
- *                                                                                               \
- * \param arr_in Flat input array (band) of size width*height.                                   \
- * \param width The width of the flat array.                                                     \
- * \param height The height of the flat array.                                                   \
- *                                                                                               \
- * \return The adress to the created SplineImageView of order ##order                            \
+/**
+  Creates a SplineImageView for a given image band of degree order.
+
+  \param arr_in Flat input array (band) of size width*height.
+  \param width The width of the flat array.
+  \param height The height of the flat array.
+
+   \return The adress to the created SplineImageView of degree order
  */                                                                                              \
 LIBEXPORT unsigned long vigra_create_splineimageview##order##_address_c(const PixelType *arr_in, \
                                                                         const int width,         \
@@ -263,14 +297,16 @@ SIV_ADDRESS_CREATION_FUNCTION(3)
 SIV_ADDRESS_CREATION_FUNCTION(4)
 SIV_ADDRESS_CREATION_FUNCTION(5)
 
-
+/**
+ * Defines a preprocessor macro for the address-based spline image view deletion
+ */
 #define SIV_DELETION_BY_ADDRESS_FUNCTION(order)                                               \
-/**                                                                                           \
- * Deletes a SplineImageView of ##order degree.                                               \
- *                                                                                            \
- * \param address The adress to the SplineImageView                                           \
- *                                                                                            \
- * \return Always 0.                                                                          \
+/**
+  Deletes a SplineImageView of degree order.
+
+  \param address The adress to the SplineImageView of degree order
+
+  \return Always 0.
  */                                                                                           \
 LIBEXPORT int vigra_delete_splineimageview##order##_by_address_c(const unsigned long address) \
 {                                                                                             \
@@ -286,17 +322,20 @@ SIV_DELETION_BY_ADDRESS_FUNCTION(4)
 SIV_DELETION_BY_ADDRESS_FUNCTION(5)
 
 
+/**
+ * Defines a preprocessor macro for the address-based spline image view function access
+ */
 #define SIV_OPERATION_BY_ADDRESS_FUNCTION(function, order)                                            \
-/**                                                                                                   \
- * Accesses the ##function of a SplineImageView of ##order degree                                     \
- * at a given position (inside the image/spline image view)                                           \
- *                                                                                                    \
- * \param address The address to the SplineImageView                                                  \
- * \param x The x position                                                                            \
- * \param y The y position                                                                            \
- *                                                                                                    \
- * \return The result of the function ##function at position x,y of the                               \
- *         given SplineImageView of order ##order.                                                    \
+/**
+  Accesses the function of a SplineImageView of degree order
+  at a given position (inside the image/spline image view)
+
+  \param address The address to the SplineImageView
+  \param x The x position
+  \param y The y position
+
+  \return The result of function at position x,y of the
+           given SplineImageView of degree order.
  */                                                                                                   \
 LIBEXPORT float vigra_splineimageview##order##_##function##_by_address_c(const unsigned long address, \
                                                                          const double x,              \
@@ -396,17 +435,19 @@ SIV_OPERATION_BY_ADDRESS_FUNCTION(g2yy,3)
 SIV_OPERATION_BY_ADDRESS_FUNCTION(g2yy,4)
 SIV_OPERATION_BY_ADDRESS_FUNCTION(g2yy,5)
 
-
+/**
+ * Defines a preprocessor macro for the address-based spline image view access
+ */
 #define SIV_ACCESSOR_BY_ADDRESS_FUNCTION(order)                                                   \
-/**                                                                                               \
- * Accesses the grayvalue of a SplineImageView of ##order degree                                  \
- * at a given position (inside the image/spline image view)                                       \
- *                                                                                                \
- * \param address The address to the SplineImageView                                              \
- * \param x The x position                                                                        \
- * \param y The y position                                                                        \
- *                                                                                                \
- * \return The grayvalue at position x,y of th given SplineImageView of order ##order.            \
+/**
+  Accesses the grayvalue of a SplineImageView of degree order
+  at a given position (inside the image/spline image view)
+
+  \param address The address to the SplineImageView
+  \param x The x position
+  \param y The y position
+
+  \return The grayvalue at position x,y of th given SplineImageView of degree order.
  */                                                                                               \
 LIBEXPORT float vigra_splineimageview##order##_accessor_by_address_c(const unsigned long address, \
                                                                      const double x,              \
