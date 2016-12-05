@@ -36,7 +36,7 @@
 #define VIGRA_KERNELUTILS_H
 
 #include <vigra/stdconvolution.hxx>
-#include <vigra/multi_convolution.hxx>
+#include <vigra/multi_array.hxx>
 
 /**
  * @file
@@ -67,18 +67,20 @@ vigra::Kernel2D<T> kernel2dFromArray(const T * arr_in,
     vigra::Shape2 shape(width,height);
     vigra::MultiArrayView<2, T, vigra::UnstridedArrayTag> k_img_in(shape, arr_in);
     
-    //Allocate a temp. BasicImage<T> for initialization of the Kernel2D,
-    //which shall be returned.
-    vigra::BasicImage<T> temp_kernel(width, height);
+    int w2 = width/2;
+    int h2 = height/2;
     
-    //Fill the temp image
-    for(int y=0; y<height; ++y)
-        for(int x=0; x<width; ++x)
-            temp_kernel(x,y) = k_img_in(x,y);
-    
-    //Init a kernel based in that image
     vigra::Kernel2D<T> kernel;
-    kernel.initExplicitly(temp_kernel);
+    kernel.initExplicitly(vigra::Shape2(-w2, -h2), vigra::Shape2(w2, h2));
+
+    //Fill the kernel with array data
+    for(int y=0; y<height; ++y)
+    {
+        for(int x=0; x<width; ++x)
+        {
+            kernel(x-w2,y-h2) = k_img_in(x,y);
+        }
+    }
     
     //and return it
     return kernel;

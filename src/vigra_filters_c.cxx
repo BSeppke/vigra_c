@@ -36,6 +36,7 @@
 #include "vigra_kernelutils_c.h"
 #include <vigra/nonlineardiffusion.hxx>
 #include <vigra/shockfilter.hxx>
+#include <vigra/multi_convolution.hxx>
 
 
 /**
