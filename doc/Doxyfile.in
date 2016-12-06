@@ -1,13 +1,12 @@
 # Doxyfile 1.6.3
 
-INPUT = @CMAKE_CURRENT_SOURCE_DIR@/../src/
+INPUT = @CMAKE_CURRENT_SOURCE_DIR@/../src/  @CMAKE_CURRENT_SOURCE_DIR@/../README.md
 
 # The RECURSIVE tag can be used to turn specify whether or not subdirectories
 # should be searched for input files as well. Possible values are YES and NO.
 # If left blank NO is used.
 
 RECURSIVE              = YES
-
 
 # The PROJECT_NAME tag is a single word (or a sequence of words surrounded by 
 # double-quotes, unless you are using Doxywizard) that should identify the project
@@ -32,7 +31,24 @@ MACRO_EXPANSION = YES
 
 PROJECT_BRIEF = "wraps (parts of) VIGRA's functionality into a C shared library" 
 
+# If the ALPHABETICAL_INDEX tag is set to YES, an alphabetical index 
+# of all compounds will be generated. Enable this if the project 
+# contains a lot of classes, structs, unions or interfaces.
 
+ALPHABETICAL_INDEX     = YES
+
+# If the alphabetical index is enabled (see ALPHABETICAL_INDEX) then 
+# the COLS_IN_ALPHA_INDEX tag can be used to specify the number of columns 
+# in which this list will be split (can be a number in the range [1..20])
+
+COLS_IN_ALPHA_INDEX    = 6 
+
+# In case all classes in a project start with a common prefix, all classes will be put 
+# under the same header in the alphabetical index. The IGNORE_PREFIX tag can be used to 
+# specify a prefix (or a list of prefixes) that should be ignored while generating the 
+# index headers.
+
+IGNORE_PREFIX          = vigra_
 
 
 # With the PROJECT_LOGO tag one can specify a logo or an icon that is included in the 
