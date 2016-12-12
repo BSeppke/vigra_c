@@ -251,6 +251,28 @@ LIBEXPORT int vigra_simplesharpening_c(const PixelType * arr_in,
                                        float sharpening_factor);
 
 /**
+ * Computation of a non-linear median filter.
+ * This function wraps the vigra::medianFilter function to C to compute
+ * the result at a given window size, for whic the median value is derived.
+ * All arrays must have been allocated before the call of this function.
+ *
+ * \param arr_in Flat input array (band) of size width*height.
+ * \param[out] arr_out Flat array (nl-diffused) of size width*height.
+ * \param width The width of the flat array.
+ * \param height The height of the flat array.
+ * \param window_width The width of the median window.
+ * \param window_height The height of the median window.
+ *
+ * \return 0 if the nl diffusion was successful, 1 else.
+ */
+LIBEXPORT int vigra_medianfilter_c(const PixelType * arr_in,
+                                   const PixelType * arr_out,
+                                   const int width,
+                                   const int height,
+                                   const int window_width,
+                                   const int window_height);
+                                   
+/**
  * Computation of a non-linear (nl) diffusion filter.
  * This function wraps the vigra::nonlinearDiffusion function to C to compute
  * the result at a given scale (Gaussian std.dev.) and using an edge threshold.

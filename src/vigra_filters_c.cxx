@@ -34,6 +34,7 @@
 
 #include "vigra_filters_c.h"
 #include "vigra_kernelutils_c.h"
+#include <vigra/medianfilter.hxx>
 #include <vigra/nonlineardiffusion.hxx>
 #include <vigra/shockfilter.hxx>
 #include <vigra/multi_convolution.hxx>
@@ -404,6 +405,44 @@ LIBEXPORT int vigra_simplesharpening_c(const PixelType * arr_in,
         ImageView img_out(shape, arr_out);
         
         vigra::simpleSharpening(img_in, img_out, sharpening_factor);
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+/**
+ * Computation of a non-linear median filter.
+ * This function wraps the vigra::medianFilter function to C to compute
+ * the result at a given window size, for whic the median value is derived.
+ * All arrays must have been allocated before the call of this function.
+ *
+ * \param arr_in Flat input array (band) of size width*height.
+ * \param[out] arr_out Flat array (nl-diffused) of size width*height.
+ * \param width The width of the flat array.
+ * \param height The height of the flat array.
+ * \param window_width The width of the median window.
+ * \param window_height The height of the median window.
+ *
+ * \return 0 if the nl diffusion was successful, 1 else.
+ */
+LIBEXPORT int vigra_medianfilter_c(const PixelType * arr_in,
+                                   const PixelType * arr_out,
+                                   const int width,
+                                   const int height,
+                                   const int window_width,
+                                   const int window_height)
+{
+    try
+    {
+        //Create gray scale image views for the arrays
+        vigra::Shape2 shape(width,height);
+        ImageView img_in(shape, arr_in);
+        ImageView img_out(shape, arr_out);
+        
+        vigra::medianFilter(img_in, img_out, vigra::Diff2D(window_width, window_height));
     }
     catch (vigra::StdException & e)
     {
