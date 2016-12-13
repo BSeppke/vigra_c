@@ -442,7 +442,9 @@ LIBEXPORT int vigra_medianfilter_c(const PixelType * arr_in,
         ImageView img_in(shape, arr_in);
         ImageView img_out(shape, arr_out);
         
-        vigra::medianFilter(img_in, img_out, vigra::Diff2D(window_width, window_height));
+        vigra::medianFilter(img_in, img_out,
+							vigra::Diff2D(window_width, window_height),
+							vigra::BORDER_TREATMENT_ZEROPAD);
     }
     catch (vigra::StdException & e)
     {

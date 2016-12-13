@@ -50,6 +50,6 @@
 //  - work on single band images (unless otherwise mentioned)
 //  - need float as pixel type!
 typedef float PixelType;
-typedef vigra::MultiArrayView<2, PixelType, vigra::UnstridedArrayTag> ImageView;
+typedef vigra::MultiArrayView<2, PixelType> ImageView;
 
 #endif
