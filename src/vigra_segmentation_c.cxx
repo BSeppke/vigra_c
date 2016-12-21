@@ -57,13 +57,15 @@
  * \param[out] arr_out Flat array (labels) of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
+ * \param eight_connectiviity If set to true, 8-conectivity is used, else 4.
  *
  * \return If the labelling was sucessful, the largest label assigned, else -1.
  */
 LIBEXPORT int vigra_labelimage_c(const PixelType * arr_in,
                                  const PixelType * arr_out,
                                  const int width,
-                                 const int height)
+                                 const int height,
+                                 const bool eight_connectivity)
 {
     try
     {
@@ -71,7 +73,7 @@ LIBEXPORT int vigra_labelimage_c(const PixelType * arr_in,
         ImageView img_in(shape, arr_in);
         ImageView img_out(shape, arr_out);
         
-        return vigra::labelImage(img_in, img_out, true);
+        return vigra::labelImage(img_in, img_out, eight_connectivity);
     }
     catch (vigra::StdException & e)
     {
