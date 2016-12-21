@@ -57,7 +57,7 @@
  * \param[out] arr_out Flat array (labels) of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
- * \param eight_connectiviity If set to true, 8-conectivity is used, else 4.
+ * \param eight_connectivity If set to true, 8-conectivity is used, else 4.
  *
  * \return If the labelling was sucessful, the largest label assigned, else -1.
  */
@@ -81,13 +81,45 @@ LIBEXPORT int vigra_labelimage_c(const PixelType * arr_in,
  * \param[out] arr_out Flat array (labels) of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
+ * \param eight_connectivity If set to true, 8-conectivity is used, else 4.
  *
  * \return If the segmentation was sucessful, the largest label assigned, else -1.
  */
-LIBEXPORT int vigra_watersheds_c(const PixelType * arr_in,
-                                 const PixelType * arr_out,
-                                 const int width,
-                                 const int height);
+LIBEXPORT int vigra_watershedsunionfind_c(const PixelType * arr_in,
+                                          const PixelType * arr_out,
+                                          const int width,
+                                          const int height,
+                                          const bool eight_connectivity);
+/**
+ * Applies the Watershed Transform to an image band.
+ * This function wraps the vigra::watershedsRegionGrowing function to C to carry out a
+ * union-find watershed segmentation algorithm. This first segments the image and
+ * then finds the and sets unique labels for the connected components of same 
+ * grayvalues in the given image. Use e.g. the reseult of vigra_gradientmagnitude_c
+ * as an input for this function, since the watersheds of the gradient are good 
+ * candidates for region boundaries.
+ * All arrays must have been allocated before the call of this function.
+ *
+ * \param arr_in Flat input array (band) of size width*height.
+ * \param[out] arr_out Flat array (labels) of size width*height.
+ * \param width The width of the flat array.
+ * \param height The height of the flat array.
+ * \param eight_connectivity If set to true, 8-conectivity is used, else 4.
+ * \param keep_contours Keep the watersheds' contours in the resulting images.
+ * \param use_turbo Normalize costs to 0..255 and use turbo algorithm for fast queue ordering.
+ * \param stop_cost Stop the region growing if a cost is >= the given value. 
+ *                  This will only be considered if the given value is >= 0.
+ *
+ * \return If the segmentation was sucessful, the largest label assigned, else -1.
+ */
+LIBEXPORT int vigra_watershedsregiongrowing_c(const PixelType * arr_in,
+                                              const PixelType * arr_out,
+                                              const int width,
+                                              const int height,
+                                              const bool eight_connectivity,
+                                              const bool keep_contours,
+                                              const bool use_turbo,
+                                              const double stop_cost);
 
 /**
  * Applies the SLIC segmenation to an image band.

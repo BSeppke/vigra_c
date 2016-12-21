@@ -57,7 +57,7 @@
  * \param[out] arr_out Flat array (labels) of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
- * \param eight_connectiviity If set to true, 8-conectivity is used, else 4.
+ * \param eight_connectivity If set to true, 8-conectivity is used, else 4.
  *
  * \return If the labelling was sucessful, the largest label assigned, else -1.
  */
@@ -95,13 +95,15 @@ LIBEXPORT int vigra_labelimage_c(const PixelType * arr_in,
  * \param[out] arr_out Flat array (labels) of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
+ * \param eight_connectivity If set to true, 8-conectivity is used, else 4.
  *
  * \return If the segmentation was sucessful, the largest label assigned, else -1.
  */
-LIBEXPORT int vigra_watersheds_c(const PixelType * arr_in,
-                                 const PixelType * arr_out,
-                                 const int width,
-                                 const int height)
+LIBEXPORT int vigra_watershedsunionfind_c(const PixelType * arr_in,
+                                          const PixelType * arr_out,
+                                          const int width,
+                                          const int height,
+                                          const bool eight_connectivity)
 {
     try
     {
@@ -109,7 +111,110 @@ LIBEXPORT int vigra_watersheds_c(const PixelType * arr_in,
         ImageView img_in(shape, arr_in);
         ImageView img_out(shape, arr_out);
         
-        return vigra::watershedsUnionFind(img_in, img_out);
+        if(eight_connectivity)
+        {
+            return vigra::watershedsUnionFind(img_in, img_out, vigra::EightNeighborCode());
+        }
+        else
+        {
+            return vigra::watershedsUnionFind(img_in, img_out, vigra::FourNeighborCode());
+        }
+    }
+    catch (vigra::StdException & e)
+    {
+        return -1;
+    }
+}
+
+/**
+ * Applies the Watershed Transform to an image band.
+ * This function wraps the vigra::watershedsUnionFind function to C to carry out a
+ * union-find watershed segmentation watershedsRegionGrowing. This first segments the image and
+ * then finds the and sets unique labels for the connected components of same 
+ * grayvalues in the given image. Use e.g. the reseult of vigra_gradientmagnitude_c
+ * as an input for this function, since the watersheds of the gradient are good 
+ * candidates for region boundaries.
+ * All arrays must have been allocated before the call of this function.
+ *
+ * \param arr_in Flat input array (band) of size width*height.
+ * \param[out] arr_out Flat array (labels) of size width*height.
+ * \param width The width of the flat array.
+ * \param height The height of the flat array.
+ * \param eight_connectivity If set to true, 8-conectivity is used, else 4.
+ * \param keep_contours Keep the watersheds' contours in the resulting images.
+ * \param use_turbo Normalize costs to 0..255 and use turbo algorithm for fast queue ordering.
+ * \param stop_cost Stop the region growing if a cost is >= the given value. 
+ *                  This will only be considered if the given value is >= 0.
+ *
+ * \return If the segmentation was sucessful, the largest label assigned, else -1.
+ */
+LIBEXPORT int vigra_watershedsregiongrowing_c(const PixelType * arr_in,
+                                              const PixelType * arr_out,
+                                              const int width,
+                                              const int height,
+                                              const bool eight_connectivity,
+                                              const bool keep_contours,
+                                              const bool use_turbo,
+                                              const double stop_cost)
+{
+    try
+    {
+        vigra::Shape2 shape(width,height);
+        ImageView img_in(shape, arr_in);
+        ImageView img_out(shape, arr_out);
+        
+        vigra::WatershedOptions options;
+        
+        if(keep_contours)
+        {
+            options = options.keepContours();
+        }
+        
+        if(stop_cost>0)
+        {
+            options = options.stopAtThreshold(stop_cost);
+        }
+        
+        if(use_turbo)
+        {
+            options = options.turboAlgorithm(256);
+            
+            // quantize the gradient image to 256 gray levels
+            vigra::MultiArray<2, unsigned char> img_in256(width, height);
+            vigra::FindMinMax<float> minmax;
+            vigra::inspectImage(img_in, minmax); // find original range
+            vigra::transformImage(img_in, img_in256,
+                                    linearRangeMapping(minmax, 0, 255));
+            
+            // call the turbo algorithm with 256 bins:
+            if(eight_connectivity)
+            {
+                return vigra::watershedsRegionGrowing(img_in256, img_out,
+                            vigra::EightNeighborCode(),
+                            options);
+            }
+            else
+            {
+                return vigra::watershedsRegionGrowing(img_in256, img_out,
+                            vigra::FourNeighborCode(),
+                            options);
+            }
+        }
+        else
+        {
+            if(eight_connectivity)
+            {
+                return vigra::watershedsRegionGrowing(img_in, img_out,
+                            vigra::EightNeighborCode(),
+                            options);
+            }
+            else
+            {
+                return vigra::watershedsRegionGrowing(img_in, img_out,
+                            vigra::FourNeighborCode(),
+                            options);
+            }
+        }
     }
     catch (vigra::StdException & e)
     {

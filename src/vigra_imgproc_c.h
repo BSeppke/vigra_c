@@ -229,13 +229,15 @@ LIBEXPORT int vigra_fastnormalizedcrosscorrelation_c(const PixelType * arr_in,
  * \param[out] arr_out Flat array (marks for maxima) of size width*height.
  * \param width The width of the flat band arrays.
  * \param height The height of the flat band arrays.
+ * \param eight_connectivity If set to true, 8-conectivity is used, else 4.
  *
  * \return 0 if the local maxima finding was successful, 1 else.
  */
 LIBEXPORT int vigra_localmaxima_c(const PixelType * arr_in,
                                   const PixelType * arr_out,
                                   const int width,
-                                  const int height);
+                                  const int height,
+                                  const bool eight_connectivity);
 
 /**
  * Extraction of the local (intensity) mniima of an image band.
@@ -248,13 +250,15 @@ LIBEXPORT int vigra_localmaxima_c(const PixelType * arr_in,
  * \param[out] arr_out Flat array (marks for minima) of size width*height.
  * \param width The width of the flat band arrays.
  * \param height The height of the flat band arrays.
+ * \param eight_connectivity If set to true, 8-conectivity is used, else 4.
  *
  * \return 0 if the local minima finding was successful, 1 else.
  */
 LIBEXPORT int vigra_localminima_c(const PixelType * arr_in,
                                   const PixelType * arr_out,
                                   const int width,
-                                  const int height);
+                                  const int height,
+                                  const bool eight_connectivity);
 
 /**
  * Extraction of the sub-image of an image band.
