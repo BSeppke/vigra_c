@@ -170,11 +170,6 @@ LIBEXPORT int vigra_watershedsregiongrowing_c(const PixelType * arr_in,
             options = options.keepContours();
         }
         
-        if(stop_cost>0)
-        {
-            options = options.stopAtThreshold(stop_cost);
-        }
-        
         if(use_turbo)
         {
             options = options.turboAlgorithm(256);
@@ -185,6 +180,12 @@ LIBEXPORT int vigra_watershedsregiongrowing_c(const PixelType * arr_in,
             vigra::inspectImage(img_in, minmax); // find original range
             vigra::transformImage(img_in, img_in256,
                                     linearRangeMapping(minmax, 0, 255));
+            
+            //Adapt the stop costs to 0..255, too.
+            if(stop_cost>0)
+            {
+                options = options.stopAtThreshold(255.0*(stop_cost-minmax.min)/(minmax.max-minmax.min));
+            }
             
             // call the turbo algorithm with 256 bins:
             if(eight_connectivity)
@@ -202,6 +203,12 @@ LIBEXPORT int vigra_watershedsregiongrowing_c(const PixelType * arr_in,
         }
         else
         {
+        
+            if(stop_cost>0)
+            {
+                options = options.stopAtThreshold(stop_cost);
+            }
+            
             if(eight_connectivity)
             {
                 return vigra::watershedsRegionGrowing(img_in, img_out,
