@@ -137,7 +137,8 @@ LIBEXPORT int vigra_watershedsunionfind_c(const PixelType * arr_in,
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height.
- * \param[out] arr_out Flat array (labels) of size width*height.
+ * \param arr_inout Flat array of the seeds (in) of size width*height. 
+                    Will contain the labels after processing.
  * \param width The width of the flat array.
  * \param height The height of the flat array.
  * \param eight_connectivity If set to true, 8-conectivity is used, else 4.
@@ -149,7 +150,7 @@ LIBEXPORT int vigra_watershedsunionfind_c(const PixelType * arr_in,
  * \return If the segmentation was sucessful, the largest label assigned, else -1.
  */
 LIBEXPORT int vigra_watershedsregiongrowing_c(const PixelType * arr_in,
-                                              const PixelType * arr_out,
+                                              const PixelType * arr_inout,
                                               const int width,
                                               const int height,
                                               const bool eight_connectivity,
@@ -161,7 +162,7 @@ LIBEXPORT int vigra_watershedsregiongrowing_c(const PixelType * arr_in,
     {
         vigra::Shape2 shape(width,height);
         ImageView img_in(shape, arr_in);
-        ImageView img_out(shape, arr_out);
+        ImageView img_inout(shape, arr_inout);
         
         vigra::WatershedOptions options;
         
@@ -190,13 +191,13 @@ LIBEXPORT int vigra_watershedsregiongrowing_c(const PixelType * arr_in,
             // call the turbo algorithm with 256 bins:
             if(eight_connectivity)
             {
-                return vigra::watershedsRegionGrowing(img_in256, img_out,
+                return vigra::watershedsRegionGrowing(img_in256, img_inout,
                             vigra::EightNeighborCode(),
                             options);
             }
             else
             {
-                return vigra::watershedsRegionGrowing(img_in256, img_out,
+                return vigra::watershedsRegionGrowing(img_in256, img_inout,
                             vigra::FourNeighborCode(),
                             options);
             }
@@ -211,13 +212,13 @@ LIBEXPORT int vigra_watershedsregiongrowing_c(const PixelType * arr_in,
             
             if(eight_connectivity)
             {
-                return vigra::watershedsRegionGrowing(img_in, img_out,
+                return vigra::watershedsRegionGrowing(img_in, img_inout,
                             vigra::EightNeighborCode(),
                             options);
             }
             else
             {
-                return vigra::watershedsRegionGrowing(img_in, img_out,
+                return vigra::watershedsRegionGrowing(img_in, img_inout,
                             vigra::FourNeighborCode(),
                             options);
             }
