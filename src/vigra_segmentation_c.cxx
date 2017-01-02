@@ -568,7 +568,7 @@ LIBEXPORT int vigra_extractfeatures_gray_c(const PixelType * arr_gray_in,
         ImageView img_out(shape_out, arr_out);
         
         typedef
-            AccumulatorChain<vigra::CoupledArrays<2, PixelType, unsigned int>,
+            AccumulatorChainArray<vigra::CoupledArrays<2, PixelType, unsigned int>,
                 Select< DataArg<1>, LabelArg<2>, // in which array to look (coordinates are always arg 0)
                         Count,
                         Coord<Minimum>, Coord<Maximum>, Coord<Mean>,
@@ -680,7 +680,7 @@ LIBEXPORT int vigra_extractfeatures_rgb_c( const PixelType * arr_r_in,
         ImageView img_out(shape_out, arr_out);
         
         typedef
-            AccumulatorChain<vigra::CoupledArrays<2, vigra::RGBValue<float>, unsigned int>,
+            AccumulatorChainArray<vigra::CoupledArrays<2, vigra::RGBValue<float>, unsigned int>,
                 Select< DataArg<1>, LabelArg<2>, // in which array to look (coordinates are always arg 0)
                         Count,
                         Coord<Minimum>, Coord<Maximum>, Coord<Mean>,
