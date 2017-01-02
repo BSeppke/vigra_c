@@ -220,7 +220,7 @@ LIBEXPORT int vigra_slic_rgb_c(const PixelType * arr_r_in,
  * \param gradient_threshold The minimum edge threshold.
  * \param mark The intensity for marking the edges in the resulting band.
  *
- * \return 0 if the nl diffusion was successful, 1 else.
+ * \return 0 if the computation was successful, 1 else.
  */
 LIBEXPORT int vigra_cannyedgeimage_c(const PixelType * arr_in,
                                      const PixelType * arr_out,
@@ -246,7 +246,7 @@ LIBEXPORT int vigra_cannyedgeimage_c(const PixelType * arr_in,
  * \param gradient_threshold The minimum edge threshold.
  * \param mark The intensity for marking the edges in the resulting band.
  *
- * \return 0 if the nl diffusion was successful, 1 else.
+ * \return 0 if the computation was successful, 1 else.
  */
 LIBEXPORT int vigra_differenceofexponentialedgeimage_c(const PixelType * arr_in,
                                                        const PixelType * arr_out,
@@ -271,7 +271,7 @@ LIBEXPORT int vigra_differenceofexponentialedgeimage_c(const PixelType * arr_in,
  * \param height_in The height of the flat array.
  * \param mark The intensity for marking the crack-edges in the resulting band.
  *
- * \return 0 if the nl diffusion was successful, 1 else.
+ * \return 0 if the crackedge image generation was successful, 1 else.
  */
 LIBEXPORT int vigra_regionimagetocrackedgeimage_c(const PixelType * arr_in,
                                                   const PixelType * arr_out,
@@ -279,6 +279,83 @@ LIBEXPORT int vigra_regionimagetocrackedgeimage_c(const PixelType * arr_in,
                                                   const int height_in,
                                                   const float mark);
 
+/**
+ * Extracts features from a given label image band w.r.t. its corresponding
+ * grey value intensity band. This function internally maps the
+ * vigra::extractFeatures function to estimate the basic features in a region-
+ * wise manner. The following features will be extracted for each region:
+ * 
+ *  | Index         | Feature                       |
+ *  | ------------- | ----------------------------- |
+ *  |  0            | region_size                   |
+ *  |  1,  2        | upperleft-x and y-coord       |
+ *  |  3,  4        | lowerright-x and y-coord      |
+ *  |  5,  6        | mean-x and y-coord            |
+ *  |  7            | min grey value                |
+ *  |  8            | max grey value                |
+ *  |  9            | mean grey value               |
+ *  | 10            | std.dev. grey value           |
+ *
+ * Each feature can be accessed in the output array by means of its index and 
+ * region id by: output(index, region_id). Please make sure, that the output is 
+ * allocated of size 11x(max_label+1).
+ *
+ * \param arr_gray_in Flat input array (band) of size width_in*height_in.
+ * \param arr_labels_in Flat input array (labels) of size width_in*height_in.
+ * \param[out] arr_out Flat array (results) of size 11*(max_label+1).
+ * \param width_in The width of the flat array.
+ * \param height_in The width of the flat array.
+ * \param max_label The maximum region label to derive statistics for.
+ *
+ * \return 0 if the feature extraction was successful, 1 else.
+ */
+LIBEXPORT int vigra_extractfeatures_gray_c(const PixelType * arr_gray_in,
+                                           const PixelType * arr_labels_in,
+                                           const PixelType * arr_out,
+                                           const int width_in,
+                                           const int height_in,
+                                           const int max_label);
+
+/**
+ * Extracts features from a given label image band w.r.t. its corresponding
+ * rgb value intensity bands. This function internally maps the
+ * vigra::extractFeatures function to estimate the basic features in a region-
+ * wise manner. The following features will be extracted for each region:
+ * 
+ *  | Index         | Feature                       |
+ *  | ------------- | ----------------------------- |
+ *  |  0            | region_size                   |
+ *  |  1,  2        | upperleft-x and y-coord       |
+ *  |  3,  4        | lowerright-x and y-coord      |
+ *  |  5,  6        | mean-x and y-coord            |
+ *  |  7,  8,  9    | min red,green,blue value      |
+ *  | 10, 11, 12    | max red,green,blue value      |
+ *  | 13, 14, 15    | mean red,green,blue value     |
+ *  | 16, 17, 18    | std.dev. red,green,blue value |
+ *
+ * Each feature can be accessed in the output array by means of its index and 
+ * region id by: output(index, region_id). Please make sure, that the output is 
+ * allocated of size 19x(max_label+1).
+ *
+ * \param arr_r_in Flat input array (red band) of size width_in*height_in.
+ * \param arr_g_in Flat input array (green band) of size width_in*height_in.
+ * \param arr_b_in Flat input array (blue band) of size width_in*height_in.
+ * \param arr_labels_in Flat input array (labels) of size width_in*height_in.
+ * \param[out] arr_out Flat array (results) of size 19*(max_label+1).
+ * \param width_in The width of the flat array.
+ * \param height_in The height of the flat array.
+ * \param max_label The maximum region label to derive statistics for.
+ *
+ * \return 0 if the feature extraction was successful, 1 else.
+ */
+LIBEXPORT int vigra_extractfeatures_rgb_c(const PixelType * arr_r_in,
+                                           const PixelType * arr_g_in,
+                                           const PixelType * arr_b_in,
+                                           const PixelType * arr_labels_in,
+                                           const PixelType * arr_out,
+                                           const int width_in,
+                                           const int height_in,
+                                           const int max_label);
 /**
  * @}
  */
