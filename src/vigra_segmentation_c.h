@@ -68,6 +68,31 @@ LIBEXPORT int vigra_labelimage_c(const PixelType * arr_in,
                                  const bool eight_connectivity);
 
 /**
+ * Labels the connected components of an image band w.r.t. a background intensity,
+ * which should not be considered by the lageling.
+ * This function wraps the vigra::labelImageWithBackground function to C to carry
+ * out a union-find algorithm. This finds the and sets unique labels for the 
+ * connected components of same grayvalues in the given image.
+ * All arrays must have been allocated before the call of this function.
+ *
+ * \param arr_in Flat input array (band) of size width*height.
+ * \param[out] arr_out Flat array (labels) of size width*height.
+ * \param width The width of the flat array.
+ * \param height The height of the flat array.
+ * \param eight_connectivity If set to true, 8-conectivity is used, else 4.
+ * \param background Intensity value of the background. Will not be counted as
+ *        any label and will get label-id 0 at the final result.
+ *
+ * \return If the labelling was sucessful, the largest label assigned, else -1.
+ */
+LIBEXPORT int vigra_labelimagewithbackground_c(const PixelType * arr_in,
+                                               const PixelType * arr_out,
+                                               const int width,
+                                               const int height,
+                                               const bool eight_connectivity,
+                                               const PixelType background);
+
+/**
  * Applies the Watershed Transform to an image band.
  * This function wraps the vigra::watershedsUnionFind function to C to carry out a
  * union-find watershed segmentation algorithm. This first segments the image and
@@ -90,6 +115,7 @@ LIBEXPORT int vigra_watershedsunionfind_c(const PixelType * arr_in,
                                           const int width,
                                           const int height,
                                           const bool eight_connectivity);
+                                          
 /**
  * Applies the Watershed Transform to an image band.
  * This function wraps the vigra::watershedsRegionGrowing function to C to carry out a
