@@ -43,12 +43,16 @@
  *
  * @defgroup filters Image Filters
  * @{
- *    @brief Contains many linear and non-linear image filtering algorithms.
+ *    @brief Linear and non-linear image filtering algorithms
  */
 
 /**
- * Image convolution. This function wraps the vigra::convolveImage function to
- * C to perform a convolution for a single band and a kernel. 
+ * Image convolution.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__ConvolutionFilters.html">
+ * vigra::convolveImage
+ * </a>
+ * function to C to perform a convolution for a single band and a kernel.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height.
@@ -72,7 +76,11 @@ LIBEXPORT int vigra_convolveimage_c(const PixelType * arr_in,
                                     const int kernel_height);
 
 /**
- * Separable image convolution. This function wraps the vigra::separableconvolveImage 
+ * Separable image convolution.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__ConvolutionFilters.html">
+ * vigra::separableConvolveImage
+ * </a>
  * function to C to perform a convolution for a single band and a kernel.
  * All arrays must have been allocated before the call of this function.
  *
@@ -101,8 +109,12 @@ LIBEXPORT int vigra_separableconvolveimage_c(const PixelType * arr_in,
 /**
  * Computation of the first order partial derivatives by means of a convolution 
  * of an image band with the first order derivative of a Gaussian.
- * This function wraps the vigra::gaussianGradient function to C to compute both
- * partial derivates (in x- and y-direction) at a given scale (Gaussian std.dev.).
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__ConvolutionFilters.html">
+ * vigra::gaussianGradient
+ * </a>
+ * function to C to compute both partial derivates (in x- and y-direction) at a
+ * given scale (Gaussian std.dev.).
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height.
@@ -124,7 +136,12 @@ LIBEXPORT int vigra_gaussiangradient_c(const PixelType * arr_in,
 /**
  * Computation of the strength of the first order partial derivatives by means 
  * of a convolution of an image band with the first order derivative of a Gaussian.
- * This function wraps the vigra::gaussianGradientMagnitue function to C to compute 
+ * 
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__ConvolutionFilters.html">
+ * vigra::gaussianGradientMagnitude
+ * </a>
+ * function to C to compute
  * the gradient magnitude at a given scale (Gaussian std.dev.).
  * All arrays must have been allocated before the call of this function.
  *
@@ -145,8 +162,11 @@ LIBEXPORT int vigra_gaussiangradientmagnitude_c(const PixelType * arr_in,
 /**
  * Computation of the Gaussian smoothing by means of a convolution of an image
  * band with a 2D-Gaussian function.
- * This function wraps the vigra::gaussianSmoothing function to C to compute
- * the result at a given scale (Gaussian std.dev.).
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__ConvolutionFilters.html">
+ * vigra::gaussianSmoothing
+ * </a>
+ * function to C to compute the result at a given scale (Gaussian std.dev.).
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height.
@@ -164,9 +184,13 @@ LIBEXPORT int vigra_gaussiansmoothing_c(const PixelType * arr_in,
                                         const float sigma);
 
 /**
- * Computation of the Laplacian of Gaussian. This function wraps the 
- * vigra::laplacianOfGaussian function to C to compute the result of the LoG at
- * a given scale (Gaussian std.dev.).
+ * Computation of the Laplacian of Gaussian (LoG).
+ *
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__ConvolutionFilters.html">
+ * vigra::laplacianOfGaussian
+ * </a> 
+ * function to C to compute the result of the LoG at a given scale (Gaussian std.dev.).
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height.
@@ -184,9 +208,13 @@ LIBEXPORT int vigra_laplacianofgaussian_c(const PixelType * arr_in,
                                           const float scale);
 
 /**
- * Computation of the Hessian matrix of an image band. This function wraps the
- * vigra::hessianMatrixOfGaussian function to C to compute the partial second 
- * order derivatives I_xx, I_xy and I_yy a given scale (Gaussian std.dev.). 
+ * Computation of the Hessian matrix using Gaussians, thus HoG, of an image band.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__ConvolutionFilters.html">
+ * vigra::hessianMatrixOfGaussians
+ * </a>
+ * function to C to compute the partial second order derivatives I_xx, I_xy and
+ * I_yy of an image band at a given scale (Gaussian std.dev.).
  * This is performed by successive convolutions with derived Gaussian kernels.
  * All arrays must have been allocated before the call of this function.
  *
@@ -210,8 +238,12 @@ LIBEXPORT int vigra_hessianmatrixofgaussian_c(const PixelType * arr_in,
 
 /**
  * Computation of the Gaussian sharpening.
- * This function wraps the vigra::gaussianSharpening function to C to compute
- * the result at a given scale (Gaussian std.dev.) and using a sharpening factor.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__ConvolutionFilters.html">
+ * vigra::gaussianSharpening
+ * </a>
+ * function to C to compute the result at a given scale (Gaussian std.dev.) and 
+ * using a sharpening factor based on a gaussian.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height.
@@ -231,9 +263,12 @@ LIBEXPORT int vigra_gaussiansharpening_c(const PixelType * arr_in,
                                          const float scale);
 
 /**
- * Computation of a simple shaprening.
- * This function wraps the vigra::simpleSharpening function to C to compute
- * the result using a sharpening factor.
+ * Computation of a simple sharpening.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__ConvolutionFilters.html">
+ * vigra::simpleSharpening
+ * </a>
+ * function to C to compute the result using a sharpening factor.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height.

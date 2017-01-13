@@ -43,14 +43,17 @@
  *
  * @defgroup morphology Morphological operators
  * @{
- *    @brief Contains morphological operators, mainly applicable to binary images.
+ *    @brief Morphological operators, mainly applicable to binary images
  */
  
 /**
  * Computation of the distance transform.
- * This function wraps the vigra::distanceTransform function to C to compute
- * the distance transform for a (binary) image band w.r.t. a given background label
- * and a L-distance norm. 
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__DistanceTransform.html">
+ * vigra::distanceTransform
+ * </a>
+ * function to C to compute the distance transform for a (binary) image band
+ * w.r.t. a given background label and an L-distance norm.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height.
@@ -73,7 +76,11 @@ LIBEXPORT int vigra_distancetransform_c(const PixelType * arr_in,
 
 /**
  * Computation of the morpholgical erosion operator.
- * This function wraps the vigra::discErosion function to C to compute
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__Morphology.html">
+ * vigra::discErosion
+ * </a>
+ * function to C to compute
  * the erosion for a binary image band w.r.t. a given disc radius.
  * All arrays must have been allocated before the call of this function.
  *
@@ -93,7 +100,11 @@ LIBEXPORT int vigra_discerosion_c(const PixelType * arr_in,
 
 /**
  * Computation of the morpholgical dilation operator.
- * This function wraps the vigra::discDilation function to C to compute
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__Morphology.html">
+ * vigra::discDilation
+ * </a>
+ * function to C to compute
  * the dilation for a binary image band w.r.t. a given disc radius.
  * All arrays must have been allocated before the call of this function.
  *

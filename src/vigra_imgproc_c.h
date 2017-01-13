@@ -43,13 +43,15 @@
  *
  * @defgroup imgproc Image Processing
  * @{
- *    @brief Contains many linear and non-linear image filtering algorithms.
+ *    @brief Collection of general purpose image processing algorithms
  */
-// @file
-// @brief Contains basic image processing algorithms.
 
 /**
- * Resizing of image bands. This function wraps the vigra::resizeImageSplineInterpolation
+ * Resizing of image bands. 
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__GeometricTransformations.html">
+ * vigra::resizeImageSplineInterpolation
+ * </a>
  * function to C to perform an interpolated resizing of two flat image arrays,
  * which must have been allocated at the correct sizes before the call of this function.
  *
@@ -74,7 +76,11 @@ LIBEXPORT int vigra_resizeimage_c(const PixelType * arr_in,
                                   const int resample_method);
 
 /**
- * Rotation of image bands. This function wraps the vigra::rotateImage
+ * Rotation of image bands.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__GeometricTransformations.html">
+ * vigra::rotateImage
+ * </a>
  * function to C to perform an interpolated rotation of a flat image array.
  * All arrays must have been allocated before the call of this function.
  *
@@ -97,7 +103,11 @@ LIBEXPORT int vigra_rotateimage_c(const PixelType * arr_in,
                                   const int resample_method);
 
 /**
- * Affine warping of image bands. This function wraps the vigra::affineWarpImage
+ * Affine warping of image bands.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__GeometricTransformations.html">
+ * vigra::affineWarpImage
+ * </a>
  * function to C to perform an interpolated affine warping of a flat image array.
  * All arrays must have been allocated before the call of this function.
  *
@@ -120,8 +130,12 @@ LIBEXPORT int vigra_affinewarpimage_c(const PixelType * arr_in,
                                       const int resample_method);
 
 /**
- * Reflection of image bands w.r.t. the image axes. This function wraps the 
- * vigra::reflectImage function to C to perform a reflection along each or both
+ * Reflection of image bands w.r.t. the image axes.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__GeometricTransformations.html">
+ * vigra::reflectImage
+ * </a>
+ * function to C to perform a reflection along each or both
  * axis of a flat image array.
  * All arrays must have been allocated before the call of this function.
  *
@@ -143,9 +157,13 @@ LIBEXPORT int vigra_reflectimage_c(const PixelType * arr_in,
 
 /**
  * Computation of the centered Fast Fourier Transform (FFT) of an image band.
- * This function wraps the vigra::fourierTransform function to C to perform an
- * FFT of the image band and centers the DC after transformation. Internally, 
- * this performs a thread safe call of the FFTW lib's tranformation fucntions.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__FourierTransform.html">
+ * vigra::fourierTransform
+ * </a>
+ * function to C to perform an FFT of the image band and centers the DC after
+ * transformation. Internally, this performs a thread safe call of the FFTW 
+ * lib's tranformation functions.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height
@@ -163,11 +181,42 @@ LIBEXPORT int vigra_fouriertransform_c(const PixelType * arr_in,
                                        const int height);
 
 /**
+ * Computation of the inverse of a centered Fast Fourier Transform (FFT) of a
+ * real and complex image band.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__FourierTransform.html">
+ * vigra::fourierTransformInverse
+ * </a>
+ * function to C to perform an inverse FFT of the centered real and imaginary 
+ * image bands. Internally, this performs a thread safe call of the FFTW
+ * lib's tranformation functions.
+ * All arrays must have been allocated before the call of this function.
+ *
+ * \param arr_real_in Flat input array of the real part of the FFT of size width*height.
+ * \param arr_imag_in Flat array of the imaginary part of the FFT of size width*height.
+ * \param[out] arr_real_out Flat array of the real part after the iFFT of size width*height.
+ * \param[out] arr_imag_out Flat array of the imaginary part after the iFFT of size width*height.
+ * \param width The width of the flat arrays.
+ * \param height The height of the flat arrays.
+ *
+ * \return 0 if the inverse Fourier Transform was successful, 1 else.
+ */
+LIBEXPORT int vigra_fouriertransforminverse_c(const PixelType * arr_real_in,
+                                              const PixelType * arr_imag_in,
+                                              const PixelType * arr_real_out,
+                                              const PixelType * arr_imag_out,
+                                              const int width,
+                                              const int height);
+
+/**
  * Computation of the fast (un-normalized) cross-correlation an image band w.r.t.
  * another (typically smaller) image, called template.
- * This function wraps the vigra::fastCrossCorrelation function to C to perform an
- * cross-correlation of the image band w.r.t the template. For sake of efficiency,
- * this is performed in fourier space.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__Correlation.html">
+ * vigra::fastCrossCorrelation
+ * </a>
+ * function to C to perform a cross-correlation of the image band w.r.t the
+ * template. For sake of efficiency, this is performed in fourier space.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height
@@ -193,9 +242,13 @@ LIBEXPORT int vigra_fastcrosscorrelation_c(const PixelType * arr_in,
 /**
  * Computation of the fast (normalized) cross-correlation an image band w.r.t.
  * another (typically smaller) image, called template.
- * This function wraps the vigra::fastNormalizedCrossCorrelation function to C to perform an
- * normalized cross-correlation of the image band w.r.t the template. For sake of efficiency,
- * this is performed in fourier space and using integral images.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__Correlation.html">
+ * vigra::fastNormalizedCrossCorrelation
+ * </a>
+ * function to C to perform a normalized cross-correlation of the image band
+ * w.r.t the template. For sake of efficiency, this is performed in fourier space
+ * and using integral images.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height
@@ -220,9 +273,12 @@ LIBEXPORT int vigra_fastnormalizedcrosscorrelation_c(const PixelType * arr_in,
 
 /**
  * Extraction of the local (intensity) maxima of an image band.
- * This function wraps the vigra::localMaxima function to C to perform a filtering
- * of image band w.r.t. its intensity maxima, which are retured as the only
- * non-zero pixel values in the resulting image band.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__LocalMinMax.html">
+ * vigra::localMaxima
+ * </a> 
+ * function to C to perform a filtering of an image band w.r.t. its intensity maxima,
+ * which are retured as the only non-zero pixel values in the resulting image band.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height
@@ -241,9 +297,12 @@ LIBEXPORT int vigra_localmaxima_c(const PixelType * arr_in,
 
 /**
  * Extraction of the local (intensity) mniima of an image band.
- * This function wraps the vigra::localMinima function to C to perform a filtering
- * of image band w.r.t. its intensity minima,  which are retured as the only
- * non-zero pixel values in the resulting image band.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__LocalMinMax.html">
+ * vigra::localMinima
+ * </a> 
+ * function to C to perform a filtering of an image band w.r.t. its intensity minima,
+ * which are retured as the only non-zero pixel values in the resulting image band.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height
@@ -262,9 +321,12 @@ LIBEXPORT int vigra_localminima_c(const PixelType * arr_in,
 
 /**
  * Extraction of the sub-image of an image band.
- * This function wraps the vigra::MultiArray::subarray function to C to extract a
- * of image band w.r.t. the left, upper, right, and lower margins to the original
- * image.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/classvigra_1_1MultiArrayView.html">
+ * vigra::MultiArrayView::subarray
+ * </a>
+ * function to C to extract a sub-part of an image band w.r.t. the left, upper, 
+ * right, and lower margins to the original image band.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width_in*height_in

@@ -47,10 +47,11 @@ Quick Start
 -----------
 To write another wrapper for a new programming languages, get inspiration from the already existing wrappers to:
 
+* Racket ([vigracket](https://github.com/bseppke/vigracket))
 * Common Lisp ([vigracl](https://github.com/bseppke/vigracl))
 * exelvis IDL ([vigraidl](https://github.com/bseppke/vigraidl))
 * MatLAB ([vigramatlab](https://github.com/bseppke/vigramatlab))
-* Racket ([vigracket](https://github.com/bseppke/vigracket))
+* Java ([vigraj](https://github.com/bseppke/vigraj))
 
 All you need to make sure, is that the other programming language is able to load foreign (C-) functions and to allocate memory for the images.
 

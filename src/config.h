@@ -35,8 +35,18 @@
 #ifndef VIGRA_C_CONFIG_H
 #define VIGRA_C_CONFIG_H
 
+/**
+ * @file
+ * @brief Commonly used Header file with global definitions
+ *
+ * @decr Please note, that all vigra_c accessing libs:
+ *  - work on single band images (unless otherwise mentioned)
+ *  - need float as pixel type!
+ */
 
-//Library export settings for the mainly used OSes
+/**
+ * Library export settings for the mainly used operating systems
+ */
 #ifdef _WIN32
   #define LIBEXPORT extern "C" __declspec(dllexport)
 #else
@@ -45,11 +55,16 @@
 
 #include <vigra/multi_array.hxx>
 
-//Pixel and Image Types
-//Please note, that all vigra_c accessing libs:
-//  - work on single band images (unless otherwise mentioned)
-//  - need float as pixel type!
+/**
+ * The universally used PixelType:
+ * float
+ */
 typedef float PixelType;
+
+/**
+ * The universally used ImageType (for bands):
+ * A 2D MultiArrayView with an element type = PixelType = float
+ */
 typedef vigra::MultiArrayView<2, PixelType> ImageView;
 
 #endif

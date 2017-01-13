@@ -49,9 +49,12 @@
 
 /**
  * Labels the connected components of an image band.
- * This function wraps the vigra::labelImage function to C to carry out a
- * union-find algorithm. This finds the and sets unique labels for the connected
- * components of same grayvalues in the given image.
+ * This function wraps the 
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__Labeling.html">
+ * vigra::labelImage
+ * </a>
+ * function to C to carry out a union-find algorithm. This finds the and sets 
+ * unique labels for the connected components of same grayvalues in the given image.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height.
@@ -85,9 +88,12 @@ LIBEXPORT int vigra_labelimage_c(const PixelType * arr_in,
 /**
  * Labels the connected components of an image band w.r.t. a background intensity,
  * which should not be considered by the lageling.
- * This function wraps the vigra::labelImageWithBackground function to C to carry
- * out a union-find algorithm. This finds the and sets unique labels for the 
- * connected components of same grayvalues in the given image.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__Labeling.html">
+ * vigra::labelImageWithBackground
+ * </a>
+ * function to C to carry out a union-find algorithm. This finds the and sets 
+ * unique labels for the connected components of same grayvalues in the given image.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height.
@@ -123,12 +129,15 @@ LIBEXPORT int vigra_labelimagewithbackground_c(const PixelType * arr_in,
 
 /**
  * Applies the Watershed Transform to an image band.
- * This function wraps the vigra::watershedsUnionFind function to C to carry out a
- * union-find watershed segmentation algorithm. This first segments the image and
- * then finds the and sets unique labels for the connected components of same 
- * grayvalues in the given image. Use e.g. the reseult of vigra_gradientmagnitude_c
- * as an input for this function, since the watersheds of the gradient are good 
- * candidates for region boundaries.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__Superpixels.html">
+ * vigra::watershedsUnionFind
+ * </a> 
+ * function to C to carry out a union-find watershed segmentation algorithm. 
+ * This first segments the image and then finds the and sets unique labels for the
+ * connected components of same grayvalues in the given image. Use e.g. the result
+ * of vigra_gradientmagnitude_c as an input for this function, since the watersheds
+ * of the gradient are good candidates for region boundaries.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height.
@@ -168,12 +177,15 @@ LIBEXPORT int vigra_watershedsunionfind_c(const PixelType * arr_in,
 
 /**
  * Applies the Watershed Transform to an image band.
- * This function wraps the vigra::watershedsRegionGrowing function to C to carry out a
- * union-find watershed segmentation algorithm. This first segments the image and
- * then finds the and sets unique labels for the connected components of same 
- * grayvalues in the given image. Use e.g. the reseult of vigra_gradientmagnitude_c
- * as an input for this function, since the watersheds of the gradient are good 
- * candidates for region boundaries.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__Superpixels.html">
+ * vigra::watershedsRegionGrowing
+ * </a> 
+ * function to C to carry out a union-find watershed segmentation algorithm. 
+ * This first segments the image and then finds the and sets unique labels for the
+ * connected components of same grayvalues in the given image. Use e.g. the result
+ * of vigra_gradientmagnitude_c as an input for this function, since the watersheds
+ * of the gradient are good candidates for region boundaries.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height.
@@ -272,10 +284,13 @@ LIBEXPORT int vigra_watershedsregiongrowing_c(const PixelType * arr_in,
 
 /**
  * Applies the SLIC segmenation to an image band.
- * This function wraps the vigra::slicSuperpixels function to C to carry out a
- * SLIC segmentation algorithm. This first segments the image and
- * then finds the and sets unique labels for the connected components of same 
- * grayvalues in the given image.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__Superpixels.html">
+ * vigra::slicSuperpixels
+ * </a> 
+ * function to C to carry out a SLIC segmentation algorithm. This first segments
+ * the image and then finds the and sets unique labels for the connected components
+ * of same grayvalues in the given image.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height.
@@ -323,10 +338,14 @@ LIBEXPORT int vigra_slic_gray_c(const PixelType * arr_in,
 
 /**
  * Applies the SLIC segmenation to an RGB image.
- * This function wraps the vigra::slicSuperpixels function to C to carry out a
- * SLIC segmentation algorithm on three single image bands, refering to the RGB-
- * bands. This first segments the image and then finds the and sets unique 
- * labels for the connected components of same grayvalues in the given image.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__Superpixels.html">
+ * vigra::slicSuperpixels
+ * </a> 
+ * function to C to carry out a SLIC segmentation algorithm on three single image
+ * bands, refering to the RGB-bands. This first segments the image and then finds
+ * the and sets unique labels for the connected components of same grayvalues in
+ * the given image.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_r_in Flat input array (red band) of size width*height.
@@ -387,10 +406,14 @@ LIBEXPORT int vigra_slic_rgb_c(const PixelType * arr_r_in,
 
 /**
  * Computation of the Canny Edge Detector.
- * This function wraps the vigra::cannyEdgeImage function to C to compute
- * the Canny edgels at a given scale (Gaussian std.dev.) and using an edge
- * (gradient) threshold to mark all edgels on the given input band with a certain
- * grayvalue. The intensity of all other pixels in the result remain 0.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__EdgeDetection.html">
+ * vigra::cannyEdgeImage
+ * </a> 
+ * function to C to compute the Canny edgels at a given scale (Gaussian std.dev.)
+ * and using an edge (gradient) threshold to mark all edgels on the given input 
+ * band with a certain grayvalue. The intensity of all other pixels in the result
+ * remain 0.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height.
@@ -428,10 +451,14 @@ LIBEXPORT int vigra_cannyedgeimage_c(const PixelType * arr_in,
 
 /**
  * Computation of the Difference of Exponential (DoE) Edge Detector.
- * This function wraps the vigra::differenceOfExponentialEdgeImage function to C
- * to compute the DoE edgels at a given scale (Gaussian std.dev.) and using an edge
- * (gradient) threshold to mark all edgels on the given input band with a certain
- * grayvalue. The intensity of all other pixels in the result remain 0.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__EdgeDetection.html">
+ * vigra::differenceOfExponentialEdgeImage
+ * </a> 
+ * function to C to compute the DoE edgels at a given scale (Gaussian std.dev.)
+ * and using an edge (gradient) threshold to mark all edgels on the given input 
+ * band with a certain grayvalue. The intensity of all other pixels in the 
+ * result remain 0.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height.
@@ -469,12 +496,15 @@ LIBEXPORT int vigra_differenceofexponentialedgeimage_c(const PixelType * arr_in,
 
 /**
  * Transforms a label image band into its crack-edge representation.
- * This function wraps the vigra::regionImageToCrackEdgeImage function to C
- * to transform a label image band into a (nearly 4x) as large image band, which
- * shows the boundaries between labels/regions by a given mark intensity. The size
- * of the output band has to be (2*width_in-1)*(2*height_in-1) for an input label
- * band of size width_in*height_in. All arrays must have been allocated with 
- * correct sizes before the call of this function.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__Labeling.html">
+ * vigra::regionImageToCrackEdgeImage
+ * </a> 
+ * function to C to transform a label image band into a (nearly 4x) as large 
+ * image band, which shows the boundaries between labels/regions by a given mark
+ * intensity. The size of the output band has to be (2*width_in-1)*(2*height_in-1)
+ * for an input label band of size width_in*height_in. 
+ * All arrays must have been allocated with correct sizes before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width_in*height_in.
  * \param[out] arr_out Flat array (crack-edges) of size (2*width_in-1)*(2*height_in-1).
@@ -509,8 +539,10 @@ LIBEXPORT int vigra_regionimagetocrackedgeimage_c(const PixelType * arr_in,
 /**
  * Extracts features from a given label image band w.r.t. its corresponding
  * grey value intensity band. This function internally maps the
- * vigra::extractFeatures function to estimate the basic features in a region-
- * wise manner. The following features will be extracted for each region:
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/namespacevigra_1_1acc.html">
+ * vigra::extractFeatures
+ * </a> function to estimate the basic features in a region-wise manner.
+ * The following features will be extracted for each region:
  * 
  *  | Index         | Feature                       |
  *  | ------------- | ----------------------------- |
@@ -608,8 +640,11 @@ LIBEXPORT int vigra_extractfeatures_gray_c(const PixelType * arr_gray_in,
 /**
  * Extracts features from a given label image band w.r.t. its corresponding
  * rgb value intensity bands. This function internally maps the
- * vigra::extractFeatures function to estimate the basic features in a region-
- * wise manner. The following features will be extracted for each region:
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/namespacevigra_1_1acc.html">
+ * vigra::extractFeatures
+ * </a> 
+ * function to estimate the basic features in a region-wise manner. 
+ * The following features will be extracted for each region:
  * 
  *  | Index         | Feature                       |
  *  | ------------- | ----------------------------- |

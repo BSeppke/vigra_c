@@ -43,7 +43,7 @@
  *
  * @defgroup convert Conversion Functions
  * @{
- *    @brief Contains conversion functions between internal external image representations.
+ *    @brief Conversion functions between internal external image representations
  */
 
 /**
@@ -79,9 +79,9 @@ LIBEXPORT int vigra_convert_grayband_to_argb_c(const PixelType *arr_in,
  *
  * \return 0 if the conversion was successful, else uncought error.
  */
-LIBEXPORT int vigra_convert_rgbbands_to_argb_c(const float * arr_r_in,
-                                               const float * arr_g_in,
-                                               const float * arr_b_in,
+LIBEXPORT int vigra_convert_rgbbands_to_argb_c(const PixelType * arr_r_in,
+                                               const PixelType * arr_g_in,
+                                               const PixelType * arr_b_in,
                                                char * argb_arr_out,
                                                const int width,
                                                const int height);
@@ -120,9 +120,9 @@ LIBEXPORT int vigra_convert_argb_to_grayband_c(const char * argb_arr_in,
  * \return 0 if the conversion was successful, else uncought error.
  */
 LIBEXPORT int vigra_convert_argb_to_rgbbands_c(const char * argb_arr_in,
-                                               float * arr_r_out,
-                                               float * arr_g_out,
-                                               float * arr_b_out,
+                                               PixelType * arr_r_out,
+                                               PixelType * arr_g_out,
+                                               PixelType * arr_b_out,
                                                const int width,
                                                const int height);
 

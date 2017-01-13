@@ -43,16 +43,19 @@
  *
  * @defgroup impex Image import and export
  * @{
- *    @brief Contains image import and export facilities.
+ *    @brief Image import and export facilities.
  */
-// @file
-// @brief Contains image import and export facilities.
-
+ 
 /**
  * Import of a grayscale image from filesystem into a single band array.
  * This function checks if an image exists on file system and if it is grayscale.
  * If so, it is imported into the given flat array, which needs already to 
  * be allocated at correct size (width*hight).
+ *
+ * For more information, refer to the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__VigraImpex.html">
+ * vigra Import/Export documentation
+ * </a>.
  *
  * \param[out] arr_out The flat (band) array for the image of size width*height.
  * \param width The width of the flat input band array.
@@ -74,6 +77,11 @@ LIBEXPORT int vigra_importgrayimage_c(const PixelType * arr_out,
  * This function checks if an image exists on file system and if it is RGB.
  * If so, it is imported into the three given flat arrays, which needs already to
  * be allocated at correct size (width*hight each).
+ *
+ * For more information, refer to the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__VigraImpex.html">
+ * vigra Import/Export documentation
+ * </a>.
  *
  * \param[out] arr_r_out The flat (red band) array for the image of size width*height.
  * \param[out] arr_g_out The flat (green band) array for the image of size width*height.
@@ -101,6 +109,11 @@ LIBEXPORT int vigra_importrgbimage_c(const PixelType * arr_r_out,
  * If so, it is imported into the four given flat arrays, which needs already to
  * be allocated at correct size (width*hight each).
  *
+ * For more information, refer to the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__VigraImpex.html">
+ * vigra Import/Export documentation
+ * </a>.
+ *
  * \param[out] arr_r_out The flat (red band) array for the image of size width*height.
  * \param[out] arr_g_out The flat (green band) array for the image of size width*height.
  * \param[out] arr_b_out The flat (blue band) array for the image of size width*height.
@@ -126,6 +139,11 @@ LIBEXPORT int vigra_importrgbaimage_c(const PixelType * arr_r_out,
  * Export of a grayscale image from a single band array to file system.
  * This function writes the given band as a grayvalue image to the file system.
  *
+ * For more information, refer to the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__VigraImpex.html">
+ * vigra Import/Export documentation
+ * </a>.
+ *
  * \param arr_in The flat (band) array for the image of size width*height.
  * \param width The width of the flat input band array.
  * \param height The height of the flat band array.
@@ -141,6 +159,11 @@ LIBEXPORT int vigra_exportgrayimage_c(const PixelType * arr_in,
 /**
  * Export of an RGB image from three single band arrays to file system.
  * This function writes the given bands as a RGB image to the file system.
+ *
+ * For more information, refer to the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__VigraImpex.html">
+ * vigra Import/Export documentation
+ * </a>.
  *
  * \param arr_r_in The flat (red band) array for the image of size width*height.
  * \param arr_g_in The flat (green band) array for the image of size width*height.
@@ -161,6 +184,11 @@ LIBEXPORT int vigra_exportrgbimage_c(const PixelType * arr_r_in,
 /**
  * Export of an RGBA image from four single band arrays to file system.
  * This function writes the given bands as a RGBA image to the file system.
+ *
+ * For more information, refer to the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__VigraImpex.html">
+ * vigra Import/Export documentation
+ * </a>.
  *
  * \param arr_r_in The flat (red band) array for the image of size width*height.
  * \param arr_g_in The flat (green band) array for the image of size width*height.
@@ -184,6 +212,11 @@ LIBEXPORT int vigra_exportrgbaimage_c(const PixelType * arr_r_in,
  * This function returns the image width of a given filename without importing
  * the data of that image from filesystem.
  *
+ * For more information, refer to the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__VigraImpex.html">
+ * vigra Import/Export documentation
+ * </a>.
+ *
  * \param filename the file name of the image
  *
  * \return 0,   if an error occured or the image has no width,
@@ -193,7 +226,11 @@ LIBEXPORT int vigra_imagewidth_c(const char * filename);
 
 /**
  * This function returns the image height of a given filename without importing
- * the data of that image from filesystem.
+ *
+ * For more information, refer to the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__VigraImpex.html">
+ * vigra Import/Export documentation
+ * </a>.
  *
  * \param filename the file name of the image
  *
@@ -206,6 +243,11 @@ LIBEXPORT int vigra_imageheight_c(const char * filename);
  * This function returns the number of bands of an image of a given filename 
  * without importing the data of that image from filesystem.
  *
+ * For more information, refer to the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__VigraImpex.html">
+ * vigra Import/Export documentation
+ * </a>.
+ *
  * \param filename the file name of the image
  *
  * \return 0,    if an error occured or the image has no bands,
@@ -216,6 +258,11 @@ LIBEXPORT int vigra_imagenumbands_c(const char * filename);
 /**
  * This function returns the number of addiation (alpha-)bands of an image of a
  * given filename without importing the data of that image from filesystem.
+ *
+ * For more information, refer to the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__VigraImpex.html">
+ * vigra Import/Export documentation
+ * </a>.
  *
  * \param filename the file name of the image
  *

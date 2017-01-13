@@ -44,7 +44,7 @@
  *
  * @defgroup kernelutils Kernel utilities
  * @{
- *    @brief Contains internal helpers (not exported by VIGRA_C) to convert arrays to kernels (Header-only file).
+ *    @brief Internal helpers to convert arrays to kernels (Header-only file)
  */
  
 /**

@@ -74,13 +74,13 @@ typedef vigra::SplineImageView<5, float> SplineImageView5;
  */
 #define SIV_CREATION_FUNCTION(order)                                              \
 /**
- * Creates a SplineImageView for a given image band of degree order.
- *
- * \param arr_in Flat input array (band) of size width*height.
- * \param width The width of the flat array.
- * \param height The height of the flat array.
- *
- * \return a (void) pointer to the created SplineImageView of degree order.
+  Creates a SplineImageView for a given image band of degree order.
+
+  \param arr_in Flat input array (band) of size width*height.
+  \param width The width of the flat array.
+  \param height The height of the flat array.
+
+  \return a (void) pointer to the created SplineImageView of degree order.
  */                                                                               \
 LIBEXPORT void * vigra_create_splineimageview##order##_c(const PixelType *arr_in, \
                                                          const int width,         \
@@ -102,11 +102,11 @@ SIV_CREATION_FUNCTION(5)
  */
 #define SIV_DELETION_FUNCTION(order)                                  \
 /**                                                                   \
- * Deletes a SplineImageView of ##order degree.                       \
- *                                                                    \
- * \param siv The pointer to the SplineImageView                      \
- *                                                                    \
- * \return Always 0.                                                  \
+  Deletes a SplineImageView of ##order degree.                       \
+                                                                     \
+  \param siv The pointer to the SplineImageView                      \
+                                                                     \
+  \return Always 0.                                                  \
  */                                                                   \
 LIBEXPORT int vigra_delete_splineimageview##order##_c(void * siv)     \
 {                                                                     \

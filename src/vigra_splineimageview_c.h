@@ -43,7 +43,7 @@
  *
  * @defgroup splineimageview Spline interpolation
  * @{
- *    @brief Contains interpolation access to images with repect to Spline Interpolation.
+ *    @brief Interpolated access on images with repect to Spline interpolation
  */
 
 /************ POINTER BASED FUNCTIONS *****************/
@@ -53,13 +53,13 @@
  */
 #define SIV_CREATION_FUNCTION_INTERFACE(order)                                    \
 /**
- * Creates a SplineImageView for a given image band of degree order.
- *
- * \param arr_in Flat input array (band) of size width*height.
- * \param width The width of the flat array.
- * \param height The height of the flat array.
- *
- * \return a (void) pointer to the created SplineImageView of degree order.
+  Creates a SplineImageView for a given image band of degree order.
+
+  \param arr_in Flat input array (band) of size width*height.
+  \param width The width of the flat array.
+  \param height The height of the flat array.
+
+  \return a (void) pointer to the created SplineImageView of degree order.
  */                                                                               \
 LIBEXPORT void * vigra_create_splineimageview##order##_c(const PixelType *arr_in, \
                                                          const int width,         \

@@ -43,12 +43,16 @@
  *
  * @defgroup tensors Tensor-based algorithms
  * @{
- *    @brief Contains functions for Tensor based image processing and analysis.
+ *    @brief Functions for Tensor based image processing and analysis
  */
  
 /**
- * Computation of the Structure Tensor of an image band. This function wraps the
- * vigra::structureTensor function to C to compute the spatially smoothed products 
+ * Computation of the Structure Tensor of an image band.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__ConvolutionFilters.html">
+ * vigra::structureTensor
+ * </a> 
+ * function to C to compute the spatially smoothed products
  * of the first order image derivatives: smooth(I_x^2), smooth(I_x*I_y) and
  * smooth(I_y^2). The gradient estinmation is performed by convolutions with 
  * derived Gaussian kernels of a given std. dev. The smoothing is also performed
@@ -76,8 +80,12 @@ LIBEXPORT int vigra_structuretensor_c(const PixelType * arr_in,
                                       const float outer_scale);
 
 /**
- * Computation of the Boundary Tensor of an image band. This function wraps the
- * vigra::boundaryTensor function to C.
+ * Computation of the Boundary Tensor of an image band.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__TensorImaging.html">
+ * vigra::boundaryTensor
+ * </a> 
+ * function to C.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height.
@@ -99,8 +107,13 @@ LIBEXPORT int vigra_boundarytensor_c(const PixelType * arr_in,
                                      const float scale);
 
 /**
- * Computation of the Boundary Tensor (without the first order component) of an
- * image band. This function wraps the vigra::boundaryTensor1 function to C.
+ * Computation of the Boundary Tensor (without the zero order component) of an
+ * image band. 
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__TensorImaging.html">
+ * vigra::boundaryTensor1
+ * </a> 
+ * function to C.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height.
@@ -122,8 +135,12 @@ LIBEXPORT int vigra_boundarytensor1_c(const PixelType * arr_in,
                                       const float scale);
 
 /**
- * Computation of the Gradient Energy Tensor of an image band. This function 
- * wraps the vigra::gradientEnergyTensor function to C.
+ * Computation of the Gradient Energy Tensor of an image band.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__TensorImaging.html">
+ * vigra::gradientEnergyTensor
+ * </a> 
+ * function to C.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_in Flat input array (band) of size width*height.
@@ -154,7 +171,11 @@ LIBEXPORT int vigra_gradientenergytensor_c(const PixelType * arr_in,
 
 /**
  * Computation of the Eigenvalue/Eigenvector representation of a tensor.
- * This function wraps the vigra::tensorEigenRepresentation function to C.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__TensorImaging.html">
+ * vigra::tensorEigenRepresentation
+ * </a> 
+ * function to C.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_xx_in Flat array (Tensor xx) of size width*height.
@@ -179,7 +200,11 @@ LIBEXPORT int vigra_tensoreigenrepresentation_c(const PixelType * arr_xx_in,
 
 /**
  * Computation of the trace of a tensor.
- * This function wraps the vigra::tensorTrace function to C.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__TensorImaging.html">
+ * vigra::tensorTrace
+ * </a> 
+ * function to C.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_xx_in Flat array (Tensor xx) of size width*height.
@@ -199,8 +224,12 @@ LIBEXPORT int vigra_tensortrace_c(const PixelType * arr_xx_in,
                                   const int height);
 
 /**
- * Computation of the Egeness/Cornerness representation of a tensor.
- * This function wraps the vigra::tensorToEdgeCorner function to C.
+ * Computation of the Edgeness/Cornerness representation of a tensor.
+ * This function wraps the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__TensorImaging.html">
+ * vigra::tensorToEdgeCorner
+ * </a>
+ * function to C.
  * All arrays must have been allocated before the call of this function.
  *
  * \param arr_xx_in Flat array (Tensor xx) of size width*height.
@@ -224,8 +253,11 @@ LIBEXPORT int vigra_tensortoedgecorner_c(const PixelType * arr_xx_in,
                                          const int height);
 
 /**
- * Filering of a tensor using the Hourglass filter.
- * This function wraps the correct application of the vigra::hourGlassFilter 
+ * Filtering of a tensor using the Hourglass filter.
+ * This function wraps the correct application of the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__TensorImaging.html">
+ * vigra::hourGlassFilter
+ * </a>
  * function to C.
  * All arrays must have been allocated before the call of this function.
  *
