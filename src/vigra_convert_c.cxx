@@ -43,7 +43,7 @@
  
 /**
  * Converts a single band grayvalue image into its Alpha,RGB representation.
- * The greyavalue is therefore copied and casted to 0..255 into each R,B, and B
+ * The greyavalue is therefore copied and casted to 0..255 into each R,G, and B
  * value and the alpha value is set to 255 (opaque). All arrays must have been
  * allocated before the call of this function.
  *
@@ -76,7 +76,7 @@ LIBEXPORT int vigra_convert_grayband_to_argb_c(const PixelType *arr_in,
 
 /**
  * Converts the single band images (r,g,b) into its combined Alpha,RGB representation.
- * The r,g,b-vaues are therefore copied and casted to 0..255 into each R,B, and B
+ * The r,g,b-vaues are therefore copied and casted to 0..255 into each R,G, and B
  * value and the alpha value is set to 255 (opaque). All arrays must have been
  * allocated before the call of this function.
  *
@@ -106,6 +106,48 @@ LIBEXPORT int vigra_convert_rgbbands_to_argb_c(const PixelType * arr_r_in,
     for ( ; r_ptr != r_end ; ++r_ptr, ++g_ptr, ++b_ptr, argb_ptr+=4)
     {
         argb_ptr[0] = 255;
+        argb_ptr[1] = *r_ptr;
+        argb_ptr[2] = *g_ptr;
+        argb_ptr[3] = *b_ptr;
+    }
+    return 0;
+}
+
+/**
+ * Converts the single band images (r,g,b,a) into its combined Alpha,RGB representation.
+ * The r,g,b,a-vaues are therefore copied and casted to 0..255 into each R,G,B, and A
+ * value and the alpha value is set to 255 (opaque). All arrays must have been
+ * allocated before the call of this function.
+ *
+ * \param arr_r_in Flat input array (red band) of size width*height.
+ * \param arr_g_in Flat input array (green band) of size width*height.
+ * \param arr_b_in Flat input array (blue band) of size width*height.
+ * \param arr_a_in Flat input array (alpha band) of size width*height.
+ * \param[out] argb_arr_out Flat output array of size width*height*4.
+ * \param width The width of the image.
+ * \param height The height of the image.
+ *
+ * \return 0 if the conversion was successful, else uncought error.
+ */
+LIBEXPORT int vigra_convert_rgbabands_to_argb_c(const PixelType * arr_r_in,
+                                                const PixelType * arr_g_in,
+                                                const PixelType * arr_b_in,
+                                                const PixelType * arr_a_in,
+                                                char * argb_arr_out,
+                                                const int width,
+                                                const int height)
+{
+    const PixelType* r_ptr = arr_r_in;
+    const PixelType* g_ptr = arr_g_in;
+    const PixelType* b_ptr = arr_b_in;
+    const PixelType* a_ptr = arr_a_in;
+    const PixelType* r_end = r_ptr + (width*height);
+    
+    unsigned char* argb_ptr = (unsigned char*)argb_arr_out;
+    
+    for ( ; r_ptr != r_end ; ++r_ptr, ++g_ptr, ++b_ptr, ++a_ptr, argb_ptr+=4)
+    {
+        argb_ptr[0] = *a_ptr;
         argb_ptr[1] = *r_ptr;
         argb_ptr[2] = *g_ptr;
         argb_ptr[3] = *b_ptr;
@@ -179,6 +221,49 @@ LIBEXPORT int vigra_convert_argb_to_rgbbands_c(const char * argb_arr_in,
     for ( ; r_ptr != r_end ; ++r_ptr, ++g_ptr, ++b_ptr, argb_ptr+=4)
     {
         // argb_ptr[0] would be alpha!
+        *r_ptr = (float)argb_ptr[1];
+        *g_ptr = (float)argb_ptr[2];
+        *b_ptr = (float)argb_ptr[3];
+    }
+    return 0;
+}
+
+/**
+ * Converts the combined Alpha,RGB representation into its single band images (r,g,b).
+ * The R,G,B,A-vaues are therefore copied and casted to float into each r,g,b and a
+ * output band and the alpha value is omitted. All arrays must have been
+ * allocated before the call of this function.
+ *
+ * \param argb_arr_in Flat input array of size width*height*4.
+ * \param[out] arr_r_out Flat output array (red band) of size width*height.
+ * \param[out] arr_g_out Flat output array (green band) of size  width*height.
+ * \param[out] arr_b_out Flat output array (blue band) of size width*height.
+ * \param[out] arr_a_out Flat output array (alpha band) of size width*height.
+ * \param width The width of the image.
+ * \param height The height of the image.
+ *
+ * \return 0 if the conversion was successful, else uncought error.
+ */
+LIBEXPORT int vigra_convert_argb_to_rgbabands_c(const char * argb_arr_in,
+                                               PixelType * arr_r_out,
+                                               PixelType * arr_g_out,
+                                               PixelType * arr_b_out,
+                                               PixelType * arr_a_out,
+                                               const int width,
+                                               const int height)
+{
+    const unsigned char* argb_ptr = (const unsigned char*)argb_arr_in;
+    
+    PixelType* r_ptr = arr_r_out;
+    PixelType* g_ptr = arr_g_out;
+    PixelType* b_ptr = arr_b_out;
+    PixelType* a_ptr = arr_a_out;
+    PixelType* r_end = r_ptr + (width*height);
+    
+    
+    for ( ; r_ptr != r_end ; ++r_ptr, ++g_ptr, ++b_ptr, ++a_ptr, argb_ptr+=4)
+    {
+        *a_ptr = (float)argb_ptr[0];
         *r_ptr = (float)argb_ptr[1];
         *g_ptr = (float)argb_ptr[2];
         *b_ptr = (float)argb_ptr[3];
