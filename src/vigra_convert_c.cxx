@@ -34,6 +34,7 @@
 
 #include "vigra_convert_c.h"
 #include <cstring>
+#include <algorithm>
 
 
 /**
@@ -340,5 +341,77 @@ LIBEXPORT int vigra_copy_uint8_array_c(const unsigned char * arr_in,
                                        const int size)
 { 
     memcpy(arr_out,arr_in,size*sizeof(unsigned char));
+    return 0;
+}
+
+/**
+ * Fast flat array value initializing for double arrays. The arrays must have been
+ * allocated before the call of this function. Works in-place!
+ *
+ * \param arr_io Flat input/output array of size size.
+ * \param size The size of the array.
+ * \param value The value for initialization.
+ *
+ * \return 0 if the initialization was successful, else uncought error.
+ */
+LIBEXPORT int vigra_init_double_array_c(double * arr_io,
+                                        const int size,
+                                        double value)
+{
+    std::fill(arr_io, arr_io+size, value);
+    return 0;
+}
+
+/**
+ * Fast flat array value initializing for float arrays. The arrays must have been
+ * allocated before the call of this function. Works in-place!
+ *
+ * \param arr_io Flat input/output array of size size.
+ * \param size The size of the array.
+ * \param value The value for initialization.
+ *
+ * \return 0 if the initialization was successful, else uncought error.
+ */
+LIBEXPORT int vigra_init_float_array_c(float * arr_io,
+                                       const int size,
+                                       float value)
+{
+    std::fill(arr_io, arr_io+size, value);
+    return 0;
+}
+
+/**
+ * Fast flat array value initializing for int arrays. The arrays must have been
+ * allocated before the call of this function. Works in-place!
+ *
+ * \param arr_io Flat input/output array of size size.
+ * \param size The size of the array.
+ * \param value The value for initialization.
+ *
+ * \return 0 if the initialization was successful, else uncought error.
+ */
+LIBEXPORT int vigra_init_int_array_c(int * arr_io,
+                                     const int size,
+                                     int value)
+{
+    std::fill(arr_io, arr_io+size, value);
+    return 0;
+}
+
+/**
+ * Fast flat array value initializing for unsigned char arrays. The arrays must have been
+ * allocated before the call of this function. Works in-place!
+ *
+ * \param arr_io Flat input/output array of size size.
+ * \param size The size of the array.
+ * \param value The value for initialization.
+ *
+ * \return 0 if the initialization was successful, else uncought error.
+ */
+LIBEXPORT int vigra_init_uint8_array_c(unsigned char * arr_io,
+                                       const int size,
+                                       unsigned char value)
+{ 
+    std::fill(arr_io, arr_io+size, value);
     return 0;
 }

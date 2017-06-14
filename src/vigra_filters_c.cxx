@@ -46,39 +46,6 @@
  */
 
 /**
- * Image initialization.
- * This function sets all values of an image band to a given value.
- *
- * \param arr_io Flat input/output array (band) of size width*height.
- * \param width The width of the flat array.
- * \param height The height of the flat array.
- * \param value The value, which wille be set to the flat kernel array.
- *
- * \return 0 if the initialization was successful,
- *         1 else.
- */
-LIBEXPORT int vigra_initimage_c(const PixelType * arr_io,
-                                const int width,
-                                const int height,
-                                PixelType value)
-{
-    try
-    {
-        //Create gray scale image views for the arrays
-        vigra::Shape2 shape(width,height);
-        ImageView img_io(shape, arr_io);
-        
-        img_io = value;
-    }
-    catch (vigra::StdException & e)
-    {
-        return 1;
-    }
-    
-    return 0;
-}
-
-/**
  * Image convolution.
  * This function wraps the
  * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__ConvolutionFilters.html">
