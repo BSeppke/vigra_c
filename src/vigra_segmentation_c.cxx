@@ -736,7 +736,7 @@ LIBEXPORT int vigra_extractfeatures_rgb_c( const PixelType * arr_r_in,
         // x=(21 .. 22) -> minor ev: x and y-coord
         // x=23         -> major ew
         // x=24         -> minor ew
-        vigra::Shape2 shape_out(35, max_label+1);
+        vigra::Shape2 shape_out(25, max_label+1);
         ImageView img_out(shape_out, arr_out);
         
         typedef
