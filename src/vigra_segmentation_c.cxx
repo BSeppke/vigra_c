@@ -554,10 +554,14 @@ LIBEXPORT int vigra_regionimagetocrackedgeimage_c(const PixelType * arr_in,
  *  |  8            | max grey value                |
  *  |  9            | mean grey value               |
  *  | 10            | std.dev. grey value           |
+ *  | 11, 12        | major ev: x and y-coord       |
+ *  | 13, 14        | minor ev: x and y-coord       |
+ *  | 15            | major ew                      |
+ *  | 16            | minor ew                      |
  *
  * Each feature can be accessed in the output array by means of its index and 
  * region id by: output(index, region_id). Please make sure, that the output is 
- * allocated of size 11x(max_label+1).
+ * allocated of size 17x(max_label+1).
  *
  * \param arr_gray_in Flat input array (band) of size width_in*height_in.
  * \param arr_labels_in Flat input array (labels) of size width_in*height_in.
@@ -588,15 +592,19 @@ LIBEXPORT int vigra_extractfeatures_gray_c(const PixelType * arr_gray_in,
         vigra::MultiArray<2, unsigned int> labels = labels_in;
         
         //Order (x,y) with y = region_id (from 0...max_label) and:
-        // x=0    -> region_size,
-        // x=(1..2) -> upperleft-x and y-coord
-        // x=(3..4) -> lowerright-x and y-coord
-        // x=(5..6) -> mean-x and y-coord
-        // x=7      -> min grey value
-        // x=8      -> max grey value
-        // x=9      -> mean grey value
-        // x=10     -> std.dev. grey value
-        vigra::Shape2 shape_out(11, max_label+1);
+        // x=  0       - > region_size,
+        // x=( 1 ..  2) -> upperleft-x and y-coord
+        // x=( 3 ..  4) -> lowerright-x and y-coord
+        // x=( 5 ..  6) -> mean-x and y-coord
+        // x=  7        -> min grey value
+        // x=  8        -> max grey value
+        // x=  9        -> mean grey value
+        // x= 10        -> std.dev. grey value
+        // x=(11 .. 12) -> major ev: x and y-coord
+        // x=(13 .. 14) -> minor ev: x and y-coord
+        // x= 15        -> major ew
+        // x= 16        -> minor ew
+        vigra::Shape2 shape_out(17, max_label+1);
         ImageView img_out(shape_out, arr_out);
         
         typedef
@@ -604,7 +612,8 @@ LIBEXPORT int vigra_extractfeatures_gray_c(const PixelType * arr_gray_in,
                 Select< DataArg<1>, LabelArg<2>, // in which array to look (coordinates are always arg 0)
                         Count,
                         Coord<Minimum>, Coord<Maximum>, Coord<Mean>,
-                        Minimum, Maximum, Mean, StdDev > >
+                        Minimum, Maximum, Mean, StdDev,
+                        RegionAxes, RegionRadii> >
             AccumulatorType;
         
         AccumulatorType a;
@@ -628,6 +637,14 @@ LIBEXPORT int vigra_extractfeatures_gray_c(const PixelType * arr_gray_in,
             img_out(8, i) = get<Maximum>(a,i);
             img_out(9, i) = get<Mean>(a,i);
             img_out(10,i) = get<StdDev>(a,i);
+            
+            img_out(11,i) = get<RegionAxes>(a,i)(0,0);
+            img_out(12,i) = get<RegionAxes>(a,i)(1,0);
+            img_out(13,i) = get<RegionAxes>(a,i)(0,1);
+            img_out(14,i) = get<RegionAxes>(a,i)(1,1);
+            
+            img_out(15,i) = get<RegionRadii>(a,i)[0];
+            img_out(16,i) = get<RegionRadii>(a,i)[1];
         }
     }
     catch (vigra::StdException & e)
@@ -656,10 +673,14 @@ LIBEXPORT int vigra_extractfeatures_gray_c(const PixelType * arr_gray_in,
  *  | 10, 11, 12    | max red,green,blue value      |
  *  | 13, 14, 15    | mean red,green,blue value     |
  *  | 16, 17, 18    | std.dev. red,green,blue value |
+ *  | 19, 20        | major ev: x and y-coord       |
+ *  | 21, 22        | minor ev: x and y-coord       |
+ *  | 23            | major ew                      |
+ *  | 24            | minor ew                      |
  *
  * Each feature can be accessed in the output array by means of its index and 
  * region id by: output(index, region_id). Please make sure, that the output is 
- * allocated of size 19x(max_label+1).
+ * allocated of size 25x(max_label+1).
  *
  * \param arr_r_in Flat input array (red band) of size width_in*height_in.
  * \param arr_g_in Flat input array (green band) of size width_in*height_in.
@@ -711,7 +732,11 @@ LIBEXPORT int vigra_extractfeatures_rgb_c( const PixelType * arr_r_in,
         // x=(10 .. 12) -> max r,g,b value
         // x=(13 .. 15) -> mean r,g,b value
         // x=(16 .. 18) -> stddev r,g,b value
-        vigra::Shape2 shape_out(19, max_label+1);
+        // x=(19 .. 20) -> major ev: x and y-coord
+        // x=(21 .. 22) -> minor ev: x and y-coord
+        // x=23         -> major ew
+        // x=24         -> minor ew
+        vigra::Shape2 shape_out(35, max_label+1);
         ImageView img_out(shape_out, arr_out);
         
         typedef
@@ -719,7 +744,8 @@ LIBEXPORT int vigra_extractfeatures_rgb_c( const PixelType * arr_r_in,
                 Select< DataArg<1>, LabelArg<2>, // in which array to look (coordinates are always arg 0)
                         Count,
                         Coord<Minimum>, Coord<Maximum>, Coord<Mean>,
-                        Minimum, Maximum, Mean, StdDev > >
+                        Minimum, Maximum, Mean, StdDev,
+                        RegionAxes, RegionRadii > >
             AccumulatorType;
         
         AccumulatorType a;
@@ -754,6 +780,14 @@ LIBEXPORT int vigra_extractfeatures_rgb_c( const PixelType * arr_r_in,
             img_out(16, i) = get<StdDev>(a,i)[0];
             img_out(17, i) = get<StdDev>(a,i)[1];
             img_out(18, i) = get<StdDev>(a,i)[2];
+            
+            img_out(19,i) = get<RegionAxes>(a,i)(0,0);
+            img_out(20,i) = get<RegionAxes>(a,i)(1,0);
+            img_out(21,i) = get<RegionAxes>(a,i)(0,1);
+            img_out(22,i) = get<RegionAxes>(a,i)(1,1);
+            
+            img_out(23,i) = get<RegionRadii>(a,i)[0];
+            img_out(24,i) = get<RegionRadii>(a,i)[1];
         }
     }
     catch (vigra::StdException & e)
