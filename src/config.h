@@ -39,7 +39,7 @@
  * @file
  * @brief Commonly used Header file with global definitions
  *
- * @decr Please note, that all vigra_c accessing libs:
+ *  Please note, that all vigra_c accessing libs:
  *  - work on single band images (unless otherwise mentioned)
  *  - need float as pixel type!
  */
