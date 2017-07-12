@@ -1,6 +1,6 @@
 /************************************************************************/
 /*                                                                      */
-/*               Copyright 2008-2016 by Benjamin Seppke                 */
+/*               Copyright 2008-2017 by Benjamin Seppke                 */
 /*       Cognitive Systems Group, University of Hamburg, Germany        */
 /*                                                                      */
 /*    This file is part of VIGRA_C package. For more infos visit:       */
@@ -43,5 +43,13 @@
 #include "vigra_segmentation_c.h"
 #include "vigra_splineimageview_c.h"
 #include "vigra_tensors_c.h"
+
+/**
+ * @file
+ * @brief Header-only file for public API of vigra_c
+ *
+ * Including this file is neccessary, if you want to use the functionality
+ * of vigra_c in any other C/C++-project.
+ */
 
 #endif

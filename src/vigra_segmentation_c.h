@@ -1,6 +1,6 @@
 /************************************************************************/
 /*                                                                      */
-/*               Copyright 2008-2016 by Benjamin Seppke                 */
+/*               Copyright 2008-2017 by Benjamin Seppke                 */
 /*       Cognitive Systems Group, University of Hamburg, Germany        */
 /*                                                                      */
 /*    This file is part of VIGRA_C package. For more infos visit:       */
@@ -327,10 +327,14 @@ LIBEXPORT int vigra_regionimagetocrackedgeimage_c(const PixelType * arr_in,
  *  |  8            | max grey value                |
  *  |  9            | mean grey value               |
  *  | 10            | std.dev. grey value           |
+ *  | 11, 12        | major ev: x and y-coord       |
+ *  | 13, 14        | minor ev: x and y-coord       |
+ *  | 15            | major ew                      |
+ *  | 16            | minor ew                      |
  *
  * Each feature can be accessed in the output array by means of its index and 
  * region id by: output(index, region_id). Please make sure, that the output is 
- * allocated of size 11x(max_label+1).
+ * allocated of size 17x(max_label+1).
  *
  * \param arr_gray_in Flat input array (band) of size width_in*height_in.
  * \param arr_labels_in Flat input array (labels) of size width_in*height_in.
@@ -367,10 +371,14 @@ LIBEXPORT int vigra_extractfeatures_gray_c(const PixelType * arr_gray_in,
  *  | 10, 11, 12    | max red,green,blue value      |
  *  | 13, 14, 15    | mean red,green,blue value     |
  *  | 16, 17, 18    | std.dev. red,green,blue value |
+ *  | 19, 20        | major ev: x and y-coord       |
+ *  | 21, 22        | minor ev: x and y-coord       |
+ *  | 23            | major ew                      |
+ *  | 24            | minor ew                      |
  *
  * Each feature can be accessed in the output array by means of its index and 
  * region id by: output(index, region_id). Please make sure, that the output is 
- * allocated of size 19x(max_label+1).
+ * allocated of size 25x(max_label+1).
  *
  * \param arr_r_in Flat input array (red band) of size width_in*height_in.
  * \param arr_g_in Flat input array (green band) of size width_in*height_in.
