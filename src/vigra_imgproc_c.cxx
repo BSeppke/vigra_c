@@ -356,27 +356,6 @@ LIBEXPORT int vigra_fouriertransform_c(const PixelType * arr_in,
     return 0;
 }
 
-/**
- * Computation of the inverse of a centered Fast Fourier Transform (FFT) of a
- * real and complex image band.
- * This function wraps the
- * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__FourierTransform.html">
- * vigra::fourierTransformInverse
- * </a>
- * function to C to perform an inverse FFT of the centered real and imaginary 
- * image bands. Internally, this performs a thread safe call of the FFTW
- * lib's tranformation functions.
- * All arrays must have been allocated before the call of this function.
- *
- * \param arr_real_in Flat input array of the real part of the FFT of size width*height.
- * \param arr_imag_in Flat array of the imaginary part of the FFT of size width*height.
- * \param[out] arr_real_out Flat array of the real part after the iFFT of size width*height.
- * \param[out] arr_imag_out Flat array of the imaginary part after the iFFT of size width*height.
- * \param width The width of the flat arrays.
- * \param height The height of the flat arrays.
- *
- * \return 0 if the inverse Fourier Transform was successful, 1 else.
- */
 LIBEXPORT int vigra_fouriertransforminverse_c(const PixelType * arr_real_in,
                                               const PixelType * arr_imag_in,
                                               const PixelType * arr_real_out,
@@ -423,29 +402,6 @@ LIBEXPORT int vigra_fouriertransforminverse_c(const PixelType * arr_real_in,
     return 0;
 }
 
-/**
- * Computation of the fast (un-normalized) cross-correlation an image band w.r.t.
- * another (typically smaller) image, called template.
- * This function wraps the
- * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__Correlation.html">
- * vigra::fastCrossCorrelation
- * </a>
- * function to C to perform a cross-correlation of the image band w.r.t the
- * template. For sake of efficiency, this is performed in fourier space.
- * All arrays must have been allocated before the call of this function.
- *
- * \param arr_in Flat input array (band) of size width*height
- * \param arr_template_in Flat array (tmeplate band) of size width*height.
- * \param[out] arr_out Flat array (correlation values) of size width*height.
- * \param width The width of the flat band arrays.
- * \param height The height of the flat band arrays.
- * \param template_width The width of the flat template array.
- * \param template_height The height of the flat template array.
- *
- * \return 0 if the computation was successful,
- *         2 if template dimensions are not odd,
- *         1 else.
- */
 LIBEXPORT int vigra_fastcrosscorrelation_c(const PixelType * arr_in,
                                            const PixelType * arr_template_in,
                                            const PixelType * arr_out,
@@ -477,30 +433,6 @@ LIBEXPORT int vigra_fastcrosscorrelation_c(const PixelType * arr_in,
     return 0;
 }
 
-/**
- * Computation of the fast (normalized) cross-correlation an image band w.r.t.
- * another (typically smaller) image, called template.
- * This function wraps the
- * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__Correlation.html">
- * vigra::fastNormalizedCrossCorrelation
- * </a>
- * function to C to perform a normalized cross-correlation of the image band
- * w.r.t the template. For sake of efficiency, this is performed in fourier space
- * and using integral images.
- * All arrays must have been allocated before the call of this function.
- *
- * \param arr_in Flat input array (band) of size width*height
- * \param arr_template_in Flat array (tmeplate band) of size width*height.
- * \param[out] arr_out Flat array (correlation coefficents) of size width*height.
- * \param width The width of the flat band arrays.
- * \param height The height of the flat band arrays.
- * \param template_width The width of the flat template array.
- * \param template_height The height of the flat template array.
- *
- * \return 0 if the computation was successful,
- *         2 if template dimensions are not odd,
- *         1 else.
- */
 LIBEXPORT int vigra_fastnormalizedcrosscorrelation_c(const PixelType * arr_in,
                                                      const PixelType * arr_template_in,
                                                      const PixelType * arr_out,
@@ -533,24 +465,6 @@ LIBEXPORT int vigra_fastnormalizedcrosscorrelation_c(const PixelType * arr_in,
     return 0;
 }
 
-/**
- * Extraction of the local (intensity) maxima of an image band.
- * This function wraps the
- * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__LocalMinMax.html">
- * vigra::localMaxima
- * </a> 
- * function to C to perform a filtering of an image band w.r.t. its intensity maxima,
- * which are retured as the only non-zero pixel values in the resulting image band.
- * All arrays must have been allocated before the call of this function.
- *
- * \param arr_in Flat input array (band) of size width*height
- * \param[out] arr_out Flat array (marks for maxima) of size width*height.
- * \param width The width of the flat band arrays.
- * \param height The height of the flat band arrays.
- * \param eight_connectivity If set to true, 8-conectivity is used, else 4.
- *
- * \return 0 if the local maxima finding was successful, 1 else.
- */
 LIBEXPORT int vigra_localmaxima_c(const PixelType * arr_in,
                                   const PixelType * arr_out,
                                   const int width,
@@ -578,24 +492,6 @@ LIBEXPORT int vigra_localmaxima_c(const PixelType * arr_in,
     return 0;
 }
 
-/**
- * Extraction of the local (intensity) mniima of an image band.
- * This function wraps the
- * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__LocalMinMax.html">
- * vigra::localMinima
- * </a> 
- * function to C to perform a filtering of an image band w.r.t. its intensity minima,
- * which are retured as the only non-zero pixel values in the resulting image band.
- * All arrays must have been allocated before the call of this function.
- *
- * \param arr_in Flat input array (band) of size width*height
- * \param[out] arr_out Flat array (marks for minima) of size width*height.
- * \param width The width of the flat band arrays.
- * \param height The height of the flat band arrays.
- * \param eight_connectivity If set to true, 8-conectivity is used, else 4.
- *
- * \return 0 if the local minima finding was successful, 1 else.
- */
 LIBEXPORT int vigra_localminima_c(const PixelType * arr_in,
                                   const PixelType * arr_out,
                                   const int width,
@@ -623,29 +519,6 @@ LIBEXPORT int vigra_localminima_c(const PixelType * arr_in,
     return 0;
 }
 
-/**
- * Extraction of the sub-image of an image band.
- * This function wraps the
- * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/classvigra_1_1MultiArrayView.html">
- * vigra::MultiArrayView::subarray
- * </a>
- * function to C to extract a sub-part of an image band w.r.t. the left, upper, 
- * right, and lower margins to the original image band.
- * All arrays must have been allocated before the call of this function.
- *
- * \param arr_in Flat input array (band) of size width_in*height_in
- * \param[out] arr_out Flat array (sub-image band) of size (right-left)*(lower-upper).
- * \param width_in The width of the flat input band array.
- * \param height_in The height of the flat band array.
- * \param left The left margin w.r.t. the flat input array.
- * \param upper The upper margin w.r.t. the flat input array.
- * \param right The right margin w.r.t. the flat input array.
- * \param lower The lower margin w.r.t. the flat input array.
- *
- * \return 0 if the subimage extraction was successful, 
- *         2 if right<=left or lower<=upper,
- *         1 else.
- */
 LIBEXPORT int vigra_subimage_c(const PixelType * arr_in,
                                const PixelType * arr_out,
                                const int width_in,
@@ -686,24 +559,6 @@ LIBEXPORT int vigra_subimage_c(const PixelType * arr_in,
     return 0;
 }
 
-/**
- * Padding of an image band. This function padds a given image band by adding a
- * given left, upper, right, and lower border to the original image.
- * All arrays must have been allocated before the call of this function.
- *
- * \param arr_in Flat input array (band) of size width_in*height_in
- * \param[out] arr_out Flat array (padded image band) of size (width_in+right+left)*(height_in+lower+upper).
- * \param width_in The width of the flat input band array.
- * \param height_in The height of the flat band array.
- * \param left The left border to be padded to the flat input array.
- * \param upper The upper border to be padded to the flat input array.
- * \param right The right border to be padded to the flat input array.
- * \param lower The lower border to be padded to the flat input array.
- *
- * \return 0 if the subimage extraction was successful, 
- *         2 if right+left=1 or lower+upper=0,
- *         1 else.
- */
 LIBEXPORT int vigra_paddimage_c(const PixelType * arr_in,
                                 const PixelType * arr_out,
                                 const int width_in,
