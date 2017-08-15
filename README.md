@@ -28,7 +28,9 @@ The abstraction from VIGRA's templated C++ MultiArray image representation w.r.t
 
 ## Installation
 
-Currently, other modules, which use vigra\_c to bind [Racket](https://racket-lang.org), [MatLAB](https://www.mathworks.com/) etc. ship the vigra\_c by means of a submodule. However, since CMake is used to build the vigra\_c library, it is also possible to install the vigra\_c lib system-wide for Linux-like systems using:
+Currently, other modules, which use vigra\_c to bind [Racket](https://racket-lang.org), [MatLAB](https://www.mathworks.com/) etc. ship the vigra\_c by means of a submodule. They use the corresponding build-scripts (build-32.sh for 32bit, build-64.sh for 64bit builds) to build a vigra\_c binary.
+
+However, since CMake is used to build the vigra\_c library, it is also possible to install the vigra\_c lib system-wide for Linux-like systems using:
 
     git clone https://github.com/bseppke/vigra_c
     cd vigra_c
@@ -37,7 +39,10 @@ Currently, other modules, which use vigra\_c to bind [Racket](https://racket-lan
     cmake -DCMAKE_INSTALL_PREFIX=/wherever/you/want/ ..
     make
     make install
-    
+
+
+This however, does neither help nor is it necessary for the language wrappers, since they rely on a dynamically loadable libary in their installation path.
+
 Please note that the vigra\_c library relies on the installation of cmake, vigra and fftw on your system (and their dependencies). For Linux, use a package manager of choice, for Mac OS I prefer MacPorts. For Windows, binaries (created with Visual Studio 2015 and [vspkg](https://github.com/bseppke/vspkg) are shipped with the sources for 32 and 64bit.
 To build the documentation documentation install doxygen and use:
 
