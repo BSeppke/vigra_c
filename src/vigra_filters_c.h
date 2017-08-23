@@ -46,6 +46,7 @@
  *    @brief Linear and non-linear image filtering algorithms
  */
 
+
 /**
  * Image convolution.
  * This function wraps the
@@ -62,6 +63,13 @@
  * \param height The height of the flat array.
  * \param kernel_width The width of the flat kernel array.
  * \param kernel_height The height the flat kernel array.
+ * \param border_treatment The border treatment mode, according to VIGRA's border treatment modes:
+   0 = BORDER_TREATMENT_AVOID:  do not operate on a pixel where the kernel doe not fit in the image
+   1 = BORDER_TREATMENT_CLIP:   clip kernel at image border (this is only useful if the kernel is >= 0 everywhere)
+   2 = BORDER_TREATMENT_REPEAT: repeat the nearest valid pixel
+   3 = BORDER_TREATMENT_REFLECT: reflect image at last row/column
+   4 = BORDER_TREATMENT_WRAP : wrap image around (periodic boundary conditions)
+   5 = BORDER_TREATMENT_ZEROPAD: assume that all outside points have value zero
  *
  * \return 0 if the convolution was successful,
  *         2 if kernel dimensions are not odd,
@@ -73,7 +81,8 @@ LIBEXPORT int vigra_convolveimage_c(const PixelType * arr_in,
                                     const int width,
                                     const int height,
                                     const int kernel_width,
-                                    const int kernel_height);
+                                    const int kernel_height,
+                                    const int border_treatment);
 
 /**
  * Separable image convolution.
@@ -92,6 +101,13 @@ LIBEXPORT int vigra_convolveimage_c(const PixelType * arr_in,
  * \param height The height of the flat array.
  * \param kernel_width The width of the flat horizontal kernel array.
  * \param kernel_height The height the flat vertical kernel array.
+ * \param border_treatment The border treatment mode, according to VIGRA's border treatment modes:
+   0 = BORDER_TREATMENT_AVOID:  do not operate on a pixel where the kernel doe not fit in the image
+   1 = BORDER_TREATMENT_CLIP:   clip kernel at image border (this is only useful if the kernel is >= 0 everywhere)
+   2 = BORDER_TREATMENT_REPEAT: repeat the nearest valid pixel
+   3 = BORDER_TREATMENT_REFLECT: reflect image at last row/column
+   4 = BORDER_TREATMENT_WRAP : wrap image around (periodic boundary conditions)
+   5 = BORDER_TREATMENT_ZEROPAD: assume that all outside points have value zero
  *
  * \return 0 if the convolution was successful,
  *         2 if kernel dimensions are not odd,
@@ -104,7 +120,8 @@ LIBEXPORT int vigra_separableconvolveimage_c(const PixelType * arr_in,
                                              const int width,
                                              const int height,
                                              const int kernel_width,
-                                             const int kernel_height);
+                                             const int kernel_height,
+                                             const int border_treatment);
 
 /**
  * Computation of the first order partial derivatives by means of a convolution 

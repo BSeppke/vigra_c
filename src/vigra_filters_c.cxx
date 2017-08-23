@@ -51,8 +51,15 @@ LIBEXPORT int vigra_convolveimage_c(const PixelType * arr_in,
                                     const int width,
                                     const int height,
                                     const int kernel_width,
-                                    const int kernel_height)
+                                    const int kernel_height,
+                                    const int border_treatment)
 {
+    if(border_treatment < 0 || border_treatment > 5)
+    {
+        //Illegal border treatment mode!
+        return 2;
+    }
+    
     try
     {
         //Create gray scale image views for the arrays
@@ -65,7 +72,9 @@ LIBEXPORT int vigra_convolveimage_c(const PixelType * arr_in,
             return 2;
         
         vigra::convolveImage(img_in, img_out,
-                             kernel2dFromArray(kernel_arr_in, kernel_width, kernel_height));
+                             kernel2dFromArray(kernel_arr_in,
+                                               kernel_width, kernel_height,
+                                               (vigra::BorderTreatmentMode)border_treatment));
     }
     catch (vigra::StdException & e)
     {
@@ -82,8 +91,15 @@ LIBEXPORT int vigra_separableconvolveimage_c(const PixelType * arr_in,
                                              const int width,
                                              const int height,
                                              const int kernel_width,
-                                             const int kernel_height)
+                                             const int kernel_height,
+                                             const int border_treatment)
 {
+    if(border_treatment < 0 || border_treatment > 5)
+    {
+        //Illegal border treatment mode!
+        return 2;
+    }
+    
     try
     {
         //Create gray scale image views for the arrays
@@ -96,8 +112,12 @@ LIBEXPORT int vigra_separableconvolveimage_c(const PixelType * arr_in,
             return 2;
         
         vigra::convolveImage(img_in, img_out,
-                             kernel1dFromArray(kernel_h_arr_in, kernel_width),
-                             kernel1dFromArray(kernel_v_arr_in, kernel_height));
+                             kernel1dFromArray(kernel_h_arr_in,
+                                               kernel_width,
+                                               (vigra::BorderTreatmentMode)border_treatment),
+                             kernel1dFromArray(kernel_v_arr_in,
+                                               kernel_height,
+                                               (vigra::BorderTreatmentMode)border_treatment));
     }
     catch (vigra::StdException & e)
     {

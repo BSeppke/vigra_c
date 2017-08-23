@@ -55,13 +55,15 @@
  * \param arr_in Flat input array of size width*height.
  * \param width The width of the flat array.
  * \param height The height of the height of the flat array.
+ * \param border_treatment The border treatment mode, according to VIGRA's border treatment modes.
  *
  * \return The result of the given array as a vigra::Kernel2D.
  */
 template<class T>
 vigra::Kernel2D<T> kernel2dFromArray(const T * arr_in,
                                      const int width,
-                                     const int height)
+                                     const int height,
+                                     vigra::BorderTreatmentMode border_treatment = vigra::BORDER_TREATMENT_REFLECT)
 {
     //Create a view on the data
     vigra::Shape2 shape(width,height);
@@ -82,6 +84,8 @@ vigra::Kernel2D<T> kernel2dFromArray(const T * arr_in,
         }
     }
     
+    kernel.setBorderTreatment(border_treatment);
+    
     //and return it
     return kernel;
 }
@@ -93,12 +97,14 @@ vigra::Kernel2D<T> kernel2dFromArray(const T * arr_in,
  *
  * \param arr_in Flat input array of size size.
  * \param size The size of the flat array.
+ * \param border_treatment The border treatment mode, according to VIGRA's border treatment modes.
  *
  * \return The result of the given array as a vigra::Kernel1D.
  */
 template<class T>
 vigra::Kernel1D<T> kernel1dFromArray(const T * arr_in,
-                                     const int size)
+                                     const int size,
+                                     vigra::BorderTreatmentMode border_treatment = vigra::BORDER_TREATMENT_REFLECT)
 {
     //Boundaries of the kernel
     int b = size/2;
@@ -112,6 +118,8 @@ vigra::Kernel1D<T> kernel1dFromArray(const T * arr_in,
     {
         kernel[i-b] = arr_in[i];
     }
+    
+    kernel.setBorderTreatment(border_treatment);
     
     //and return it
     return kernel;
