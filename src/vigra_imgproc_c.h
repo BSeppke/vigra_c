@@ -364,6 +364,7 @@ LIBEXPORT int vigra_subimage_c(const PixelType * arr_in,
  * \param upper The upper border to be padded to the flat input array.
  * \param right The right border to be padded to the flat input array.
  * \param lower The lower border to be padded to the flat input array.
+ * \param value The intensity value of the new border.
  *
  * \return 0 if the subimage extraction was successful, 
  *         2 if right+left=1 or lower+upper=0,
@@ -376,7 +377,8 @@ LIBEXPORT int vigra_paddimage_c(const PixelType * arr_in,
                                 const int left,
                                 const int upper,
                                 const int right,
-                                const int lower);
+                                const int lower,
+                                const PixelType value);
 
 /**
  * @}

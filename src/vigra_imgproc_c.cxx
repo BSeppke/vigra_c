@@ -566,7 +566,8 @@ LIBEXPORT int vigra_paddimage_c(const PixelType * arr_in,
                                 const int left,
                                 const int upper,
                                 const int right,
-                                const int lower)
+                                const int lower,
+                                const PixelType value)
 {
     try
     {
@@ -575,13 +576,14 @@ LIBEXPORT int vigra_paddimage_c(const PixelType * arr_in,
         ImageView img(shape_in, arr_in);
         
         int padd_w = right + left + width_in,
-        padd_h = lower + upper + height_in;
+            padd_h = lower + upper + height_in;
         
         //Check for padding measures
         if(padd_w >= width_in && padd_h >= height_in)
         {
             vigra::Shape2 padd_shape_in(padd_w, padd_h);
             ImageView padd_img(padd_shape_in, arr_out);
+            padd_img = value;
             
             padd_img.subarray(vigra::Shape2(left, upper),
                               vigra::Shape2(left+width_in, upper+height_in)) = img;
