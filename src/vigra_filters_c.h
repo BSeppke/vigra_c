@@ -72,7 +72,8 @@
    5 = BORDER_TREATMENT_ZEROPAD: assume that all outside points have value zero
  *
  * \return 0 if the convolution was successful,
- *         2 if the border treatment mode is invalid,
+ *         3 if the border treatment mode is invalid,
+ *         2 if the kernel size are not odd,
  *         1 else.
  */
 LIBEXPORT int vigra_convolveimage_c(const PixelType * arr_in,
@@ -110,7 +111,8 @@ LIBEXPORT int vigra_convolveimage_c(const PixelType * arr_in,
    5 = BORDER_TREATMENT_ZEROPAD: assume that all outside points have value zero
  *
  * \return 0 if the convolution was successful,
- *         2 if the border treatment mode is invalid,
+ *         3 if the border treatment mode is invalid,
+ *         2 if the kernel size are not odd,
  *         1 else.
  */
 LIBEXPORT int vigra_separableconvolveimage_c(const PixelType * arr_in,

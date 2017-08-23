@@ -57,7 +57,7 @@ LIBEXPORT int vigra_convolveimage_c(const PixelType * arr_in,
     if(border_treatment < 0 || border_treatment > 5)
     {
         //Illegal border treatment mode!
-        return 2;
+        return 3;
     }
     
     try
@@ -97,7 +97,7 @@ LIBEXPORT int vigra_separableconvolveimage_c(const PixelType * arr_in,
     if(border_treatment < 0 || border_treatment > 5)
     {
         //Illegal border treatment mode!
-        return 2;
+        return 3;
     }
     
     try
