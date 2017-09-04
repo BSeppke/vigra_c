@@ -148,13 +148,16 @@ LIBEXPORT int vigra_importrgbaimage_c(const PixelType * arr_r_out,
  * \param width The width of the flat input band array.
  * \param height The height of the flat band array.
  * \param filename The filename of the image to be saved.
+ * \param rescale_range If true, the flat values of the image will be converted to 0..255 for saving.\n
+ *                      If false, the values will be clipped by 0 (minumum) and 255 (maximum).
  *
  * \return 0 if the grayscale image was saved to the filesystem, 1 else.
  */
 LIBEXPORT int vigra_exportgrayimage_c(const PixelType * arr_in,
                                       const int width,
                                       const int height,
-                                      const char * filename);
+                                      const char * filename,
+                                      bool rescale_range);
 
 /**
  * Export of an RGB image from three single band arrays to file system.
@@ -171,6 +174,8 @@ LIBEXPORT int vigra_exportgrayimage_c(const PixelType * arr_in,
  * \param width The width of the flat input band array.
  * \param height The height of the flat band array.
  * \param filename The filename of the image to be saved.
+ * \param rescale_range If true, the flat values of the image will be converted to 0..255 for saving.\n
+ *                      If false, the values will be clipped by 0 (minumum) and 255 (maximum).
  *
  * \return 0 if the RGB image was saved to the filesystem, 1 else.
  */
@@ -179,7 +184,8 @@ LIBEXPORT int vigra_exportrgbimage_c(const PixelType * arr_r_in,
                                      const PixelType * arr_b_in,
                                      const int width,
                                      const int height,
-                                     const char * filename);
+                                     const char * filename,
+                                      bool rescale_range);
 
 /**
  * Export of an RGBA image from four single band arrays to file system.
@@ -197,6 +203,8 @@ LIBEXPORT int vigra_exportrgbimage_c(const PixelType * arr_r_in,
  * \param width The width of the flat input band array.
  * \param height The height of the flat band array.
  * \param filename The filename of the image to be saved.
+ * \param rescale_range If true, the flat values of the image will be converted to 0..255 for saving.\n
+ *                      If false, the values will be clipped by 0 (minumum) and 255 (maximum).
  *
  * \return 0 if the RGBA image was saved to the filesystem, 1 else.
  */
@@ -206,7 +214,8 @@ LIBEXPORT int vigra_exportrgbaimage_c(const PixelType * arr_r_in,
                                       const PixelType * arr_a_in,
                                       const int width,
                                       const int height,
-                                      const char * filename);
+                                      const char * filename,
+                                      bool rescale_range);
 
 /**
  * This function returns the image width of a given filename without importing
