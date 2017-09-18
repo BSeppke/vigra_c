@@ -373,7 +373,11 @@ LIBEXPORT int vigra_extractfeatures_gray_c(const PixelType * arr_gray_in,
         // x=(13 .. 14) -> minor ev: x and y-coord
         // x= 15        -> major ew
         // x= 16        -> minor ew
-        vigra::Shape2 shape_out(17, max_label+1);
+        // x=(17 .. 18) -> grey value weighted mean-x and y-coord
+        // x=19         -> perimeter (region contour length)
+        // x=20         -> skewness
+        // x=21         -> kurtosis
+        vigra::Shape2 shape_out(22, max_label+1);
         ImageView img_out(shape_out, arr_out);
         
         typedef
@@ -382,7 +386,10 @@ LIBEXPORT int vigra_extractfeatures_gray_c(const PixelType * arr_gray_in,
                         Count,
                         Coord<Minimum>, Coord<Maximum>, Coord<Mean>,
                         Minimum, Maximum, Mean, StdDev,
-                        RegionAxes, RegionRadii> >
+                        RegionAxes, RegionRadii,
+                        Weighted<Coord<Mean> >,
+                        RegionPerimeter,
+                        Skewness, Kurtosis > >
             AccumulatorType;
         
         AccumulatorType a;
@@ -414,6 +421,14 @@ LIBEXPORT int vigra_extractfeatures_gray_c(const PixelType * arr_gray_in,
             
             img_out(15,i) = get<RegionRadii>(a,i)[0];
             img_out(16,i) = get<RegionRadii>(a,i)[1];
+            
+            img_out(17, i) = get<Weighted<Coord<Mean>>>(a,i)[0];
+            img_out(18, i) = get<Weighted<Coord<Mean>>>(a,i)[1];
+            
+            img_out(19, i) = get<RegionPerimeter>(a,i);
+            
+            img_out(20, i) = get<Skewness>(a,i);
+            img_out(21, i) = get<Kurtosis>(a,i);
         }
     }
     catch (vigra::StdException & e)
@@ -450,6 +465,12 @@ LIBEXPORT int vigra_extractfeatures_rgb_c( const PixelType * arr_r_in,
         
         ImageView labels_in(shape_in, arr_labels_in);
         
+        using namespace vigra::multi_math;
+        
+        //weights array (RGB->grey)
+        vigra::MultiArray<2, double> weights = 0.3*img_red + 0.59*img_green + 0.11*img_blue;
+        
+        
         //temp copy to int-type array
         vigra::MultiArray<2, unsigned int> labels = labels_in;
         
@@ -466,21 +487,28 @@ LIBEXPORT int vigra_extractfeatures_rgb_c( const PixelType * arr_r_in,
         // x=(21 .. 22) -> minor ev: x and y-coord
         // x=23         -> major ew
         // x=24         -> minor ew
-        vigra::Shape2 shape_out(25, max_label+1);
+        // x=(25 .. 26) -> luminace weighted mean-x and y-coord
+        // x=27         -> perimeter (region contour length)
+        // x=(28 .. 30) -> skewness (red, green, blue)
+        // x=(31 .. 33) -> kurtosis (red, green, blue)
+        vigra::Shape2 shape_out(34, max_label+1);
         ImageView img_out(shape_out, arr_out);
         
         typedef
-            AccumulatorChainArray<vigra::CoupledArrays<2, vigra::RGBValue<float>, unsigned int>,
-                Select< DataArg<1>, LabelArg<2>, // in which array to look (coordinates are always arg 0)
+            AccumulatorChainArray<vigra::CoupledArrays<2, vigra::RGBValue<float>, double, unsigned int>,
+                Select< DataArg<1>, WeightArg<2>, LabelArg<3>, // in which array to look (coordinates are always arg 0)
                         Count,
                         Coord<Minimum>, Coord<Maximum>, Coord<Mean>,
                         Minimum, Maximum, Mean, StdDev,
-                        RegionAxes, RegionRadii > >
+                        RegionAxes, RegionRadii,
+                        Weighted<Coord<Mean>>,
+                        RegionPerimeter,
+                        Skewness, Kurtosis  > >
             AccumulatorType;
         
         AccumulatorType a;
         
-        extractFeatures(src, labels, a);
+        extractFeatures(src, weights, labels, a);
 
         for(unsigned int i=0; i!=max_label+1; ++i)
         {
@@ -518,6 +546,19 @@ LIBEXPORT int vigra_extractfeatures_rgb_c( const PixelType * arr_r_in,
             
             img_out(23,i) = get<RegionRadii>(a,i)[0];
             img_out(24,i) = get<RegionRadii>(a,i)[1];
+            
+            img_out(25, i) = get<Weighted<Coord<Mean>>>(a,i)[0];
+            img_out(26, i) = get<Weighted<Coord<Mean>>>(a,i)[1];
+            
+            img_out(27, i) = get<RegionPerimeter>(a,i);
+            
+            img_out(28, i) = get<Skewness>(a,i)[0];
+            img_out(29, i) = get<Skewness>(a,i)[1];
+            img_out(30, i) = get<Skewness>(a,i)[2];
+            
+            img_out(31, i) = get<Kurtosis>(a,i)[0];
+            img_out(32, i) = get<Kurtosis>(a,i)[1];
+            img_out(33, i) = get<Kurtosis>(a,i)[2];
         }
     }
     catch (vigra::StdException & e)
