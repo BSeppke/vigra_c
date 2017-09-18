@@ -317,28 +317,32 @@ LIBEXPORT int vigra_regionimagetocrackedgeimage_c(const PixelType * arr_in,
  * </a> function to estimate the basic features in a region-wise manner.
  * The following features will be extracted for each region:
  * 
- *  | Index         | Feature                       |
- *  | ------------- | ----------------------------- |
- *  |  0            | region_size                   |
- *  |  1,  2        | upperleft-x and y-coord       |
- *  |  3,  4        | lowerright-x and y-coord      |
- *  |  5,  6        | mean-x and y-coord            |
- *  |  7            | min grey value                |
- *  |  8            | max grey value                |
- *  |  9            | mean grey value               |
- *  | 10            | std.dev. grey value           |
- *  | 11, 12        | major ev: x and y-coord       |
- *  | 13, 14        | minor ev: x and y-coord       |
- *  | 15            | major ew                      |
- *  | 16            | minor ew                      |
+ *  | Index         | Feature                                |
+ *  | ------------- | -------------------------------------- |
+ *  |  0            | region_size                            |
+ *  |  1,  2        | upperleft-x and y-coord                |
+ *  |  3,  4        | lowerright-x and y-coord               |
+ *  |  5,  6        | mean-x and y-coord                     |
+ *  |  7            | min grey value                         |
+ *  |  8            | max grey value                         |
+ *  |  9            | mean grey value                        |
+ *  | 10            | std.dev. grey value                    |
+ *  | 11, 12        | major ev: x and y-coord                |
+ *  | 13, 14        | minor ev: x and y-coord                |
+ *  | 15            | major ew                               |
+ *  | 16            | minor ew                               |
+ *  | 17, 18        | grey value weighted mean-x and y-coord |
+ *  | 19            | perimeter (region contour length)      |
+ *  | 20            | skewness                               |
+ *  | 21            | kurtosis                               |
  *
  * Each feature can be accessed in the output array by means of its index and 
  * region id by: output(index, region_id). Please make sure, that the output is 
- * allocated of size 17x(max_label+1).
+ * allocated of size 22*(max_label+1).
  *
  * \param arr_gray_in Flat input array (band) of size width_in*height_in.
  * \param arr_labels_in Flat input array (labels) of size width_in*height_in.
- * \param[out] arr_out Flat array (results) of size 11*(max_label+1).
+ * \param[out] arr_out Flat array (results) of size 22*(max_label+1).
  * \param width_in The width of the flat array.
  * \param height_in The width of the flat array.
  * \param max_label The maximum region label to derive statistics for.
@@ -361,30 +365,35 @@ LIBEXPORT int vigra_extractfeatures_gray_c(const PixelType * arr_gray_in,
  * function to estimate the basic features in a region-wise manner. 
  * The following features will be extracted for each region:
  * 
- *  | Index         | Feature                       |
- *  | ------------- | ----------------------------- |
- *  |  0            | region_size                   |
- *  |  1,  2        | upperleft-x and y-coord       |
- *  |  3,  4        | lowerright-x and y-coord      |
- *  |  5,  6        | mean-x and y-coord            |
- *  |  7,  8,  9    | min red,green,blue value      |
- *  | 10, 11, 12    | max red,green,blue value      |
- *  | 13, 14, 15    | mean red,green,blue value     |
- *  | 16, 17, 18    | std.dev. red,green,blue value |
- *  | 19, 20        | major ev: x and y-coord       |
- *  | 21, 22        | minor ev: x and y-coord       |
- *  | 23            | major ew                      |
- *  | 24            | minor ew                      |
+ *  | Index         | Feature                              |
+ *  | ------------- | ------------------------------------ |
+ *  |  0            | region_size                          |
+ *  |  1,  2        | upperleft-x and y-coord              |
+ *  |  3,  4        | lowerright-x and y-coord             |
+ *  |  5,  6        | mean-x and y-coord                   |
+ *  |  7,  8,  9    | min red,green,blue value             |
+ *  | 10, 11, 12    | max red,green,blue value             |
+ *  | 13, 14, 15    | mean red,green,blue value            |
+ *  | 16, 17, 18    | std.dev. red,green,blue value        |
+ *  | 19, 20        | major ev: x and y-coord              |
+ *  | 21, 22        | minor ev: x and y-coord              |
+ *  | 23            | major ew                             |
+ *  | 24            | minor ew                             |
+ *  | 25, 26        | luminace weighted mean-x and y-coord |
+ *  |               | L = 0.3*R + 0.59*G + 0.11*B          |
+ *  | 27            | perimeter (region contour length)    |
+ *  | 28, 29, 30    | skewness (red, green, blue)          |
+ *  | 31, 32, 33    | kurtosis (red, green, blue)          |
  *
  * Each feature can be accessed in the output array by means of its index and 
  * region id by: output(index, region_id). Please make sure, that the output is 
- * allocated of size 25x(max_label+1).
+ * allocated of size 34*(max_label+1).
  *
  * \param arr_r_in Flat input array (red band) of size width_in*height_in.
  * \param arr_g_in Flat input array (green band) of size width_in*height_in.
  * \param arr_b_in Flat input array (blue band) of size width_in*height_in.
  * \param arr_labels_in Flat input array (labels) of size width_in*height_in.
- * \param[out] arr_out Flat array (results) of size 19*(max_label+1).
+ * \param[out] arr_out Flat array (results) of size 34*(max_label+1).
  * \param width_in The width of the flat array.
  * \param height_in The height of the flat array.
  * \param max_label The maximum region label to derive statistics for.

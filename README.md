@@ -57,6 +57,7 @@ To write another wrapper for a new programming languages, get inspiration from t
 * exelvis IDL ([vigraidl](https://github.com/bseppke/vigraidl))
 * MatLAB ([vigramatlab](https://github.com/bseppke/vigramatlab))
 * Java ([vigraj](https://github.com/bseppke/vigraj))
+* Guile ([guile-cv](https://www.gnu.org/software/guile-cv/)), by David Pirotte
 
 All you need to make sure, is that the other programming language is able to load foreign (C-) functions and to allocate memory for the images.
 

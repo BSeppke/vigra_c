@@ -207,7 +207,8 @@ LIBEXPORT int vigra_importrgbaimage_c(const PixelType * arr_r_out,
 LIBEXPORT int vigra_exportgrayimage_c(const PixelType * arr_in,
                                       const int width,
                                       const int height,
-                                      const char * filename)
+                                      const char * filename,
+                                      bool rescale_range)
 {
     try
     {
@@ -215,8 +216,15 @@ LIBEXPORT int vigra_exportgrayimage_c(const PixelType * arr_in,
         vigra::Shape2 shape(width,height);
         ImageView out(shape, arr_in);
         
-        // import the image just read
-        vigra::exportImage(out, filename);
+        if(rescale_range)
+        {
+            vigra::exportImage(out, filename);
+        }
+        else
+        {
+            vigra::MultiArray<2, unsigned char> img8bit(out);
+            vigra::exportImage(img8bit, filename);
+        }
     }
     catch (vigra::StdException & e)
     {
@@ -230,7 +238,8 @@ LIBEXPORT int vigra_exportrgbimage_c(const PixelType * arr_r_in,
                                      const PixelType * arr_b_in,
                                      const int width,
                                      const int height,
-                                     const char * filename)
+                                     const char * filename,
+                                     bool rescale_range)
 {
     try
     {
@@ -254,8 +263,16 @@ LIBEXPORT int vigra_exportrgbimage_c(const PixelType * arr_r_in,
             img_iter->blue() = *blue_iter;
         }
         
-        // export the image, which has just been filled
-        vigra::exportImage(img, filename);
+        if(rescale_range)
+        {
+            // export the image, which has just been filled
+            vigra::exportImage(img, filename);
+        }
+        else
+        {
+            vigra::MultiArray<2, vigra::RGBValue<unsigned char> > img8bit(img);
+            vigra::exportImage(img8bit, filename);
+        }
     }
     catch (vigra::StdException & e)
     {
@@ -271,7 +288,8 @@ LIBEXPORT int vigra_exportrgbaimage_c(const PixelType * arr_r_in,
                                       const PixelType * arr_a_in,
                                       const int width,
                                       const int height,
-                                      const char * filename)
+                                      const char * filename,
+                                      bool rescale_range)
 {
     try
     {
@@ -296,8 +314,16 @@ LIBEXPORT int vigra_exportrgbaimage_c(const PixelType * arr_r_in,
             img_iter->blue() = *blue_iter;
         }
         
-        // export the image, which has just been filled
-        vigra::exportImageAlpha(img, img_alpha, filename);
+        if(rescale_range)
+        {
+            // export the image, which has just been filled
+            vigra::exportImageAlpha(img, img_alpha, filename);
+        }
+        else
+        {
+            vigra::MultiArray<2, vigra::RGBValue<unsigned char> > img8bit(img);
+            vigra::exportImageAlpha(img8bit, img_alpha, filename);
+        }
     }
     catch (vigra::StdException & e)
     {
