@@ -1,0 +1,45 @@
+VIGRA_C NEWS --- history of user-visible changes.
+Copyright (C) 2008-2017 Benjamin Seppke
+MIT License, see the LICENSE file for further copying conditions.
+
+Please use GitHub for bug reports and pull requests for including your enhancements.
+
+Changes at Sep 18, 2017 (a38f36151643a415c5a42280909263078f73c802):
+
+* Interface changes:
+
+Added more features to the vigra_extractfeatures_gray_c function: Now, 22 features per region are derived. Thus, the array handed over to this function needs to be of size (regions+1)*22
+
+Added more features to the vigra_extractfeatures_rgb_c function: Now, 34 features per region are derived. Thus, the array handed over to this function needs to be of size (regions+1)*34
+
+* New interfaces
+
+* New deprecations
+
+* Bug fixes
+
+* Performance improvements
+
+* Incompatible changes
+
+
+Changes at Sep 4, 2017 (c2f35f7bd85764cdd4e9acd4050d3d6ea16acf89)
+
+* Interface changes:
+
+Added one additional boolean argument "rescale_range" to the functions:
+vigra_exportgrayimage_c
+vigra_exportrgbimage_c
+vigra_exportrgbaimage_c
+
+If set to true, the range of intensity values is rescaled from min..max to 0..255 for most image formats, which only support 8bit (per channel). If not, rounded intensity are stored, if the float values lie within 0..255. Else, 0 or 255 if above or below the range.
+
+* New interfaces
+
+* New deprecations
+
+* Bug fixes
+
+* Performance improvements
+
+* Incompatible changes
