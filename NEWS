@@ -17,6 +17,45 @@ VIGRA_C NEWS --- history of user-visible changes
   Please use GitHub for bug reports and pull requests for including
   your enhancements.
 
+* Oct 25, 2017
+
+Commit 91a0bc3a0fc249f5eb96506eacb74e5633242f60
+
+** Interface changes
+
+** New interfaces
+
+vigra_clipimage_c:
+
+  This new function clips the image pixels values' to a given
+  lower and upper value.
+
+** New deprecations
+
+** Bug fixes
+
+vigra_exportgrayimage_c:
+vigra_exportrgbimage_c:
+vigra_exportrgbaimage_c:
+
+  Those functions will now clip the images from 0...255 if the
+  parameter rescale_range is set to false, like it is said in
+  the corresponding documentation. Before, they just type
+  casted the floats to uchars, which resulted in ugly overflows.
+
+** Performance improvements
+
+vigra_convert_grayband_to_argb_c:
+vigra_convert_rgbbands_to_argb_c:
+vigra_convert_rgbabands_to_argb_c:
+
+  Since these functions also perform casts from float to uchar, 
+  they now also clip the values to 0..255 before casting. Adapted
+  the documentation as well.
+
+** Incompatible changes
+
+
 * Sep 18, 2017
 
 Commit a38f36151643a415c5a42280909263078f73c802
