@@ -55,9 +55,9 @@ LIBEXPORT int vigra_convert_grayband_to_argb_c(const PixelType *arr_in,
     for ( ; gray_ptr != gray_end; ++gray_ptr, argb_ptr+=4)
     {
         argb_ptr[0] = 255;
-        argb_ptr[1] = *gray_ptr;
-        argb_ptr[2] = *gray_ptr;
-        argb_ptr[3] = *gray_ptr;
+        argb_ptr[1] = vigra::max(vigra::min(*gray_ptr, 255.0f), 0.0f);
+        argb_ptr[2] = argb_ptr[1];
+        argb_ptr[3] = argb_ptr[1];
     }
     return 0;
 }
@@ -79,9 +79,9 @@ LIBEXPORT int vigra_convert_rgbbands_to_argb_c(const PixelType * arr_r_in,
     for ( ; r_ptr != r_end ; ++r_ptr, ++g_ptr, ++b_ptr, argb_ptr+=4)
     {
         argb_ptr[0] = 255;
-        argb_ptr[1] = *r_ptr;
-        argb_ptr[2] = *g_ptr;
-        argb_ptr[3] = *b_ptr;
+        argb_ptr[1] = vigra::max(vigra::min(*r_ptr, 255.0f), 0.0f);
+        argb_ptr[2] = vigra::max(vigra::min(*g_ptr, 255.0f), 0.0f);
+        argb_ptr[3] = vigra::max(vigra::min(*b_ptr, 255.0f), 0.0f);
     }
     return 0;
 }
@@ -104,10 +104,10 @@ LIBEXPORT int vigra_convert_rgbabands_to_argb_c(const PixelType * arr_r_in,
     
     for ( ; r_ptr != r_end ; ++r_ptr, ++g_ptr, ++b_ptr, ++a_ptr, argb_ptr+=4)
     {
-        argb_ptr[0] = *a_ptr;
-        argb_ptr[1] = *r_ptr;
-        argb_ptr[2] = *g_ptr;
-        argb_ptr[3] = *b_ptr;
+        argb_ptr[0] = vigra::max(vigra::min(*a_ptr, 255.0f), 0.0f);
+        argb_ptr[1] = vigra::max(vigra::min(*r_ptr, 255.0f), 0.0f);
+        argb_ptr[2] = vigra::max(vigra::min(*g_ptr, 255.0f), 0.0f);
+        argb_ptr[3] = vigra::max(vigra::min(*b_ptr, 255.0f), 0.0f);
     }
     return 0;
 }
@@ -127,7 +127,7 @@ LIBEXPORT int vigra_convert_argb_to_grayband_c(const char * argb_arr_in,
     {
         // since all bands are equal valued - we take the first one...
         // argb_ptr[0] would be alpha!
-        *gray_ptr = (float)argb_ptr[1];
+        *gray_ptr = (PixelType)argb_ptr[1];
     }
     return 0;
 }
@@ -150,9 +150,9 @@ LIBEXPORT int vigra_convert_argb_to_rgbbands_c(const char * argb_arr_in,
     for ( ; r_ptr != r_end ; ++r_ptr, ++g_ptr, ++b_ptr, argb_ptr+=4)
     {
         // argb_ptr[0] would be alpha!
-        *r_ptr = (float)argb_ptr[1];
-        *g_ptr = (float)argb_ptr[2];
-        *b_ptr = (float)argb_ptr[3];
+        *r_ptr = (PixelType)argb_ptr[1];
+        *g_ptr = (PixelType)argb_ptr[2];
+        *b_ptr = (PixelType)argb_ptr[3];
     }
     return 0;
 }
@@ -176,10 +176,10 @@ LIBEXPORT int vigra_convert_argb_to_rgbabands_c(const char * argb_arr_in,
     
     for ( ; r_ptr != r_end ; ++r_ptr, ++g_ptr, ++b_ptr, ++a_ptr, argb_ptr+=4)
     {
-        *a_ptr = (float)argb_ptr[0];
-        *r_ptr = (float)argb_ptr[1];
-        *g_ptr = (float)argb_ptr[2];
-        *b_ptr = (float)argb_ptr[3];
+        *a_ptr = (PixelType)argb_ptr[0];
+        *r_ptr = (PixelType)argb_ptr[1];
+        *g_ptr = (PixelType)argb_ptr[2];
+        *b_ptr = (PixelType)argb_ptr[3];
     }
     return 0;
 }

@@ -598,3 +598,22 @@ LIBEXPORT int vigra_paddimage_c(const PixelType * arr_in,
     
     return 0;
 }
+
+LIBEXPORT int vigra_clipimage_c(const PixelType * arr_in,
+                                const PixelType * arr_out,
+                                const int width,
+                                const int height,
+                                const PixelType low,
+                                const PixelType upp)
+{
+    unsigned long size = width*height;
+    
+    PixelType * ptr_out = (PixelType*)arr_out;
+    
+    for(unsigned long l=0; l!=size; ++l)
+    {
+        ptr_out[l] = vigra::max(vigra::min(arr_in[l], upp), low);
+    }
+    
+    return 0;
+}

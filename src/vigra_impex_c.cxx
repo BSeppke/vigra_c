@@ -214,15 +214,22 @@ LIBEXPORT int vigra_exportgrayimage_c(const PixelType * arr_in,
     {
         //Create gray scale image views for the arrays
         vigra::Shape2 shape(width,height);
-        ImageView out(shape, arr_in);
+        ImageView img(shape, arr_in);
         
         if(rescale_range)
         {
-            vigra::exportImage(out, filename);
+            vigra::exportImage(img, filename);
         }
         else
         {
-            vigra::MultiArray<2, unsigned char> img8bit(out);
+            vigra::MultiArray<2, unsigned char> img8bit(shape);
+            auto img8Bit_iter = img8bit.begin();
+        
+            for(auto img_iter = img.begin(); img_iter != img.end(); ++img_iter, ++img8Bit_iter)
+            {
+                *img8Bit_iter = vigra::max(vigra::min(*img_iter, 255.0f), 0.0f);
+            }
+            
             vigra::exportImage(img8bit, filename);
         }
     }
@@ -256,20 +263,26 @@ LIBEXPORT int vigra_exportrgbimage_c(const PixelType * arr_r_in,
              green_iter = img_green.begin(),
              blue_iter = img_blue.begin();
         
-        for(auto img_iter = img.begin(); img_iter != img.end(); ++img_iter, ++red_iter, ++green_iter, ++blue_iter)
-        {
-            img_iter->red() = *red_iter;
-            img_iter->green() = *green_iter;
-            img_iter->blue() = *blue_iter;
-        }
-        
         if(rescale_range)
         {
+            for(auto img_iter = img.begin(); img_iter != img.end(); ++img_iter, ++red_iter, ++green_iter, ++blue_iter)
+            {
+                img_iter->red() = *red_iter;
+                img_iter->green() = *green_iter;
+                img_iter->blue() = *blue_iter;
+            }
             // export the image, which has just been filled
             vigra::exportImage(img, filename);
         }
         else
         {
+            for(auto img_iter = img.begin(); img_iter != img.end(); ++img_iter, ++red_iter, ++green_iter, ++blue_iter)
+            {
+                img_iter->red() = vigra::max(vigra::min(*red_iter, 255.0f), 0.0f);
+                img_iter->green() = vigra::max(vigra::min(*green_iter, 255.0f), 0.0f);
+                img_iter->blue() = vigra::max(vigra::min(*blue_iter, 255.0f), 0.0f);
+            }
+            
             vigra::MultiArray<2, vigra::RGBValue<unsigned char> > img8bit(img);
             vigra::exportImage(img8bit, filename);
         }
@@ -307,20 +320,32 @@ LIBEXPORT int vigra_exportrgbaimage_c(const PixelType * arr_r_in,
              green_iter = img_green.begin(),
              blue_iter = img_blue.begin();
         
-        for(auto img_iter = img.begin(); img_iter != img.end(); ++img_iter, ++red_iter, ++green_iter, ++blue_iter)
-        {
-            img_iter->red() = *red_iter;
-            img_iter->green() = *green_iter;
-            img_iter->blue() = *blue_iter;
-        }
-        
         if(rescale_range)
         {
+            for(auto img_iter = img.begin(); img_iter != img.end(); ++img_iter, ++red_iter, ++green_iter, ++blue_iter)
+            {
+                img_iter->red() = *red_iter;
+                img_iter->green() = *green_iter;
+                img_iter->blue() = *blue_iter;
+            }
+           
             // export the image, which has just been filled
             vigra::exportImageAlpha(img, img_alpha, filename);
         }
         else
         {
+            for(auto img_iter = img.begin(); img_iter != img.end(); ++img_iter, ++red_iter, ++green_iter, ++blue_iter)
+            {
+                img_iter->red() = vigra::max(vigra::min(*red_iter, 255.0f), 0.0f);
+                img_iter->green() = vigra::max(vigra::min(*green_iter, 255.0f), 0.0f);
+                img_iter->blue() = vigra::max(vigra::min(*blue_iter, 255.0f), 0.0f);
+            }
+            
+            for(auto img_iter = img_alpha.begin(); img_iter != img_alpha.end(); ++img_iter)
+            {
+                *img_iter = vigra::max(vigra::min(*img_iter, 255.0f), 0.0f);
+            }
+           
             vigra::MultiArray<2, vigra::RGBValue<unsigned char> > img8bit(img);
             vigra::exportImageAlpha(img8bit, img_alpha, filename);
         }

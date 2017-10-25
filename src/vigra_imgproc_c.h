@@ -377,7 +377,26 @@ LIBEXPORT int vigra_paddimage_c(const PixelType * arr_in,
                                 const int upper,
                                 const int right,
                                 const int lower);
-
+/**
+ * Clipping of the intensities of an image band to two given values.
+ * The clipping sets all values below low to low, above upp to upp and
+ * lets the remaining values unchanged.
+ *
+ * \param arr_in Flat input array (band) of size width*height
+ * \param[out] arr_out Flat array (band) of size width*height.
+ * \param width The width of the flat band arrays.
+ * \param height The height of the flat band arrays.
+ * \param low The lower clipping value.
+ * \param upp The upper clipping value.
+ *
+ * \return Always 0, memory overflow for arraya of different sizes.
+ */
+LIBEXPORT int vigra_clipimage_c(const PixelType * arr_in,
+                                const PixelType * arr_out,
+                                const int width,
+                                const int height,
+                                const PixelType low,
+                                const PixelType upp);
 /**
  * @}
  */
