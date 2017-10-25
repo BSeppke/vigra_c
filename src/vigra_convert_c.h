@@ -50,7 +50,7 @@
  
 /**
  * Converts a single band grayvalue image into its Alpha,RGB representation.
- * The greyavalue is therefore copied and casted to 0..255 into each R,G, and B
+ * The greyavalue is therefore copied and clipped to 0..255 into each R,G, and B
  * value and the alpha value is set to 255 (opaque). All arrays must have been
  * allocated before the call of this function.
  *
@@ -68,7 +68,7 @@ LIBEXPORT int vigra_convert_grayband_to_argb_c(const PixelType *arr_in,
 
 /**
  * Converts the single band images (r,g,b) into its combined Alpha,RGB representation.
- * The r,g,b-vaues are therefore copied and casted to 0..255 into each R,G, and B
+ * The r,g,b-vaues are therefore copied and clipped to 0..255 into each R,G, and B
  * value and the alpha value is set to 255 (opaque). All arrays must have been
  * allocated before the call of this function.
  *
@@ -90,7 +90,7 @@ LIBEXPORT int vigra_convert_rgbbands_to_argb_c(const PixelType * arr_r_in,
 
 /**
  * Converts the single band images (r,g,b,a) into its combined Alpha,RGB representation.
- * The r,g,b,a-vaues are therefore copied and casted to 0..255 into each R,G,B, and A
+ * The r,g,b,a-vaues are therefore copied and clipped to 0..255 into each R,G,B, and A
  * value and the alpha value is set to 255 (opaque). All arrays must have been
  * allocated before the call of this function.
  *
