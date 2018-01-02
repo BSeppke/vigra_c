@@ -377,6 +377,55 @@ LIBEXPORT int vigra_shockfilter_c(const PixelType *arr_in,
                                   const int iterations);
 
 /**
+ * Computation of a non-local mean filter.
+ * This function wraps the vigra::nonLocalMean function for the 2d case
+ * to C to compute the result in an iterative fashion.
+ * All arrays must have been allocated before the call of this function.
+ * For "good" default values see the vigranumpy example. They are noted
+ * inside brackets of the end of each parameter.
+ *
+ * \param arr_in Flat input array (band) of size width*height.
+ * \param[out] arr_out Flat array (shock filtered) of size width*height.
+ * \param width The width of the flat array.
+ * \param height The height of the flat array.
+ * \param policy_type The Policy, must be 0 or 1:
+                                        0 = Ratio Policy,
+                                        1 = Norm Policy.
+ * \param sigma The sigma value of the policy (P0=10.0, P1=50.0).
+ * \param mean The mean value of the policy (P0=0.95, P1=50).
+ * \param varRatio The variance ratio of the policy (0.5).
+ * \param epsilon The epsilon of the policy (0.00001).
+ * \param sigmaSpatial The sigma value of the filter (2.0).
+ * \param searchRadius The search radius of the filter (5).
+ * \param patchRadius The patch radius of the filter (either 1 or 2).
+ * \param sigmaMean The expected mean sigma value for the filter (10.0).
+ * \param stepSize The step size of the filter (2).
+ * \param iterations The iterations to be carried out. (10)
+ * \param nThreads The threads used for the computation of the filter (8).
+ * \param verbose If true, prints out status infos (True).
+ *
+ * \return 0 if the computation was successful,
+ *         2 if the policy_type is neither 0 nor 1,
+ *         1 else.
+ */
+LIBEXPORT int vigra_nonLocalMean_c(const PixelType *arr_in,
+                                   const PixelType *arr_out,
+                                   const int width,
+                                   const int height,
+                                   const int policy_type,
+                                   const float sigma,
+                                   const float mean,
+                                   const float varRatio,
+                                   const float epsilon,
+                                   const float sigmaSpatial,
+                                   const int searchRadius,
+                                   const int patchRadius,
+                                   const float sigmaMean,
+                                   const int stepSize,
+                                   const int iterations,
+                                   const int nThreads,
+                                   const bool verbose);
+/**
  * @}
  */
  

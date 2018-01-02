@@ -38,6 +38,7 @@
 #include <vigra/nonlineardiffusion.hxx>
 #include <vigra/shockfilter.hxx>
 #include <vigra/multi_convolution.hxx>
+#include <vigra/non_local_mean.hxx>
 
 
 /**
@@ -361,6 +362,55 @@ LIBEXPORT int vigra_shockfilter_c(const PixelType *arr_in,
             vigra::shockFilter(img_in, img_out, sigma, rho, upwind_factor_h, iterations);
         else
             return 2;
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+LIBEXPORT int vigra_nonLocalMean_c(const PixelType *arr_in,
+                                   const PixelType *arr_out,
+                                   const int width,
+                                   const int height,
+                                   const int policy_type,
+                                   const float sigma,
+                                   const float mean,
+                                   const float varRatio,
+                                   const float epsilon,
+                                   const float sigmaSpatial,
+                                   const int searchRadius,
+                                   const int patchRadius,
+                                   const float sigmaMean,
+                                   const int stepSize,
+                                   const int iterations,
+                                   const int nThreads,
+                                   const bool verbose)
+{
+    try
+    {
+        //Create gray scale image views for the arrays
+        vigra::Shape2 shape(width,height);
+        ImageView img_in(shape, arr_in);
+        ImageView img_out(shape, arr_out);
+        
+        vigra::NonLocalMeanParameter params(sigmaSpatial, searchRadius, patchRadius, sigmaMean, stepSize, iterations, nThreads, verbose);
+        
+        if (policy_type == 0)
+        {
+            vigra::RatioPolicy<float> ratio_policy(vigra::RatioPolicyParameter(sigma, mean, varRatio, epsilon));
+            vigra::nonLocalMean<2, float, float, vigra::RatioPolicy<float> >(img_in, ratio_policy, params, img_out);
+        }
+        else if (policy_type == 1)
+        {
+            vigra::NormPolicy<float> norm_policy(vigra::NormPolicyParameter(sigma, mean, varRatio, epsilon));
+            vigra::nonLocalMean<2, float, float, vigra::NormPolicy<float> >(img_in, norm_policy, params, img_out);
+        }
+        else
+        {
+            return 2;
+        }
     }
     catch (vigra::StdException & e)
     {
