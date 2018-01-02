@@ -4,7 +4,7 @@
 
 #+BEGIN_COMMENT
 
-Copyright (C) 2017 Benjamin Seppke
+Copyright (C) 2018 Benjamin Seppke
 
 MIT License, see the LICENSE file for further copying conditions.
 
@@ -16,6 +16,30 @@ VIGRA_C NEWS --- history of user-visible changes
 
   Please use GitHub for bug reports and pull requests for including
   your enhancements.
+  
+* Jan 2, 2018
+
+Commit 2871bfbb4578caffc8a8fe64cf8f8b46e0ff7f94
+
+** Interface changes
+
+vigra_nonLocalMean_c:
+
+  This new function maps the undocumented vigra function
+  for non-local mean filtering. Simple straight-forward
+  wrapping, but (however) untested yet.
+	
+** New interfaces
+
+** New deprecations
+
+** Bug fixes
+
+** Performance improvements
+
+** Incompatible changes
+
+
 
 * Oct 25, 2017
 
