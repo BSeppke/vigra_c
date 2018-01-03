@@ -316,15 +316,25 @@ LIBEXPORT int vigra_simplesharpening_c(const PixelType * arr_in,
  * \param height The height of the flat array.
  * \param window_width The width of the median window.
  * \param window_height The height of the median window.
+ * \param border_treatment The border treatment mode according to VIGRA's border treatment modes,
+          but without the BORDER_TREATMENT_CLIP mode:
+   0 = BORDER_TREATMENT_AVOID:  do not operate on a pixel where the kernel doe not fit in the image
+   2 = BORDER_TREATMENT_REPEAT: repeat the nearest valid pixel
+   3 = BORDER_TREATMENT_REFLECT: reflect image at last row/column
+   4 = BORDER_TREATMENT_WRAP : wrap image around (periodic boundary conditions)
+   5 = BORDER_TREATMENT_ZEROPAD: assume that all outside points have value zero
  *
- * \return 0 if the nl diffusion was successful, 1 else.
+ * \return 0 if the median filter was successful,
+           2 if the border_treatment is not allowed,
+           1 else.
  */
 LIBEXPORT int vigra_medianfilter_c(const PixelType * arr_in,
                                    const PixelType * arr_out,
                                    const int width,
                                    const int height,
                                    const int window_width,
-                                   const int window_height);
+	                               const int window_height,
+	                               const int border_treatment);
                                    
 /**
  * Computation of a non-linear (nl) diffusion filter.

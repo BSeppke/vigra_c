@@ -298,8 +298,15 @@ LIBEXPORT int vigra_medianfilter_c(const PixelType * arr_in,
                                    const int width,
                                    const int height,
                                    const int window_width,
-                                   const int window_height)
+                                   const int window_height,
+								   const int border_treatment)
 {
+	if (border_treatment < 0 || border_treatment > 5 || (vigra::BorderTreatmentMode)border_treatment == vigra::BORDER_TREATMENT_CLIP)
+	{
+		//Illegal border treatment mode!
+		return 2;
+	}
+
     try
     {
         //Create gray scale image views for the arrays
@@ -309,7 +316,7 @@ LIBEXPORT int vigra_medianfilter_c(const PixelType * arr_in,
         
         vigra::medianFilter(img_in, img_out,
 							vigra::Diff2D(window_width, window_height),
-							vigra::BORDER_TREATMENT_ZEROPAD);
+			                (vigra::BorderTreatmentMode)border_treatment);
     }
     catch (vigra::StdException & e)
     {
