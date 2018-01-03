@@ -377,7 +377,7 @@ LIBEXPORT int vigra_shockfilter_c(const PixelType *arr_in,
     return 0;
 }
 
-LIBEXPORT int vigra_nonLocalMean_c(const PixelType *arr_in,
+LIBEXPORT int vigra_nonlocalmean_c(const PixelType *arr_in,
                                    const PixelType *arr_out,
                                    const int width,
                                    const int height,

@@ -418,7 +418,7 @@ LIBEXPORT int vigra_shockfilter_c(const PixelType *arr_in,
  *         2 if the policy_type is neither 0 nor 1,
  *         1 else.
  */
-LIBEXPORT int vigra_nonLocalMean_c(const PixelType *arr_in,
+LIBEXPORT int vigra_nonlocalmean_c(const PixelType *arr_in,
                                    const PixelType *arr_out,
                                    const int width,
                                    const int height,
