@@ -19,7 +19,7 @@ VIGRA_C NEWS --- history of user-visible changes
   
 * Jan 3, 2017
 
-Commit 654d2fa794fabacf27f01764664fb57ca4f7da26
+Commit b35267f75f5867a64c0688852ada180da8a9676b
 
 ** Interface changes
 
@@ -29,6 +29,10 @@ vigra_medianfilter_c:
   the border treatment mode. Please note, that the mode
   CLIP (1) is not supported for median filtering.
 
+vigra_nonlocalmean_c:
+
+  Renamed to lowercase from vigra_nonLocalMean_c.
+	
 ** New interfaces
 
 ** New deprecations
