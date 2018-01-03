@@ -402,7 +402,7 @@ LIBEXPORT int vigra_shockfilter_c(const PixelType *arr_in,
                                         0 = Ratio Policy,
                                         1 = Norm Policy.
  * \param sigma The sigma value of the policy (P0=10.0, P1=50.0).
- * \param mean The mean value of the policy (P0=0.95, P1=50).
+ * \param mean The mean value of the policy (P0=0.95, P1=5.0).
  * \param varRatio The variance ratio of the policy (0.5).
  * \param epsilon The epsilon of the policy (0.00001).
  * \param sigmaSpatial The sigma value of the filter (2.0).
