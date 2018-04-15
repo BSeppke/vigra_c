@@ -383,7 +383,7 @@ LIBEXPORT int vigra_nonlocalmean_c(const PixelType *arr_in,
                                    const int height,
                                    const int policy_type,
                                    const float sigma,
-                                   const float mean,
+                                   const float meanRatio,
                                    const float varRatio,
                                    const float epsilon,
                                    const float sigmaSpatial,
@@ -406,12 +406,12 @@ LIBEXPORT int vigra_nonlocalmean_c(const PixelType *arr_in,
         
         if (policy_type == 0)
         {
-            vigra::RatioPolicy<float> ratio_policy(vigra::RatioPolicyParameter(sigma, mean, varRatio, epsilon));
+            vigra::RatioPolicy<float> ratio_policy(vigra::RatioPolicyParameter(sigma, meanRatio, varRatio, epsilon));
             vigra::nonLocalMean<2, float, float, vigra::RatioPolicy<float> >(img_in, ratio_policy, params, img_out);
         }
         else if (policy_type == 1)
         {
-            vigra::NormPolicy<float> norm_policy(vigra::NormPolicyParameter(sigma, mean, varRatio, epsilon));
+            vigra::NormPolicy<float> norm_policy(vigra::NormPolicyParameter(sigma, meanRatio, varRatio, epsilon));
             vigra::nonLocalMean<2, float, float, vigra::NormPolicy<float> >(img_in, norm_policy, params, img_out);
         }
         else
