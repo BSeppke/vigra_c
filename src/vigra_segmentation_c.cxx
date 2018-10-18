@@ -64,7 +64,7 @@ LIBEXPORT int vigra_labelimage_c(const PixelType * arr_in,
         
         vigra::MultiArray<2, unsigned int> labels(width, height);
         
-        auto labelCount = vigra::labelImage(img_in, img_out, eight_connectivity);
+        auto labelCount = vigra::labelImage(img_in, labels, eight_connectivity);
         
         if (labelCount > MAX_FLOAT_INTEGER)
         {
@@ -97,7 +97,7 @@ LIBEXPORT int vigra_labelimagewithbackground_c(const PixelType * arr_in,
         
         vigra::MultiArray<2, unsigned int> labels(width, height);
         
-        auto labelCount = vigra::labelImageWithBackground(img_in, img_out, eight_connectivity, background);
+        auto labelCount = vigra::labelImageWithBackground(img_in, labels, eight_connectivity, background);
         
         if (labelCount > MAX_FLOAT_INTEGER)
         {
@@ -132,11 +132,11 @@ LIBEXPORT int vigra_watershedsunionfind_c(const PixelType * arr_in,
         
         if(eight_connectivity)
         {
-            labelCount = vigra::watershedsUnionFind(img_in, img_out, vigra::EightNeighborCode());
+            labelCount = vigra::watershedsUnionFind(img_in, labels, vigra::EightNeighborCode());
         }
         else
         {
-            labelCount = vigra::watershedsUnionFind(img_in, img_out, vigra::FourNeighborCode());
+            labelCount = vigra::watershedsUnionFind(img_in, labels, vigra::FourNeighborCode());
         }
         if (labelCount > MAX_FLOAT_INTEGER)
         {
