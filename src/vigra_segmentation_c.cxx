@@ -40,12 +40,15 @@
 #include <vigra/accumulator.hxx>
 #include <vigra/slic.hxx>
 #include <vigra/colorconversions.hxx>
+#include <limits>
 
 
 /**
  * @file
  * @brief Implementation of segmentation algorithms
  */
+
+static const unsigned long long MAX_FLOAT_INTEGER = pow(2, std::numeric_limits<float>::digits-1)*2;
 
 LIBEXPORT int vigra_labelimage_c(const PixelType * arr_in,
                                  const PixelType * arr_out,
@@ -59,7 +62,19 @@ LIBEXPORT int vigra_labelimage_c(const PixelType * arr_in,
         ImageView img_in(shape, arr_in);
         ImageView img_out(shape, arr_out);
         
-        return vigra::labelImage(img_in, img_out, eight_connectivity);
+        vigra::MultiArray<2, unsigned int> labels(width, height);
+        
+        auto labelCount = vigra::labelImage(img_in, img_out, eight_connectivity);
+        
+        if (labelCount > MAX_FLOAT_INTEGER)
+        {
+            return -1;
+        }
+        else
+        {
+            img_out = labels;
+            return labelCount;
+        }
     }
     catch (vigra::StdException & e)
     {
@@ -80,7 +95,19 @@ LIBEXPORT int vigra_labelimagewithbackground_c(const PixelType * arr_in,
         ImageView img_in(shape, arr_in);
         ImageView img_out(shape, arr_out);
         
-        return vigra::labelImageWithBackground(img_in, img_out, eight_connectivity, background);
+        vigra::MultiArray<2, unsigned int> labels(width, height);
+        
+        auto labelCount = vigra::labelImageWithBackground(img_in, img_out, eight_connectivity, background);
+        
+        if (labelCount > MAX_FLOAT_INTEGER)
+        {
+            return -1;
+        }
+        else
+        {
+            img_out = labels;
+            return labelCount;
+        }
     }
     catch (vigra::StdException & e)
     {
@@ -100,13 +127,25 @@ LIBEXPORT int vigra_watershedsunionfind_c(const PixelType * arr_in,
         ImageView img_in(shape, arr_in);
         ImageView img_out(shape, arr_out);
         
+        vigra::MultiArray<2, unsigned int> labels(width, height);
+        unsigned int labelCount = 0;
+        
         if(eight_connectivity)
         {
-            return vigra::watershedsUnionFind(img_in, img_out, vigra::EightNeighborCode());
+            labelCount = vigra::watershedsUnionFind(img_in, img_out, vigra::EightNeighborCode());
         }
         else
         {
-            return vigra::watershedsUnionFind(img_in, img_out, vigra::FourNeighborCode());
+            labelCount = vigra::watershedsUnionFind(img_in, img_out, vigra::FourNeighborCode());
+        }
+        if (labelCount > MAX_FLOAT_INTEGER)
+        {
+            return -1;
+        }
+        else
+        {
+            img_out = labels;
+            return labelCount;
         }
     }
     catch (vigra::StdException & e)
@@ -137,6 +176,9 @@ LIBEXPORT int vigra_watershedsregiongrowing_c(const PixelType * arr_in,
             options = options.keepContours();
         }
         
+        vigra::MultiArray<2, unsigned int> labels(width, height);
+        unsigned int labelCount = 0;
+        
         if(use_turbo)
         {
             options = options.turboAlgorithm(256);
@@ -157,15 +199,15 @@ LIBEXPORT int vigra_watershedsregiongrowing_c(const PixelType * arr_in,
             // call the turbo algorithm with 256 bins:
             if(eight_connectivity)
             {
-                return vigra::watershedsRegionGrowing(img_in256, img_inout,
-                            vigra::EightNeighborCode(),
-                            options);
+                labelCount = vigra::watershedsRegionGrowing(img_in256, labels,
+                                vigra::EightNeighborCode(),
+                                options);
             }
             else
             {
-                return vigra::watershedsRegionGrowing(img_in256, img_inout,
-                            vigra::FourNeighborCode(),
-                            options);
+                labelCount = vigra::watershedsRegionGrowing(img_in256, labels,
+                                vigra::FourNeighborCode(),
+                                options);
             }
         }
         else
@@ -178,16 +220,26 @@ LIBEXPORT int vigra_watershedsregiongrowing_c(const PixelType * arr_in,
             
             if(eight_connectivity)
             {
-                return vigra::watershedsRegionGrowing(img_in, img_inout,
-                            vigra::EightNeighborCode(),
-                            options);
+                labelCount =  vigra::watershedsRegionGrowing(img_in, labels,
+                                vigra::EightNeighborCode(),
+                                options);
             }
             else
             {
-                return vigra::watershedsRegionGrowing(img_in, img_inout,
-                            vigra::FourNeighborCode(),
-                            options);
+                labelCount =  vigra::watershedsRegionGrowing(img_in, labels,
+                                vigra::FourNeighborCode(),
+                                options);
             }
+        }
+        
+        if (labelCount > MAX_FLOAT_INTEGER)
+        {
+            return -1;
+        }
+        else
+        {
+            img_inout = labels;
+            return labelCount;
         }
     }
     catch (vigra::StdException & e)
@@ -218,10 +270,17 @@ LIBEXPORT int vigra_slic_gray_c(const PixelType * arr_in,
         
         // compute seeds automatically, perform 40 iterations, and scale intensity differences
         // down to 1/20 before comparing with spatial distances
-        unsigned int count = vigra::slicSuperpixels(img_in, labels, intensityScaling, seedDistance, vigra::SlicOptions().iterations(iterations));
+        auto labelCount = vigra::slicSuperpixels(img_in, labels, intensityScaling, seedDistance, vigra::SlicOptions().iterations(iterations));
         
-        img_out = labels;
-        return count;
+        if (labelCount > MAX_FLOAT_INTEGER)
+        {
+            return -1;
+        }
+        else
+        {
+            img_out = labels;
+            return labelCount;
+        }
     }
     catch (vigra::StdException & e)
     {
@@ -255,6 +314,8 @@ LIBEXPORT int vigra_slic_rgb_c(const PixelType * arr_r_in,
         src.bindElementChannel(1) = img_green;
         src.bindElementChannel(2) = img_blue;
         
+        vigra::MultiArray<2, unsigned int> labels(shape);
+        
         // transform image to Lab color space
         vigra::transformMultiArray(srcMultiArrayRange(src), destMultiArray(src),
                                    vigra::RGBPrime2LabFunctor<float>());
@@ -264,8 +325,18 @@ LIBEXPORT int vigra_slic_rgb_c(const PixelType * arr_r_in,
         
         // compute seeds automatically, perform 40 iterations, and scale intensity differences
         // down to 1/20 before comparing with spatial distances
-        return vigra::slicSuperpixels(src, img_out, intensityScaling, seedDistance,
+        auto labelCount = vigra::slicSuperpixels(src, labels, intensityScaling, seedDistance,
                                       vigra::SlicOptions().iterations(iterations));
+        
+        if (labelCount > MAX_FLOAT_INTEGER)
+        {
+            return -1;
+        }
+        else
+        {
+            img_out  = labels;
+            return labelCount;
+        }
     }
     catch (vigra::StdException & e)
     {
