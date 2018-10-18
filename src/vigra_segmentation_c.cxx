@@ -177,6 +177,9 @@ LIBEXPORT int vigra_watershedsregiongrowing_c(const PixelType * arr_in,
         }
         
         vigra::MultiArray<2, unsigned int> labels(width, height);
+        //Fill labels image woth markers
+        labels = img_inout;
+        
         unsigned int labelCount = 0;
         
         if(use_turbo)
