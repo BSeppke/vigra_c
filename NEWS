@@ -17,7 +17,49 @@ VIGRA_C NEWS --- history of user-visible changes
   Please use GitHub for bug reports and pull requests for including
   your enhancements.
   
-* Jan 3, 2017
+* Oct 26, 2018
+
+Commit 3f1c1e4c11f9a9eb5004502a47a6e3e77aa29a53
+
+** Interface changes
+
+vigra_localMinima_c:
+vigra_localMaxima_c:
+
+  Additional arguments have been appended to the end of these two
+  algorithms. See the inline documentation for the new parameters
+  and their semantics.
+
+** New interfaces
+
+vigra_imageplusimage_c:
+vigra_imageminusimage_c:
+vigra_imagemultimage_c:
+vigra_imagedivideimage_c:
+vigra_imagepowimage_c:
+
+  Arithmetic operations for images of same size:
+  result = img1 OP img2 with OP in {+, - , *, /, ^}.
+  
+vigra_imageplusvalue_c:
+vigra_imageminusvalue_c:
+vigra_imagemultivalue_c:
+vigra_imagedividevalue_c:
+vigra_imagepowvalue_c:
+
+  Arithmetic operations for an image and a scalar values:
+  result = img OP value with OP in {+, - , *, /, ^}.
+
+** New deprecations
+
+** Bug fixes
+
+** Performance improvements
+
+** Incompatible changes
+
+  
+* Jan 3, 2018
 
 Commit b35267f75f5867a64c0688852ada180da8a9676b
 
@@ -49,7 +91,7 @@ vigra_nonlocalmean_c:
 Commit 2871bfbb4578caffc8a8fe64cf8f8b46e0ff7f94
 
 ** Interface changes
-	
+
 ** New interfaces
 
 vigra_nonLocalMean_c:
