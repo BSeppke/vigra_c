@@ -286,6 +286,11 @@ LIBEXPORT int vigra_fastnormalizedcrosscorrelation_c(const PixelType * arr_in,
  * \param width The width of the flat band arrays.
  * \param height The height of the flat band arrays.
  * \param eight_connectivity If set to true, 8-conectivity is used, else 4.
+ * \param marker Marker intensity for the found maxima
+ * \param threshold only maxima above a given threshold will be returned
+ * \param allow_at_border allow maxima at image border
+ * \param allow_plateaus allow maxima plateaus.
+ * \param plateau_epsilon The epsilon (max difference) for two intensity values to be equal.
  *
  * \return 0 if the local maxima finding was successful, 1 else.
  */
@@ -293,7 +298,12 @@ LIBEXPORT int vigra_localmaxima_c(const PixelType * arr_in,
                                   const PixelType * arr_out,
                                   const int width,
                                   const int height,
-                                  const bool eight_connectivity);
+                                  const bool eight_connectivity,
+                                  const PixelType marker,
+                                  const PixelType threshold,
+                                  const bool allow_at_border,
+                                  const bool allow_plateaus,
+                                  const PixelType plateau_epsilon);
 
 /**
  * Extraction of the local (intensity) mniima of an image band.
@@ -310,6 +320,11 @@ LIBEXPORT int vigra_localmaxima_c(const PixelType * arr_in,
  * \param width The width of the flat band arrays.
  * \param height The height of the flat band arrays.
  * \param eight_connectivity If set to true, 8-conectivity is used, else 4.
+ * \param marker Marker intensity for the found minima
+ * \param threshold only minima below a given threshold will be returned
+ * \param allow_at_border allow minima at image border
+ * \param allow_plateaus allow minima plateaus.
+ * \param plateau_epsilon The epsilon (max difference) for two intensity values to be equal.
  *
  * \return 0 if the local minima finding was successful, 1 else.
  */
@@ -317,7 +332,12 @@ LIBEXPORT int vigra_localminima_c(const PixelType * arr_in,
                                   const PixelType * arr_out,
                                   const int width,
                                   const int height,
-                                  const bool eight_connectivity);
+                                  const bool eight_connectivity,
+                                  const PixelType marker,
+                                  const PixelType threshold,
+                                  const bool allow_at_border,
+                                  const bool allow_plateaus,
+                                  const PixelType plateau_epsilon);
 
 /**
  * Extraction of the sub-image of an image band.
@@ -377,6 +397,7 @@ LIBEXPORT int vigra_paddimage_c(const PixelType * arr_in,
                                 const int upper,
                                 const int right,
                                 const int lower);
+
 /**
  * Clipping of the intensities of an image band to two given values.
  * The clipping sets all values below low to low, above upp to upp and
@@ -397,6 +418,179 @@ LIBEXPORT int vigra_clipimage_c(const PixelType * arr_in,
                                 const int height,
                                 const PixelType low,
                                 const PixelType upp);
+
+/**
+ * Addition of the intensity values of two images.
+ *
+ * \param arr1_in Flat input array 1 (band) of size width*height
+ * \param arr2_in Flat input array 2 (band) of size width*height
+ * \param[out] arr_out Flat array (band) of size width*height.
+ * \param width The width of the flat band arrays.
+ * \param height The height of the flat band arrays.
+ *
+ * \return Always 0, memory overflow for arraya of different sizes..
+ */
+LIBEXPORT int vigra_imageplusimage_c(const PixelType * arr1_in,
+                    const PixelType * arr2_in,
+                    const PixelType * arr_out,
+                    const int width,
+                    const int height);
+
+/**
+ * Subtraction of the intensity values of two images.
+ *
+ * \param arr1_in Flat input array 1 (band) of size width*height
+ * \param arr2_in Flat input array 2 (band) of size width*height
+ * \param[out] arr_out Flat array (band) of size width*height.
+ * \param width The width of the flat band arrays.
+ * \param height The height of the flat band arrays.
+ *
+ * \return Always 0, memory overflow for arraya of different sizes..
+ */
+LIBEXPORT int vigra_imageminusimage_c(const PixelType * arr1_in,
+                    const PixelType * arr2_in,
+                    const PixelType * arr_out,
+                    const int width,
+                    const int height);
+/**
+ * Product of the intensity values of two images.
+ *
+ * \param arr1_in Flat input array 1 (band) of size width*height
+ * \param arr2_in Flat input array 2 (band) of size width*height
+ * \param[out] arr_out Flat array (band) of size width*height.
+ * \param width The width of the flat band arrays.
+ * \param height The height of the flat band arrays.
+ *
+ * \return Always 0, memory overflow for arraya of different sizes..
+ */
+LIBEXPORT int vigra_imagemultimage_c(const PixelType * arr1_in,
+                    const PixelType * arr2_in,
+                    const PixelType * arr_out,
+                    const int width,
+                    const int height);
+/**
+ * Division of the intensity values of two images.
+ * If safe_mode is not set NaNs might occur on pixels where
+ * the intensity is 0 in arr2_in.
+ *
+ * \param arr1_in Flat input array 1 (band) of size width*height
+ * \param arr2_in Flat input array 2 (band) of size width*height
+ * \param[out] arr_out Flat array (band) of size width*height.
+ * \param width The width of the flat band arrays.
+ * \param height The height of the flat band arrays.
+ * \param safe_mode If set to true, only pixels with values of arr2_in !=0 are set.
+ *
+ * \return Always 0, memory overflow for arraya of different sizes..
+ */
+LIBEXPORT int vigra_imagedivideimage_c(const PixelType * arr1_in,
+                    const PixelType * arr2_in,
+                    const PixelType * arr_out,
+                    const int width,
+                    const int height,
+                    bool safe_mode);
+/**
+ * Power of the intensity values of two images a.k.a. arr1 .^ arr2
+ *
+ * \param arr1_in Flat input array 1 (band) of size width*height
+ * \param arr2_in Flat input array 2 (band) of size width*height
+ * \param[out] arr_out Flat array (band) of size width*height.
+ * \param width The width of the flat band arrays.
+ * \param height The height of the flat band arrays.
+ *
+ * \return Always 0, memory overflow for arraya of different sizes..
+ */
+LIBEXPORT int vigra_imagepowimage_c(const PixelType * arr1_in,
+                    const PixelType * arr2_in,
+                    const PixelType * arr_out,
+                    const int width,
+                    const int height);
+
+/**
+ * Addition of a scalar value to the intensity values of an image.
+ *
+ * \param arr_in Flat input array 1 (band) of size width*height
+ * \param[out] arr_out Flat array (band) of size width*height.
+ * \param value scalar value for the operation.
+ * \param width The width of the flat band arrays.
+ * \param height The height of the flat band arrays.
+ *
+ * \return Always 0, memory overflow for arraya of different sizes..
+ */
+LIBEXPORT int vigra_imageplusvalue_c(const PixelType * arr_in,
+                    const PixelType * arr_out,
+                    const PixelType value,
+                    const int width,
+                    const int height);
+
+/**
+ * Addition of the intensity values of an image and a scalar value.
+ *
+ * \param arr_in Flat input array 1 (band) of size width*height
+ * \param[out] arr_out Flat array (band) of size width*height.
+ * \param value scalar value for the operation.
+ * \param width The width of the flat band arrays.
+ * \param height The height of the flat band arrays.
+ *
+ * \return Always 0, memory overflow for arraya of different sizes..
+ */
+LIBEXPORT int vigra_imageminusvalue_c(const PixelType * arr_in,
+                    const PixelType * arr_out,
+                    const PixelType value,
+                    const int width,
+                    const int height);
+
+/**
+ * Multiplication of the intensity values of an image with a scalar value.
+ *
+ * \param arr_in Flat input array 1 (band) of size width*height
+ * \param[out] arr_out Flat array (band) of size width*height.
+ * \param value scalar value for the operation.
+ * \param width The width of the flat band arrays.
+ * \param height The height of the flat band arrays.
+ *
+ * \return Always 0, memory overflow for arraya of different sizes..
+ */
+LIBEXPORT int vigra_imagemultvalue_c(const PixelType * arr_in,
+                    const PixelType * arr_out,
+                    const PixelType value,
+                    const int width,
+                    const int height);
+
+/**
+ * Division of intensity values of an image by a scalar.
+ *
+ * \param arr_in Flat input array 1 (band) of size width*height
+ * \param[out] arr_out Flat array (band) of size width*height.
+ * \param value scalar value for the operation.
+ * \param width The width of the flat band arrays.
+ * \param height The height of the flat band arrays.
+ *
+ * \return 0 if value !=0,
+ *          1 if value ==0,
+ *           memory overflow for arraya of different sizes..
+ */
+LIBEXPORT int vigra_imagedividevalue_c(const PixelType * arr_in,
+                    const PixelType * arr_out,
+                    const PixelType value,
+                    const int width,
+                    const int height);
+
+/**
+ * The power of the intensity values of an image with respect to a scalar value.
+ *
+ * \param arr_in Flat input array 1 (band) of size width*height
+ * \param[out] arr_out Flat array (band) of size width*height.
+ * \param value scalar value for the operation.
+ * \param width The width of the flat band arrays.
+ * \param height The height of the flat band arrays.
+ *
+ * \return Always 0, memory overflow for arraya of different sizes..
+ */
+LIBEXPORT int vigra_imagepowvalue_c(const PixelType * arr_in,
+                    const PixelType * arr_out,
+                    const PixelType value,
+                    const int width,
+                    const int height);
 /**
  * @}
  */

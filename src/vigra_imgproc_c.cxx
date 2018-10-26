@@ -38,6 +38,7 @@
 #include <vigra/affinegeometry.hxx>
 #include <vigra/basicgeometry.hxx>
 #include <vigra/multi_fft.hxx>
+#include <vigra/multi_math.hxx>
 #include <vigra/correlation.hxx>
 #include <vigra/multi_localminmax.hxx>
 
@@ -465,11 +466,47 @@ LIBEXPORT int vigra_fastnormalizedcrosscorrelation_c(const PixelType * arr_in,
     return 0;
 }
 
+/**
+ * Defines an equality function w.r.t. a certain tolerance/epsilon
+ */
+template <class T>
+struct EqualWithToleranceFunctor
+{
+    /**
+     * Construction of the EqualWithToleranceFunctor
+     *
+     * \param epsilon The maximal deviation for two values to considered being equal.
+     */
+    EqualWithToleranceFunctor(T epsilon)
+    : m_epsilon(epsilon)
+    {}
+ 
+    /**
+     * Functor call:
+     * \param val1 first value to be compared
+     * \param val2 first value to be compared
+     * \result True, if the difference between val1 and val4 is smaller or equal epsilon.
+     */
+    bool operator()(T val1, T val2) const
+    {
+        return abs(val1 - val2) <= m_epsilon;
+    }
+    /**
+     * The internally used epsilon
+     */
+    T m_epsilon;
+};
+
 LIBEXPORT int vigra_localmaxima_c(const PixelType * arr_in,
                                   const PixelType * arr_out,
                                   const int width,
                                   const int height,
-                                  const bool eight_connectivity)
+                                  const bool eight_connectivity,
+                                  const PixelType marker,
+                                  const PixelType threshold,
+                                  const bool allow_at_border,
+                                  const bool allow_plateaus,
+                                  const PixelType plateau_epsilon)
 {
     try
     {
@@ -478,11 +515,24 @@ LIBEXPORT int vigra_localmaxima_c(const PixelType * arr_in,
         ImageView img_in(shape, arr_in);
         ImageView img_out(shape, arr_out);
         
-        vigra::localMaxima(img_in, img_out,
-                           vigra::LocalMinmaxOptions().neighborhood(
-                                eight_connectivity ?
-                                    vigra::IndirectNeighborhood :
-                                    vigra::DirectNeighborhood));
+        auto options = vigra::LocalMinmaxOptions()
+                            .neighborhood(eight_connectivity ? vigra::IndirectNeighborhood : vigra::DirectNeighborhood)
+                            .markWith(marker)
+                            .threshold(threshold)
+                            .allowAtBorder(allow_at_border)
+                            .allowPlateaus(allow_plateaus);
+        
+        if (!allow_plateaus)
+        {
+            vigra::localMaxima(img_in, img_out, options);
+        }
+        else
+        {
+            vigra::extendedLocalMaxima(
+                img_in, img_out,
+                EqualWithToleranceFunctor<PixelType>(plateau_epsilon),
+                options);
+        }
     }
     catch (vigra::StdException & e)
     {
@@ -496,7 +546,12 @@ LIBEXPORT int vigra_localminima_c(const PixelType * arr_in,
                                   const PixelType * arr_out,
                                   const int width,
                                   const int height,
-                                  const bool eight_connectivity)
+                                  const bool eight_connectivity,
+                                  const PixelType marker,
+                                  const PixelType threshold,
+                                  const bool allow_at_border,
+                                  const bool allow_plateaus,
+                                  const PixelType plateau_epsilon)
 {
     try
     {
@@ -505,11 +560,24 @@ LIBEXPORT int vigra_localminima_c(const PixelType * arr_in,
         ImageView img_in(shape, arr_in);
         ImageView img_out(shape, arr_out);
         
-        vigra::localMinima(img_in, img_out,
-                           vigra::LocalMinmaxOptions().neighborhood(
-                                eight_connectivity ?
-                                    vigra::IndirectNeighborhood :
-                                    vigra::DirectNeighborhood));
+        auto options = vigra::LocalMinmaxOptions()
+                            .neighborhood(eight_connectivity ? vigra::IndirectNeighborhood : vigra::DirectNeighborhood)
+                            .markWith(marker)
+                            .threshold(threshold)
+                            .allowAtBorder(allow_at_border)
+                            .allowPlateaus(allow_plateaus);
+        
+        if (!allow_plateaus)
+        {
+            vigra::localMaxima(img_in, img_out, options);
+        }
+        else
+        {
+            vigra::extendedLocalMaxima(
+                img_in, img_out,
+                EqualWithToleranceFunctor<PixelType>(plateau_epsilon),
+                options);
+        }
     }
     catch (vigra::StdException & e)
     {
@@ -613,6 +681,286 @@ LIBEXPORT int vigra_clipimage_c(const PixelType * arr_in,
     for(unsigned long l=0; l!=size; ++l)
     {
         ptr_out[l] = vigra::max(vigra::min(arr_in[l], upp), low);
+    }
+    
+    return 0;
+}
+
+LIBEXPORT int vigra_imageplusimage_c(const PixelType * arr1_in,
+                    const PixelType * arr2_in,
+                    const PixelType * arr_out,
+                    const int width,
+                    const int height)
+{
+    using namespace vigra::multi_math;
+    
+    try
+    {
+        //Create gray scale image views for the arrays
+        vigra::Shape2 shape(width,height);
+        ImageView img1_in(shape, arr1_in);
+        ImageView img2_in(shape, arr2_in);
+        ImageView img_out(shape, arr_out);
+        
+        img_out = img1_in + img2_in;
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+        
+    return 0;
+}
+
+LIBEXPORT int vigra_imageminusimage_c(const PixelType * arr1_in,
+                    const PixelType * arr2_in,
+                    const PixelType * arr_out,
+                    const int width,
+                    const int height)
+{
+    using namespace vigra::multi_math;
+    
+    try
+    {
+        //Create gray scale image views for the arrays
+        vigra::Shape2 shape(width,height);
+        ImageView img1_in(shape, arr1_in);
+        ImageView img2_in(shape, arr2_in);
+        ImageView img_out(shape, arr_out);
+        
+        img_out = img1_in - img2_in;
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    
+    return 0;
+}
+
+LIBEXPORT int vigra_imagemultimage_c(const PixelType * arr1_in,
+                    const PixelType * arr2_in,
+                    const PixelType * arr_out,
+                    const int width,
+                    const int height)
+{
+    using namespace vigra::multi_math;
+    
+    try
+    {
+        //Create gray scale image views for the arrays
+        vigra::Shape2 shape(width,height);
+        ImageView img1_in(shape, arr1_in);
+        ImageView img2_in(shape, arr2_in);
+        ImageView img_out(shape, arr_out);
+        
+        img_out = img1_in * img2_in;
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    
+    return 0;
+}
+
+LIBEXPORT int vigra_imagedivideimage_c(const PixelType * arr1_in,
+                    const PixelType * arr2_in,
+                    const PixelType * arr_out,
+                    const int width,
+                    const int height,
+                    const bool safe_mode)
+{
+    using namespace vigra::multi_math;
+    
+    try
+    {
+        //Create gray scale image views for the arrays
+        vigra::Shape2 shape(width,height);
+        ImageView img1_in(shape, arr1_in);
+        ImageView img2_in(shape, arr2_in);
+        ImageView img_out(shape, arr_out);
+        
+        //Divide without safe_mode
+        if (!safe_mode)
+        {
+            img_out = img1_in / img2_in;
+        }
+        else
+        {
+            auto img1_in_iter = img1_in.begin();
+            auto img2_in_iter = img2_in.begin();
+            auto img_out_iter = img_out.begin();
+            
+            for(; img1_in_iter != img1_in.end(); ++img1_in_iter, ++img2_in_iter, ++img_out_iter)
+            {
+                if(*img2_in_iter != 0.0f)
+                {
+                    *img_out_iter = *img1_in_iter / *img2_in_iter;
+                }
+                //Potentially +-inf values are not set in img_out for safe_mode
+            }
+        }
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    
+    return 0;
+}
+
+LIBEXPORT int vigra_imagepowimage_c(const PixelType * arr1_in,
+                    const PixelType * arr2_in,
+                    const PixelType * arr_out,
+                    const int width,
+                    const int height)
+{
+    using namespace vigra::multi_math;
+    
+    try
+    {
+        //Create gray scale image views for the arrays
+        vigra::Shape2 shape(width,height);
+        ImageView img1_in(shape, arr1_in);
+        ImageView img2_in(shape, arr2_in);
+        ImageView img_out(shape, arr_out);
+        
+        img_out = pow(img1_in, img2_in);
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    
+    return 0;
+}
+
+LIBEXPORT int vigra_imageplusvalue_c(const PixelType * arr_in,
+                    const PixelType * arr_out,
+                    const PixelType value,
+                    const int width,
+                    const int height)
+{
+    using namespace vigra::multi_math;
+    
+    try
+    {
+        //Create gray scale image views for the arrays
+        vigra::Shape2 shape(width,height);
+        ImageView img_in(shape, arr_in);
+        ImageView img_out(shape, arr_out);
+        
+        img_out = img_in + value;
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    
+    return 0;
+}
+
+LIBEXPORT int vigra_imageminusvalue_c(const PixelType * arr_in,
+                    const PixelType * arr_out,
+                    const PixelType  value,
+                    const int width,
+                    const int height)
+{
+    using namespace vigra::multi_math;
+    
+    try
+    {
+        //Create gray scale image views for the arrays
+        vigra::Shape2 shape(width,height);
+        ImageView img_in(shape, arr_in);
+        ImageView img_out(shape, arr_out);
+        
+        img_out = img_in - value;
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    
+    return 0;
+}
+
+LIBEXPORT int vigra_imagemultvalue_c(const PixelType * arr_in,
+                    const PixelType * arr_out,
+                    const PixelType value,
+                    const int width,
+                    const int height)
+{
+    using namespace vigra::multi_math;
+    
+    try
+    {
+        //Create gray scale image views for the arrays
+        vigra::Shape2 shape(width,height);
+        ImageView img_in(shape, arr_in);
+        ImageView img_out(shape, arr_out);
+        
+        img_out = img_in * value;
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    
+    return 0;
+}
+
+LIBEXPORT int vigra_imagedividevalue_c(const PixelType * arr_in,
+                    const PixelType * arr_out,
+                    const PixelType value,
+                    const int width,
+                    const int height)
+{
+    using namespace vigra::multi_math;
+    
+    if(value == 0)
+    {
+        return 1;
+    }
+    
+    try
+    {
+        //Create gray scale image views for the arrays
+        vigra::Shape2 shape(width,height);
+        ImageView img_in(shape, arr_in);
+        ImageView img_out(shape, arr_out);
+        
+        img_out = img_in / value;
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
+    }
+    
+    return 0;
+}
+
+LIBEXPORT int vigra_imagepowvalue_c(const PixelType * arr_in,
+                    const PixelType * arr_out,
+                    const PixelType value,
+                    const int width,
+                    const int height)
+{
+    using namespace vigra::multi_math;
+    
+    try
+    {
+        //Create gray scale image views for the arrays
+        vigra::Shape2 shape(width,height);
+        ImageView img_in(shape, arr_in);
+        ImageView img_out(shape, arr_out);
+        
+        img_out = pow(img_in, value);
+    }
+    catch (vigra::StdException & e)
+    {
+        return 1;
     }
     
     return 0;
