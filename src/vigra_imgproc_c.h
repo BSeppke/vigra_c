@@ -470,15 +470,13 @@ LIBEXPORT int vigra_imagemultimage_c(const PixelType * arr1_in,
                     const int height);
 /**
  * Division of the intensity values of two images.
- * If safe_mode is not set NaNs might occur on pixels where
- * the intensity is 0 in arr2_in.
+ * Warning: Divison by zero yields NaN values.
  *
  * \param arr1_in Flat input array 1 (band) of size width*height
  * \param arr2_in Flat input array 2 (band) of size width*height
  * \param[out] arr_out Flat array (band) of size width*height.
  * \param width The width of the flat band arrays.
  * \param height The height of the flat band arrays.
- * \param safe_mode If set to true, only pixels with values of arr2_in !=0 are set.
  *
  * \return Always 0, memory overflow for arraya of different sizes..
  */
@@ -486,10 +484,10 @@ LIBEXPORT int vigra_imagedivideimage_c(const PixelType * arr1_in,
                     const PixelType * arr2_in,
                     const PixelType * arr_out,
                     const int width,
-                    const int height,
-                    bool safe_mode);
+                    const int height);
 /**
  * Power of the intensity values of two images a.k.a. arr1 .^ arr2
+ * Warning: Divison by zero (arr2 < 0, arr1 == 0) yields NaN values.
  *
  * \param arr1_in Flat input array 1 (band) of size width*height
  * \param arr2_in Flat input array 2 (band) of size width*height
@@ -558,6 +556,7 @@ LIBEXPORT int vigra_imagemultvalue_c(const PixelType * arr_in,
 
 /**
  * Division of intensity values of an image by a scalar.
+ * Division by zero will be caught, see return value.
  *
  * \param arr_in Flat input array 1 (band) of size width*height
  * \param[out] arr_out Flat array (band) of size width*height.
@@ -577,6 +576,7 @@ LIBEXPORT int vigra_imagedividevalue_c(const PixelType * arr_in,
 
 /**
  * The power of the intensity values of an image with respect to a scalar value.
+ * Warning: Divison by zero (value < 0, arr == 0) yields NaN values.
  *
  * \param arr_in Flat input array 1 (band) of size width*height
  * \param[out] arr_out Flat array (band) of size width*height.

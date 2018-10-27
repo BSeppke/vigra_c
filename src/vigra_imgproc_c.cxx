@@ -768,8 +768,7 @@ LIBEXPORT int vigra_imagedivideimage_c(const PixelType * arr1_in,
                     const PixelType * arr2_in,
                     const PixelType * arr_out,
                     const int width,
-                    const int height,
-                    const bool safe_mode)
+                    const int height)
 {
     using namespace vigra::multi_math;
     
@@ -781,26 +780,7 @@ LIBEXPORT int vigra_imagedivideimage_c(const PixelType * arr1_in,
         ImageView img2_in(shape, arr2_in);
         ImageView img_out(shape, arr_out);
         
-        //Divide without safe_mode
-        if (!safe_mode)
-        {
-            img_out = img1_in / img2_in;
-        }
-        else
-        {
-            auto img1_in_iter = img1_in.begin();
-            auto img2_in_iter = img2_in.begin();
-            auto img_out_iter = img_out.begin();
-            
-            for(; img1_in_iter != img1_in.end(); ++img1_in_iter, ++img2_in_iter, ++img_out_iter)
-            {
-                if(*img2_in_iter != 0.0f)
-                {
-                    *img_out_iter = *img1_in_iter / *img2_in_iter;
-                }
-                //Potentially +-inf values are not set in img_out for safe_mode
-            }
-        }
+        img_out = img1_in / img2_in;
     }
     catch (vigra::StdException & e)
     {
