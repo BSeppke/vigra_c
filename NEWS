@@ -17,9 +17,9 @@ VIGRA_C NEWS --- history of user-visible changes
   Please use GitHub for bug reports and pull requests for including
   your enhancements.
   
-* Oct 26, 2018
+* Oct 27, 2018
 
-Commit 3f1c1e4c11f9a9eb5004502a47a6e3e77aa29a53
+Commit 296be63c2b1cdb28659a340a047cee49c4a9a037
 
 ** Interface changes
 
