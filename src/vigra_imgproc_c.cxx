@@ -569,11 +569,11 @@ LIBEXPORT int vigra_localminima_c(const PixelType * arr_in,
         
         if (!allow_plateaus)
         {
-            vigra::localMaxima(img_in, img_out, options);
+            vigra::localMinima(img_in, img_out, options);
         }
         else
         {
-            vigra::extendedLocalMaxima(
+            vigra::extendedLocalMinima(
                 img_in, img_out,
                 EqualWithToleranceFunctor<PixelType>(plateau_epsilon),
                 options);
