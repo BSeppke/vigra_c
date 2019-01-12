@@ -417,3 +417,221 @@ LIBEXPORT int vigra_imagenumextrabands_c(const char * filename)
         return 0;
     }
 }
+
+#include <vigra/hdf5impex.hxx>
+
+LIBEXPORT int vigra_hdf5_numdimensions_c(const char* filename, const char* pathInFile)
+{
+    try
+    {
+        // read image given as first argument
+        // file type is determined automatically
+        vigra::HDF5ImportInfo info(filename, pathInFile);
+
+        return info.numDimensions();
+    }
+    catch (vigra::StdException & e)
+    {
+        return 0;
+    }
+}
+
+LIBEXPORT int vigra_hdf5_shape_c(const char * filename, const char* pathInFile, int* shape_arr, const int dimensions)
+{
+    try
+    {
+        // read image given as first argument
+        // file type is determined automatically
+        vigra::HDF5ImportInfo info(filename, pathInFile);
+
+        if (info.numDimensions() != dimensions)
+        {
+            return 1;
+        }
+        for(int i=0; i!=dimensions; ++i)
+        {
+            shape_arr[i] = info.shapeOfDimension(i);
+        }
+        return 0;
+    }
+    catch (vigra::StdException & e)
+    {
+        return 2;
+    }
+}
+
+LIBEXPORT int vigra_hdf5_importarray_c(const char * filename, const char* pathInFile, float* flat_arr, int* shape_arr, const int dimensions)
+{
+    try
+    {
+        vigra::HDF5ImportInfo info(filename, pathInFile);
+        
+        if(info.numDimensions() != dimensions)
+        {
+            return 1;
+        }
+        
+        bool dimMatch = true;
+        for(int dim=0; dim != dimensions; ++dim)
+        {
+         dimMatch = dimMatch && (info.shapeOfDimension(dim) == shape_arr[dim]);
+        }
+        
+        if(!dimMatch)
+        {
+            return 1;
+        }
+        
+        switch(info.numDimensions())
+        {
+            case 1:
+            {
+                vigra::MultiArrayShape<1>::type shape(info.shape().begin());
+                vigra::MultiArrayView<1, float> array(shape, flat_arr);
+                readHDF5(info, array);
+                return 0;
+            }
+            case 2:
+            {
+                vigra::MultiArrayShape<2>::type shape(info.shape().begin());
+                vigra::MultiArrayView<2, float> array(shape, flat_arr);
+                readHDF5(info, array);
+                return 0;
+            }
+            case 3:
+            {
+                vigra::MultiArrayShape<3>::type shape(info.shape().begin());
+                vigra::MultiArrayView<3, float> array(shape, flat_arr);
+                readHDF5(info, array);
+                return 0;
+            }
+            case 4:
+            {
+                vigra::MultiArrayShape<4>::type shape(info.shape().begin());
+                vigra::MultiArrayView<4, float> array(shape, flat_arr);
+                readHDF5(info, array);
+                return 0;
+            }
+            case 5:
+            {
+                vigra::MultiArrayShape<5>::type shape(info.shape().begin());
+                vigra::MultiArrayView<5, float> array(shape, flat_arr);
+                readHDF5(info, array);
+                return 0;
+            }
+            case 6:
+            {
+                vigra::MultiArrayShape<6>::type shape(info.shape().begin());
+                vigra::MultiArrayView<6, float> array(shape, flat_arr);
+                readHDF5(info, array);
+                return 0;
+            }
+            case 7:
+            {
+                vigra::MultiArrayShape<7>::type shape(info.shape().begin());
+                vigra::MultiArrayView<7, float> array(shape, flat_arr);
+                readHDF5(info, array);
+                return 0;
+            }
+            case 8:
+            {
+                vigra::MultiArrayShape<8>::type shape(info.shape().begin());
+                vigra::MultiArrayView<8, float> array(shape, flat_arr);
+                readHDF5(info, array);
+                return 0;
+            }
+            case 9:
+            {
+                vigra::MultiArrayShape<9>::type shape(info.shape().begin());
+                vigra::MultiArrayView<9, float> array(shape, flat_arr);
+                readHDF5(info, array);
+                return 0;
+            }
+            default:
+                return 1;
+        }
+    }
+    catch (vigra::StdException & e)
+    {
+        return 2;
+    }
+}
+
+LIBEXPORT int vigra_hdf5_exportarray_c(float* flat_arr, int* shape_arr, const int dimensions, const char * filename, const char* pathInFile)
+{
+    try
+    {
+        switch(dimensions)
+        {
+            case 1:
+            {
+                vigra::MultiArrayShape<1>::type shape(shape_arr);
+                vigra::MultiArrayView<1, float> array(shape, flat_arr);
+                writeHDF5(filename, pathInFile, array);
+                return 0;
+            }
+            case 2:
+            {
+                vigra::MultiArrayShape<2>::type shape(shape_arr);
+                vigra::MultiArrayView<2, float> array(shape, flat_arr);
+                writeHDF5(filename, pathInFile, array);
+                return 0;
+            }
+            case 3:
+            {
+                vigra::MultiArrayShape<3>::type shape(shape_arr);
+                vigra::MultiArrayView<3, float> array(shape, flat_arr);
+                writeHDF5(filename, pathInFile, array);
+                return 0;
+            }
+            case 4:
+            {
+                vigra::MultiArrayShape<4>::type shape(shape_arr);
+                vigra::MultiArrayView<4, float> array(shape, flat_arr);
+                writeHDF5(filename, pathInFile, array);
+                return 0;
+            }
+            case 5:
+            {
+                vigra::MultiArrayShape<5>::type shape(shape_arr);
+                vigra::MultiArrayView<5, float> array(shape, flat_arr);
+                writeHDF5(filename, pathInFile, array);
+                return 0;
+            }
+            case 6:
+            {
+                vigra::MultiArrayShape<6>::type shape(shape_arr);
+                vigra::MultiArrayView<6, float> array(shape, flat_arr);
+                writeHDF5(filename, pathInFile, array);
+                return 0;
+            }
+            case 7:
+            {
+                vigra::MultiArrayShape<7>::type shape(shape_arr);
+                vigra::MultiArrayView<7, float> array(shape, flat_arr);
+                writeHDF5(filename, pathInFile, array);
+                return 0;
+            }
+            case 8:
+            {
+                vigra::MultiArrayShape<8>::type shape(shape_arr);
+                vigra::MultiArrayView<8, float> array(shape, flat_arr);
+                writeHDF5(filename, pathInFile, array);
+                return 0;
+            }
+            case 9:
+            {
+                vigra::MultiArrayShape<9>::type shape(shape_arr);
+                vigra::MultiArrayView<9, float> array(shape, flat_arr);
+                writeHDF5(filename, pathInFile, array);
+                return 0;
+            }
+            default:
+                return 1;
+        }
+    }
+    catch (vigra::StdException & e)
+    {
+        return 2;
+    }
+}

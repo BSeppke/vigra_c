@@ -51,5 +51,10 @@ find_library(FFTWF_LIBRARY
    NAMES fftw-3.3f fftw3f fftwf-3.3 fftwf3 fftwf)
 list(APPEND FFTW_LIBRARIES "${FFTWF_LIBRARY}")
 
+find_package(HDF5)
+if(HDF5_FOUND)
+   add_definitions("-DHAS_HDF5")
+endif()
+
 add_subdirectory(src)
 add_subdirectory(doc)

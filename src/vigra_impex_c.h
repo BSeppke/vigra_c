@@ -281,6 +281,87 @@ LIBEXPORT int vigra_imagenumbands_c(const char * filename);
 LIBEXPORT int vigra_imagenumextrabands_c(const char * filename);
 
 
+
+
+/**
+ * This function returns the number of dimensions of an hdf5 array of a given filename
+ * and dataset name without importing the data of that image from filesystem.
+ *
+ * For more information, refer to the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__VigraHDF5Impex.html">
+ * vigra Import/Export documentation
+ * </a>.
+ *
+ * \param filename The file name of the hdf5 array
+ * \param pathInFile The dataset name of the hdf5 array
+ *
+ * \return 0,    if an error occured or the array is empty
+ *         else  the number of dimensions of the shape
+ */
+LIBEXPORT int vigra_hdf5_numdimensions_c(const char* filename, const char* pathInFile);
+
+/**
+ * This function returns the shape of an hdf5 array of a given filename
+ * and dataset name without importing the data of that image from filesystem
+ * into a pre-allocated shape array.
+ *
+ * For more information, refer to the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__VigraHDF5Impex.html">
+ * vigra Import/Export documentation
+ * </a>.
+ *
+ * \param filename The file name of the hdf5 array
+ * \param pathInFile The dataset name of the hdf5 array
+ * \param[out] shape_arr The already allocated array of size dimensions
+ * \param dimensions The dimension count of the shape_arr and the hdf5 array
+ *
+ * \return 0,    if no error occured.
+ *         1,    if the dimensions do not match
+ *         2,    if any other error occured.
+ */
+LIBEXPORT int vigra_hdf5_shape_c(const char* filename, const char* pathInFile, int* shape_arr, const int dimensions);
+
+/**
+ * This function imports an hdf5 array of a given filename
+ * and dataset name into a pre-allocated array.
+ *
+ * For more information, refer to the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__VigraHDF5Impex.html">
+ * vigra Import/Export documentation
+ * </a>.
+ *
+ * \param filename The file name of the hdf5 array
+ * \param pathInFile The dataset name of the hdf5 array
+ * \param[out] flat_arr The already allocated array of size shape_arr[0]*shape_arr[1]...*shape_arr[dimensions-1]
+ * \param shape_arr The already allocated array of size dimensions
+ * \param dimensions The dimension count of the shape_arr and the hdf5 array
+ *
+ * \return 0,    if no error occured.
+ *         1,    if the dimensions do not match or are not within 1..9
+ *         2,    if any other error occured.
+ */
+LIBEXPORT int vigra_hdf5_importarray_c(const char * filename, const char* pathInFile, float* flat_arr, int* shape_arr, const int dimensions);
+
+/**
+ * This function exports an hdf5 array to a given filename
+ * and dataset name .
+ *
+ * For more information, refer to the
+ * <a href="https://ukoethe.github.io/vigra/doc-release/vigra/group__VigraHDF5Impex.html">
+ * vigra Import/Export documentation
+ * </a>.
+ *
+ * \param[out] flat_arr The already allocated array of size shape_arr[0]*shape_arr[1]...*shape_arr[dimensions-1]
+ * \param shape_arr The already allocated array of size dimensions
+ * \param dimensions The dimension count of the shape_arr and the hdf5 array
+ * \param filename The file name of the hdf5 array
+ * \param pathInFile The dataset name of the hdf5 array
+ *
+ * \return 0,    if no error occured.
+ *         1,    if the dimensions do not match or are not within 1..9
+ *         2,    if any other error occured.
+ */
+LIBEXPORT int vigra_hdf5_exportarray_c(float* flat_arr, int* shape_arr, const int dimensions, const char * filename, const char* pathInFile);
 /**
  * @}
  */
