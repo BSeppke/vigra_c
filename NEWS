@@ -17,6 +17,41 @@ VIGRA_C NEWS --- history of user-visible changes
   Please use GitHub for bug reports and pull requests for including
   your enhancements.
   
+* Jan 11, 2019
+
+976479c7b0d3e4ee0e458787ce6de68bbebbe44c
+
+** Interface changes
+
+** New interfaces
+
+vigra_has_hdf5_c:
+
+  Tells if vigra_c was compiled with HDF5 support.
+
+vigra_hdf5_numdimensions_c:
+
+  Returns the number of dimensions for a HDF5 file array.
+
+vigra_hdf5_shape_c:
+
+  Fills a shape array of size numDimensions with the actual shape infos
+  of the HDF5 file array.
+
+vigra_hdf5_importarray_c:
+vigra_hdf5_exportarray_c:
+
+  Import and Export of HDF5 arrays.
+
+** New deprecations
+
+** Bug fixes
+
+** Performance improvements
+
+** Incompatible changes
+
+  
 * Oct 27, 2018
 
 Commit 296be63c2b1cdb28659a340a047cee49c4a9a037
