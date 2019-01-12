@@ -280,8 +280,15 @@ LIBEXPORT int vigra_imagenumbands_c(const char * filename);
  */
 LIBEXPORT int vigra_imagenumextrabands_c(const char * filename);
 
+/**
+ * Function to indicate whether hdf5 import/export is available
+ *
+ * \reutrn 0, if HDF5 support is disabled,
+ *         1, if HDF5 support is enabled.
+ */
+LIBEXPORT int vigra_has_hdf5_c();
 
-
+#ifdef HAS_HDF5
 
 /**
  * This function returns the number of dimensions of an hdf5 array of a given filename
@@ -362,6 +369,9 @@ LIBEXPORT int vigra_hdf5_importarray_c(const char * filename, const char* pathIn
  *         2,    if any other error occured.
  */
 LIBEXPORT int vigra_hdf5_exportarray_c(float* flat_arr, int* shape_arr, const int dimensions, const char * filename, const char* pathInFile);
+
+#endif
+
 /**
  * @}
  */

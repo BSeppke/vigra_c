@@ -418,6 +418,17 @@ LIBEXPORT int vigra_imagenumextrabands_c(const char * filename)
     }
 }
 
+
+LIBEXPORT int vigra_has_hdf5_c()
+{
+    #ifdef Has_HDF5
+        return 1;
+    #else
+        return 0;
+    #endif
+}
+
+#ifdef Has_HDF5
 #include <vigra/hdf5impex.hxx>
 
 LIBEXPORT int vigra_hdf5_numdimensions_c(const char* filename, const char* pathInFile)
@@ -635,3 +646,4 @@ LIBEXPORT int vigra_hdf5_exportarray_c(float* flat_arr, int* shape_arr, const in
         return 2;
     }
 }
+#endif
