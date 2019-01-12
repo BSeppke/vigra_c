@@ -54,7 +54,7 @@ vigra_hdf5_exportarray_c:
   
 * Oct 27, 2018
 
-Commit 296be63c2b1cdb28659a340a047cee49c4a9a037
+Commit 82c8a8ba85c414526dfb62fd15da9dea0b5fadd5
 
 ** Interface changes
 
