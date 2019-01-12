@@ -53,7 +53,7 @@ list(APPEND FFTW_LIBRARIES "${FFTWF_LIBRARY}")
 
 find_package(HDF5)
 if(HDF5_FOUND)
-   add_definitions("-DHAS_HDF5")
+   add_definitions("-DHAS_HDF5=1")
 endif()
 
 add_subdirectory(src)

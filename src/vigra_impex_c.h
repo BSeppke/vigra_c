@@ -288,6 +288,9 @@ LIBEXPORT int vigra_imagenumextrabands_c(const char * filename);
  */
 LIBEXPORT int vigra_has_hdf5_c();
 
+
+
+
 #ifdef HAS_HDF5
 
 /**
