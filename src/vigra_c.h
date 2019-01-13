@@ -33,7 +33,6 @@
 /************************************************************************/
 
 #ifndef VIGRA_C_H
-#ifndef VIGRA_C_H
 
 #include "vigra_convert_c.h"
 #include "vigra_filters_c.h"
