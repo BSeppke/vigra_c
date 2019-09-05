@@ -33,3 +33,4 @@ target_link_libraries(vigra_c vigraimpex ${FFTW_LIBRARIES} ${HDF5_LIBRARIES} ${H
 
 # Add install target
 install(TARGETS vigra_c DESTINATION lib)
+install(FILES ${HEADERS} DESTINATION include/vigra_c)
