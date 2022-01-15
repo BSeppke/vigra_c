@@ -144,7 +144,7 @@ int vigra_houghtransform_delete_lines_c(void * hough_lines)
  * @brief Implementation of hough transfrom for circles
  */
 
-LIBEXPORT void* vigra_houghtransform_cicles_c(const PixelType * arr_in,
+LIBEXPORT void* vigra_houghtransform_circles_c(const PixelType * arr_in,
                                         const int width,
                                         const int height,
                                         const int min_radius,

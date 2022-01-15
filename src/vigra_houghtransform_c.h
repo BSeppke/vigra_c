@@ -108,7 +108,7 @@ LIBEXPORT int vigra_houghtransform_delete_lines_c(void * hough_lines);
  *
  * \return Pointer to HougLines structure.
  */
-LIBEXPORT void* vigra_houghtransform_cicles_c(const PixelType * arr_in,
+LIBEXPORT void* vigra_houghtransform_circles_c(const PixelType * arr_in,
     const int width,
     const int height,
     const int min_radius,
@@ -133,14 +133,17 @@ LIBEXPORT int vigra_houghtransform_get_circle_count_c(const void * hough_cicles)
  *
  * \return 0 on sucess, else 1.
  */
- LIBEXPORT int vigra_houghtransform_get_circles_c(const void * hough_circles, PixelType * arr_out);
+ LIBEXPORT int vigra_houghtransform_get_circles_c(const void * hough_circles,
+    PixelType * arr_out,
+    const int width,
+    const int height);
 
 /**
  * Frees the given hough circles structure.
  * \param hough_circles Pointer to the hough curcles structure
  * \return 0 on success, else 1.
  */
-LIBEXPORT int vigra_houghtransform_delete_cicles_c(void * hough_circles);
+LIBEXPORT int vigra_houghtransform_delete_circles_c(void * hough_circles);
 
 /**
  * @}
