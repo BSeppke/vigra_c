@@ -11,7 +11,8 @@ set(SOURCES
 	vigra_impex_c.cxx
 	vigra_morphology_c.cxx
 	vigra_segmentation_c.cxx
-	vigra_splineimageview_c.cxx)
+	vigra_splineimageview_c.cxx
+	vigra_houghtransform_c.cxx)
 
 #find . -type f -name \*.h | sed 's,^\./,,'
 set(HEADERS 
@@ -25,7 +26,9 @@ set(HEADERS
 	vigra_impex_c.h
 	vigra_morphology_c.h
 	vigra_segmentation_c.h
-	vigra_splineimageview_c.h)
+	vigra_splineimageview_c.h
+	vigra_houghtransform_c.h
+	vigra_ext/houghtransform.hxx)
 
 # Tell CMake to create the library
 add_library(vigra_c SHARED ${SOURCES} ${HEADERS})
