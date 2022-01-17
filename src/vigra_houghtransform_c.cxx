@@ -63,7 +63,7 @@ LIBEXPORT void* vigra_houghtransform_lines_c(const PixelType * arr_in,
         std::sort(paramLines.begin(), paramLines.end());
         
         std::vector<HoughLine>* persistentResult = new std::vector<HoughLine>(paramLines.size());
-        std::copy(paramLines.begin(), paramLines.end(), persistentResult->begin());
+        std::copy(paramLines.rbegin(), paramLines.rend(), persistentResult->begin());
         return persistentResult;
     }
     catch (vigra::StdException & e)
@@ -165,7 +165,7 @@ LIBEXPORT void* vigra_houghtransform_circles_c(const PixelType * arr_in,
         std::sort(paramCircles.begin(), paramCircles.end());
         
         std::vector<HoughCircle>* persistentResult = new std::vector<HoughCircle>(paramCircles.size());
-        std::copy(paramCircles.begin(), paramCircles.end(), persistentResult->begin());
+        std::copy(paramCircles.rbegin(), paramCircles.rend(), persistentResult->begin());
         return persistentResult;
         
     }
@@ -176,16 +176,16 @@ LIBEXPORT void* vigra_houghtransform_circles_c(const PixelType * arr_in,
     return nullptr;
 }
 
-int vigra_houghtransform_get_circle_count_c(const void * hough_cicles)
+int vigra_houghtransform_get_circle_count_c(const void * hough_circles)
 {
     try
     {
         using namespace vigra_ext;
         
-        const std::vector<HoughCircle>* persistentResult = reinterpret_cast<const std::vector<HoughCircle>*>(hough_cicles);
+        const std::vector<HoughCircle>* persistentResult = reinterpret_cast<const std::vector<HoughCircle>*>(hough_circles);
         return persistentResult->size();
     }
-    catch (vigra::StdException & e)
+    catch (std::exception & e)
     {
         return 0;
     }

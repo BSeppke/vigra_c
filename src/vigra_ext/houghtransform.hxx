@@ -147,7 +147,7 @@ public:
         vigra::MultiArray<2, unsigned long> houghSpace_max(m_accumulator.shape());
         vigra::localMaxima( m_accumulator,
                             houghSpace_max,
-                            vigra::LocalMinmaxOptions().neighborhood(0).allowAtBorder());
+                            vigra::LocalMinmaxOptions().neighborhood(vigra::DirectNeighborhood).allowAtBorder());
         
         // weight local maxima with supporters
         using namespace vigra::multi_math;
@@ -317,7 +317,7 @@ public:
         vigra::MultiArray<3, unsigned long> houghSpace_max(m_accumulator.shape());
         vigra::localMaxima(m_accumulator,
                     houghSpace_max,
-                    vigra::LocalMinmaxOptions().neighborhood(0).allowAtBorder());
+                vigra::LocalMinmaxOptions().neighborhood(vigra::DirectNeighborhood).allowAtBorder());
         
         // weight local maxima with supporters
         using namespace vigra::multi_math;
