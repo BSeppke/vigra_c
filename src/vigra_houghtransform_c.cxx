@@ -149,7 +149,7 @@ LIBEXPORT void* vigra_houghtransform_circles_c(const PixelType * arr_in,
                                         const int height,
                                         const int min_radius,
                                         const int max_radius,
-                                        const int min_supporters)
+                                        const float min_supporters)
 {
     try
     {

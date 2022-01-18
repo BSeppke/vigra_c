@@ -104,7 +104,7 @@ LIBEXPORT int vigra_houghtransform_delete_lines_c(void * hough_lines);
  * \param height The height of the flat array.
  * \param min_radius Minimal radius of the circles.
  * \param max_radius Maximal radius of the circles.
- * \param min_supporters minimal suppporters needed for a "find".
+ * \param min_supporters minimal suppporters needed for a "find (0.0 = none, 1.0 = all px of a circle are present)".
  *
  * \return Pointer to HougLines structure.
  */
@@ -113,7 +113,7 @@ LIBEXPORT void* vigra_houghtransform_circles_c(const PixelType * arr_in,
     const int height,
     const int min_radius,
     const int max_radius,
-    const int min_supporters);
+    const float min_supporters);
 
 /**
  * Get the count of hough circles from the given hough circles structure.
